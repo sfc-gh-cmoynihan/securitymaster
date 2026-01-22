@@ -1,0 +1,53 @@
+-- ============================================
+-- TRADES TABLE WITH SAMPLE DATA
+-- ============================================
+
+USE DATABASE SECURITY_MASTER_DB;
+USE SCHEMA SECURITIES;
+
+-- Create trades table
+CREATE OR REPLACE TABLE TRADES (
+    TRADE_ID NUMBER AUTOINCREMENT PRIMARY KEY,
+    SYMBOL VARCHAR(10) NOT NULL,
+    TRADE_DATE DATE NOT NULL,
+    TRADE_TYPE VARCHAR(4) NOT NULL,
+    QUANTITY NUMBER(10,2) NOT NULL,
+    PRICE NUMBER(18,4) NOT NULL,
+    TOTAL_VALUE NUMBER(18,4),
+    CREATED_AT TIMESTAMP_NTZ DEFAULT CURRENT_TIMESTAMP(),
+    FOREIGN KEY (SYMBOL) REFERENCES SP500(SYMBOL)
+);
+
+-- Generate 5 trades per S&P 500 instrument using set-based approach
+-- Create a helper sequence for trade numbers
+CREATE OR REPLACE TABLE TRADE_NUMBERS AS
+SELECT ROW_NUMBER() OVER (ORDER BY SEQ4()) as TRADE_NUM
+FROM TABLE(GENERATOR(ROWCOUNT => 5));
+
+-- Insert trades using a cross join with random values
+INSERT INTO TRADES (SYMBOL, TRADE_DATE, TRADE_TYPE, QUANTITY, PRICE, TOTAL_VALUE)
+SELECT 
+    s.SYMBOL,
+    DATEADD(DAY, -UNIFORM(1, 365, RANDOM()), CURRENT_DATE()) as TRADE_DATE,
+    CASE WHEN UNIFORM(0, 100, RANDOM()) < 60 THEN 'BUY' ELSE 'SELL' END as TRADE_TYPE,
+    ROUND(UNIFORM(10, 1000, RANDOM()), 0) as QUANTITY,
+    ROUND(UNIFORM(10, 500, RANDOM()) * (0.8 + UNIFORM(0, 40, RANDOM()) / 100), 2) as PRICE,
+    ROUND(UNIFORM(10, 1000, RANDOM()), 0) * ROUND(UNIFORM(10, 500, RANDOM()) * (0.8 + UNIFORM(0, 40, RANDOM()) / 100), 2) as TOTAL_VALUE
+FROM SP500 s
+CROSS JOIN TRADE_NUMBERS t;
+
+-- Recalculate TOTAL_VALUE to be consistent with QUANTITY * PRICE
+UPDATE TRADES SET TOTAL_VALUE = QUANTITY * PRICE;
+
+-- Drop helper table
+DROP TABLE IF EXISTS TRADE_NUMBERS;
+
+-- Verify trades were created
+SELECT 
+    'Total trades: ' || COUNT(*) AS total_trades,
+    'Unique symbols: ' || COUNT(DISTINCT SYMBOL) AS unique_symbols,
+    'Date range: ' || MIN(TRADE_DATE) || ' to ' || MAX(TRADE_DATE) AS date_range
+FROM TRADES;
+
+-- Sample of generated trades
+SELECT * FROM TRADES ORDER BY TRADE_DATE DESC LIMIT 20;
