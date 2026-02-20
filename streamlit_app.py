@@ -196,7 +196,7 @@ def load_trades(symbol=None):
                 t.SYMBOL,
                 s.SECURITY_NAME,
                 t.TRADE_DATE,
-                t.TRADE_TYPE,
+                t.SIDE,
                 t.QUANTITY,
                 t.PRICE,
                 t.TOTAL_VALUE
@@ -212,7 +212,7 @@ def load_trades(symbol=None):
                 t.SYMBOL,
                 s.SECURITY_NAME,
                 t.TRADE_DATE,
-                t.TRADE_TYPE,
+                t.SIDE,
                 t.QUANTITY,
                 t.PRICE,
                 t.TOTAL_VALUE
@@ -229,12 +229,12 @@ def get_portfolio_summary():
         SELECT 
             SYMBOL,
             COUNT(*) as TRADE_COUNT,
-            SUM(CASE WHEN TRADE_TYPE = 'BUY' THEN QUANTITY ELSE 0 END) as TOTAL_BOUGHT,
-            SUM(CASE WHEN TRADE_TYPE = 'SELL' THEN QUANTITY ELSE 0 END) as TOTAL_SOLD,
-            SUM(CASE WHEN TRADE_TYPE = 'BUY' THEN TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
-            SUM(CASE WHEN TRADE_TYPE = 'SELL' THEN TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
-            SUM(CASE WHEN TRADE_TYPE = 'BUY' THEN QUANTITY ELSE 0 END) - 
-                SUM(CASE WHEN TRADE_TYPE = 'SELL' THEN QUANTITY ELSE 0 END) as NET_POSITION,
+            SUM(CASE WHEN SIDE = 'BUY' THEN QUANTITY ELSE 0 END) as TOTAL_BOUGHT,
+            SUM(CASE WHEN SIDE = 'SELL' THEN QUANTITY ELSE 0 END) as TOTAL_SOLD,
+            SUM(CASE WHEN SIDE = 'BUY' THEN TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
+            SUM(CASE WHEN SIDE = 'SELL' THEN TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
+            SUM(CASE WHEN SIDE = 'BUY' THEN QUANTITY ELSE 0 END) - 
+                SUM(CASE WHEN SIDE = 'SELL' THEN QUANTITY ELSE 0 END) as NET_POSITION,
             AVG(PRICE) as AVG_PRICE
         FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES
         GROUP BY SYMBOL
@@ -248,8 +248,8 @@ def get_sector_breakdown():
             s.GICS_SECTOR,
             COUNT(DISTINCT t.SYMBOL) as SECURITIES_TRADED,
             SUM(t.TOTAL_VALUE) as TOTAL_VALUE,
-            SUM(CASE WHEN t.TRADE_TYPE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
-            SUM(CASE WHEN t.TRADE_TYPE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE
+            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
+            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE
         FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
         JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
         GROUP BY s.GICS_SECTOR
@@ -265,7 +265,7 @@ def get_trades_with_nyse_master():
             n.COMPANY_NAME as NYSE_COMPANY_NAME,
             n.FIGI,
             t.TRADE_DATE,
-            t.TRADE_TYPE,
+            t.SIDE,
             t.QUANTITY,
             t.PRICE,
             t.TOTAL_VALUE,
@@ -299,7 +299,7 @@ def load_bond_trades():
             b.TICKER,
             b.CREDIT_RATING,
             t.TRADE_DATE,
-            t.TRADE_TYPE,
+            t.SIDE,
             t.QUANTITY,
             t.PRICE,
             t.YIELD_AT_TRADE,
@@ -319,10 +319,10 @@ def get_bond_trade_summary():
             b.ISSUER_NAME,
             b.TICKER,
             COUNT(*) as TRADE_COUNT,
-            SUM(CASE WHEN t.TRADE_TYPE = 'BUY' THEN t.QUANTITY ELSE 0 END) as TOTAL_BOUGHT,
-            SUM(CASE WHEN t.TRADE_TYPE = 'SELL' THEN t.QUANTITY ELSE 0 END) as TOTAL_SOLD,
-            SUM(CASE WHEN t.TRADE_TYPE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
-            SUM(CASE WHEN t.TRADE_TYPE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
+            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.QUANTITY ELSE 0 END) as TOTAL_BOUGHT,
+            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.QUANTITY ELSE 0 END) as TOTAL_SOLD,
+            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
+            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
             AVG(t.PRICE) as AVG_PRICE,
             AVG(t.YIELD_AT_TRADE) as AVG_YIELD
         FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
@@ -581,7 +581,7 @@ with tab2:
             'SYMBOL': 'Symbol',
             'SECURITY_NAME': 'Security',
             'TRADE_DATE': 'Date',
-            'TRADE_TYPE': 'Type',
+            'SIDE': 'Type',
             'QUANTITY': 'Qty',
             'PRICE': 'Price',
             'TOTAL_VALUE': 'Total Value'
@@ -685,7 +685,7 @@ with tab4:
             'NYSE_COMPANY_NAME': 'NYSE Company',
             'FIGI': 'Bloomberg FIGI',
             'TRADE_DATE': 'Date',
-            'TRADE_TYPE': 'Type',
+            'SIDE': 'Type',
             'QUANTITY': 'Qty',
             'PRICE': 'Price',
             'TOTAL_VALUE': 'Total Value',
@@ -715,8 +715,8 @@ with tab5:
     
     total_bond_trades = len(bond_trades)
     total_bond_value = bond_trades['TOTAL_VALUE'].sum()
-    buy_trades = bond_trades[bond_trades['TRADE_TYPE'] == 'BUY']
-    sell_trades = bond_trades[bond_trades['TRADE_TYPE'] == 'SELL']
+    buy_trades = bond_trades[bond_trades['SIDE'] == 'BUY']
+    sell_trades = bond_trades[bond_trades['SIDE'] == 'SELL']
     
     with btcol1:
         st.metric("Total Bond Trades", f"{total_bond_trades:,}")
@@ -754,7 +754,7 @@ with tab5:
     # Apply filters
     filtered_bond_trades = bond_trades.copy()
     if trade_type_filter != "All":
-        filtered_bond_trades = filtered_bond_trades[filtered_bond_trades['TRADE_TYPE'] == trade_type_filter]
+        filtered_bond_trades = filtered_bond_trades[filtered_bond_trades['SIDE'] == trade_type_filter]
     if counterparty_filter != "All Counterparties":
         filtered_bond_trades = filtered_bond_trades[filtered_bond_trades['COUNTERPARTY'] == counterparty_filter]
     if bond_search:
@@ -769,7 +769,7 @@ with tab5:
     # Display trades table
     if not filtered_bond_trades.empty:
         display_bt = filtered_bond_trades[['TRADE_ID', 'CUSIP', 'TICKER', 'ISSUER_NAME', 'CREDIT_RATING',
-                                           'TRADE_DATE', 'TRADE_TYPE', 'QUANTITY', 'PRICE', 
+                                           'TRADE_DATE', 'SIDE', 'QUANTITY', 'PRICE', 
                                            'YIELD_AT_TRADE', 'TOTAL_VALUE', 'COUNTERPARTY']].copy()
         display_bt['TOTAL_VALUE'] = display_bt['TOTAL_VALUE'].apply(lambda x: f"${x:,.0f}")
         display_bt['PRICE'] = display_bt['PRICE'].apply(lambda x: f"{x:.4f}")
@@ -782,7 +782,7 @@ with tab5:
             'ISSUER_NAME': 'Issuer',
             'CREDIT_RATING': 'Rating',
             'TRADE_DATE': 'Date',
-            'TRADE_TYPE': 'Type',
+            'SIDE': 'Type',
             'QUANTITY': 'Qty',
             'PRICE': 'Price',
             'YIELD_AT_TRADE': 'Yield',
@@ -1430,7 +1430,7 @@ with tab8:
                 'Equity' as SECURITY_TYPE,
                 t.TRADE_ID,
                 t.TRADE_DATE,
-                t.TRADE_TYPE,
+                t.SIDE,
                 t.SYMBOL as TICKER,
                 g.ISSUER,
                 g.GLOBAL_SECURITY_ID,
@@ -1454,7 +1454,7 @@ with tab8:
                 'Bond' as SECURITY_TYPE,
                 t.TRADE_ID,
                 t.TRADE_DATE,
-                t.TRADE_TYPE,
+                t.SIDE,
                 g.PRIMARY_TICKER as TICKER,
                 g.ISSUER,
                 g.GLOBAL_SECURITY_ID,
@@ -1693,7 +1693,7 @@ with tab8:
     st.markdown(f'<p style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.5rem;">Showing <strong>{len(mapped_trades):,}</strong> trades (max 1,000)</p>', unsafe_allow_html=True)
     
     if not mapped_trades.empty:
-        display_mapped = mapped_trades[['SECURITY_TYPE', 'TRADE_DATE', 'TRADE_TYPE', 'TICKER', 
+        display_mapped = mapped_trades[['SECURITY_TYPE', 'TRADE_DATE', 'SIDE', 'TICKER', 
                                         'ISSUER', 'GLOBAL_SECURITY_ID', 'EXCHANGE', 'ISIN', 
                                         'CUSIP', 'SEDOL', 'QUANTITY', 'PRICE', 'AMOUNT_USD', 
                                         'IN_SP500']].copy()
@@ -1703,7 +1703,7 @@ with tab8:
         display_mapped = display_mapped.rename(columns={
             'SECURITY_TYPE': 'Type',
             'TRADE_DATE': 'Date',
-            'TRADE_TYPE': 'Side',
+            'SIDE': 'Side',
             'TICKER': 'Ticker',
             'ISSUER': 'Issuer',
             'GLOBAL_SECURITY_ID': 'GSID',
