@@ -1,5 +1,13 @@
 # Security Master EDM
 
+**Author:** Colm Moynihan  
+**Date:** 20th Feb 2026  
+**Version:** 1.0
+
+> **Disclaimer:** This is a custom demo of Security Master built for use by Financial Services clients. The code here is not supported and is provided under an open source license. It is released with this source code publicly available, but with no guarantee of maintenance, security updates, bug fixes, or customer support from the original developer.
+
+---
+
 Enterprise Data Management application for Securities Master built on Snowflake with Streamlit. This application provides a comprehensive solution for managing security reference data, trade matching, audit trails, and downstream system integration.
 
 ![Powered by Snowflake](https://img.shields.io/badge/Powered%20by-Snowflake-29B5E8?style=flat&logo=snowflake)
