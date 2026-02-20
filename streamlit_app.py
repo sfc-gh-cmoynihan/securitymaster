@@ -262,7 +262,7 @@ def get_trades_with_nyse_master():
         SELECT 
             t.TRADE_ID,
             t.SYMBOL,
-            n.COMPANY_NAME as NYSE_COMPANY_NAME,
+            n.SECURITY_NAME as NYSE_COMPANY_NAME,
             n.FIGI,
             t.TRADE_DATE,
             t.SIDE,
