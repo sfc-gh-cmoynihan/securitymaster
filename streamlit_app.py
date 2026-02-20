@@ -1312,11 +1312,9 @@ with tab6:
         </div>
         """, unsafe_allow_html=True)
         
-        submit_col1, submit_col2, submit_col3, submit_col4 = st.columns([1, 1, 1, 1])
+        submit_col1, submit_col2, submit_col3 = st.columns([1, 2, 1])
         with submit_col2:
             submitted = st.form_submit_button("➕ Add Security", type="primary", use_container_width=True)
-        with submit_col3:
-            update_submitted = st.form_submit_button("✏️ Update Security", use_container_width=True)
         
         if submitted:
             if not issuer or not ticker:
@@ -1355,52 +1353,6 @@ with tab6:
                             st.cache_data.clear()
                         except Exception as e:
                             st.error(f"Error adding security: {str(e)}")
-        
-        if update_submitted:
-            if not isin:
-                st.error("ISIN is required to identify the security to update")
-            else:
-                existing_record = session.sql(f"""
-                    SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-                    WHERE ISIN = '{isin.upper().strip()}'
-                    LIMIT 1
-                """).to_pandas()
-                
-                if existing_record.empty:
-                    st.error("❌ No security found with that ISIN to update")
-                else:
-                    validation_errors = validate_security(exchange, isin, cusip, sedol)
-                    
-                    if validation_errors:
-                        for error in validation_errors:
-                            st.error(f"Validation Error: {error}")
-                    else:
-                        try:
-                            rec = existing_record.iloc[0]
-                            new_values = {
-                                'issuer': issuer,
-                                'asset_class': asset_class,
-                                'ticker': ticker,
-                                'exchange': exchange,
-                                'isin': isin if isin else None,
-                                'cusip': cusip if cusip else None,
-                                'sedol': sedol if sedol else None,
-                                'currency': currency,
-                                'status': status,
-                                'golden_source': golden_source
-                            }
-                            update_security_with_history(
-                                rec['GLOBAL_SECURITY_ID'], rec, new_values, 'Updated via form', 'CURRENT_USER'
-                            )
-                            st.success(f"✅ Security updated successfully: {rec['GLOBAL_SECURITY_ID']}")
-                            st.session_state.prefill_issuer = ''
-                            st.session_state.prefill_ticker = ''
-                            st.session_state.prefill_isin = ''
-                            st.session_state.prefill_exchange = ''
-                            st.session_state.prefill_sector = ''
-                            st.cache_data.clear()
-                        except Exception as e:
-                            st.error(f"Error updating security: {str(e)}")
     
     st.markdown("<br>", unsafe_allow_html=True)
     
