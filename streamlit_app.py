@@ -183,7 +183,7 @@ def load_securities():
             GICS_SECTOR,
             GICS_SUB_INDUSTRY,
             HEADQUARTERS
-        FROM SECURITIES_MASTER_DB.SECURITIES.SP500 
+        FROM SECURITY_MASTER_DB.SECURITIES.SP500 
         ORDER BY SYMBOL
     """).to_pandas()
 
@@ -201,7 +201,7 @@ def load_trades(symbol=None):
                 t.PRICE,
                 t.TOTAL_VALUE
             FROM SECURITY_TRADES_DB.TRADES.EQUITY_TRADES t
-            JOIN SECURITIES_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+            JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
             WHERE t.SYMBOL = '{symbol}'
             ORDER BY t.TRADE_DATE DESC
         """
@@ -217,7 +217,7 @@ def load_trades(symbol=None):
                 t.PRICE,
                 t.TOTAL_VALUE
             FROM SECURITY_TRADES_DB.TRADES.EQUITY_TRADES t
-            JOIN SECURITIES_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+            JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
             ORDER BY t.TRADE_DATE DESC
             LIMIT 1000
         """
@@ -251,7 +251,7 @@ def get_sector_breakdown():
             SUM(CASE WHEN t.TRADE_TYPE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
             SUM(CASE WHEN t.TRADE_TYPE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE
         FROM SECURITY_TRADES_DB.TRADES.EQUITY_TRADES t
-        JOIN SECURITIES_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+        JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
         GROUP BY s.GICS_SECTOR
         ORDER BY TOTAL_VALUE DESC
     """).to_pandas()
@@ -271,7 +271,7 @@ def get_trades_with_nyse_master():
             t.TOTAL_VALUE,
             CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END as MATCH_STATUS
         FROM SECURITY_TRADES_DB.TRADES.EQUITY_TRADES t
-        LEFT JOIN SECURITIES_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
+        LEFT JOIN SECURITY_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
         ORDER BY t.TRADE_DATE DESC
         LIMIT 1000
     """).to_pandas()
@@ -285,7 +285,7 @@ def get_trade_match_summary():
             COUNT(DISTINCT t.SYMBOL) as UNIQUE_SYMBOLS,
             SUM(t.TOTAL_VALUE) as TOTAL_VALUE
         FROM SECURITY_TRADES_DB.TRADES.EQUITY_TRADES t
-        LEFT JOIN SECURITIES_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
+        LEFT JOIN SECURITY_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
         GROUP BY CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END
     """).to_pandas()
 
@@ -308,7 +308,7 @@ def load_bond_trades():
             t.SETTLEMENT_DATE,
             b.SECTOR
         FROM SECURITY_TRADES_DB.TRADES.BOND_TRADES t
-        JOIN SECURITIES_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
+        JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
         ORDER BY t.TRADE_DATE DESC
     """).to_pandas()
 
@@ -326,7 +326,7 @@ def get_bond_trade_summary():
             AVG(t.PRICE) as AVG_PRICE,
             AVG(t.YIELD_AT_TRADE) as AVG_YIELD
         FROM SECURITY_TRADES_DB.TRADES.BOND_TRADES t
-        JOIN SECURITIES_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
+        JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
         GROUP BY b.ISSUER_NAME, b.TICKER
         ORDER BY SUM(t.TOTAL_VALUE) DESC
     """).to_pandas()
@@ -465,7 +465,7 @@ with tab1:
                 CREDIT_RATING,
                 PAR_VALUE,
                 CURRENCY
-            FROM SECURITIES_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
+            FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
             WHERE MATURITY_DATE > CURRENT_DATE()
             ORDER BY CURRENT_YIELD DESC
         """).to_pandas()
@@ -835,7 +835,7 @@ with tab6:
     def lookup_isin_external(isin_code):
         """Lookup security information via External Function (OpenFIGI API)"""
         result = session.sql(f"""
-            SELECT SECURITIES_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT
+            SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT
         """).to_pandas()
         
         if not result.empty:
@@ -887,7 +887,7 @@ with tab6:
     @st.cache_data(ttl=60)
     def load_golden_record():
         return session.sql("""
-            SELECT * FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+            SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
             ORDER BY GLOBAL_SECURITY_ID DESC
             LIMIT 100
         """).to_pandas()
@@ -896,7 +896,7 @@ with tab6:
     def load_equities_dropdown():
         return session.sql("""
             SELECT GLOBAL_SECURITY_ID, PRIMARY_TICKER, ISSUER, ASSET_CLASS, PRIMARY_EXCHANGE
-            FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
             WHERE ASSET_CLASS = 'Equity'
             ORDER BY PRIMARY_TICKER
         """).to_pandas()
@@ -905,12 +905,12 @@ with tab6:
     def load_bonds_dropdown():
         return session.sql("""
             SELECT BOND_ID, ISSUER_NAME, COUPON_RATE, MATURITY_DATE, CURRENCY, CREDIT_RATING
-            FROM SECURITIES_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
+            FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
             ORDER BY ISSUER_NAME
         """).to_pandas()
     
     def get_next_gsid():
-        result = session.sql("SELECT 'GSID_' || SECURITIES_MASTER_DB.GOLDEN_RECORD.GSID_SEQ.NEXTVAL AS NEXT_ID").to_pandas()
+        result = session.sql("SELECT 'GSID_' || SECURITY_MASTER_DB.GOLDEN_RECORD.GSID_SEQ.NEXTVAL AS NEXT_ID").to_pandas()
         return result['NEXT_ID'].iloc[0]
     
     def validate_security(exchange, isin, cusip, sedol):
@@ -931,7 +931,7 @@ with tab6:
         lineage_id = f"LIN-{gsid}-{pd.Timestamp.now().strftime('%Y%m%d%H%M%S')}"
         
         session.sql(f"""
-            INSERT INTO SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
+            INSERT INTO SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
             (GLOBAL_SECURITY_ID, ISSUER, ASSET_CLASS, PRIMARY_TICKER, PRIMARY_EXCHANGE, 
              ISIN, CUSIP, SEDOL, CURRENCY, STATUS, GOLDEN_SOURCE, LAST_VALIDATED,
              LINEAGE_ID, CREATED_BY, CREATED_AT, LAST_MODIFIED_BY)
@@ -1008,7 +1008,7 @@ with tab6:
         lineage_path = f"{old_lineage} -> {lineage_id}" if old_lineage else lineage_id
         
         session.sql(f"""
-            INSERT INTO SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY (
+            INSERT INTO SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY (
                 GLOBAL_SECURITY_ID, ACTION,
                 ISSUER_BEFORE, ISSUER_AFTER,
                 ASSET_CLASS_BEFORE, ASSET_CLASS_AFTER,
@@ -1056,7 +1056,7 @@ with tab6:
         lineage_id = log_security_change(gsid, 'UPDATE', old_rec, new_values, edit_reason, user)
         
         session.sql(f"""
-            UPDATE SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
+            UPDATE SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
             SET ISSUER = '{new_values['issuer'].replace("'", "''")}',
                 ASSET_CLASS = '{new_values['asset_class']}',
                 PRIMARY_TICKER = '{new_values['ticker']}',
@@ -1076,7 +1076,7 @@ with tab6:
     if security_type == "Equities" and selected_security != "-- Select an equity to view --":
         selected_ticker = selected_security.split(" - ")[0]
         selected_record = session.sql(f"""
-            SELECT * FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+            SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
             WHERE PRIMARY_TICKER = '{selected_ticker}'
             LIMIT 1
         """).to_pandas()
@@ -1186,7 +1186,7 @@ with tab6:
     elif security_type == "Bonds" and selected_security != "-- Select a bond to view --":
         selected_bond_id = selected_security.split(" - ")[0]
         selected_bond = session.sql(f"""
-            SELECT * FROM SECURITIES_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
+            SELECT * FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
             WHERE BOND_ID = '{selected_bond_id}'
             LIMIT 1
         """).to_pandas()
@@ -1320,7 +1320,7 @@ with tab6:
                 st.error("ISIN is required")
             else:
                 existing_isin = session.sql(f"""
-                    SELECT COUNT(*) as CNT FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+                    SELECT COUNT(*) as CNT FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
                     WHERE ISIN = '{isin.upper().strip()}'
                 """).to_pandas()
                 
@@ -1364,7 +1364,7 @@ with tab6:
                 COUNT(CASE WHEN PRIMARY_EXCHANGE = 'LSEG' AND (SEDOL IS NULL OR SEDOL = '') THEN 1 END) as LSEG_MISSING_SEDOL,
                 COUNT(CASE WHEN ISIN LIKE 'US%' AND (CUSIP IS NULL OR CUSIP = '') THEN 1 END) as US_MISSING_CUSIP,
                 COUNT(CASE WHEN ISIN IS NULL OR ISIN = '' THEN 1 END) as MISSING_ISIN
-            FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
         """).to_pandas()
     
     quality = get_quality_metrics()
@@ -1441,9 +1441,9 @@ with tab8:
                 g.CURRENCY,
                 CASE WHEN s.SYMBOL IS NOT NULL THEN 'Yes' ELSE 'No' END as IN_SP500
             FROM SECURITY_TRADES_DB.TRADES.EQUITY_TRADES t
-            LEFT JOIN SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g 
+            LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g 
                 ON t.SYMBOL = g.PRIMARY_TICKER AND g.ASSET_CLASS = 'Equity'
-            LEFT JOIN SECURITIES_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+            LEFT JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
         """
         
         bond_query = """
@@ -1465,7 +1465,7 @@ with tab8:
                 g.CURRENCY,
                 'No' as IN_SP500
             FROM SECURITY_TRADES_DB.TRADES.BOND_TRADES t
-            LEFT JOIN SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g 
+            LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g 
                 ON t.CUSIP = g.CUSIP AND g.ASSET_CLASS = 'Fixed Income'
         """
         
@@ -1501,7 +1501,7 @@ with tab8:
     def get_exchange_list():
         return session.sql("""
             SELECT DISTINCT PRIMARY_EXCHANGE 
-            FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
+            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
             WHERE PRIMARY_EXCHANGE IS NOT NULL
             ORDER BY PRIMARY_EXCHANGE
         """).to_pandas()['PRIMARY_EXCHANGE'].tolist()
@@ -1740,7 +1740,7 @@ with tab7:
                     GLOBAL_SECURITY_ID, ISSUER, ASSET_CLASS, PRIMARY_TICKER, PRIMARY_EXCHANGE,
                     ISIN, CUSIP, SEDOL, CURRENCY, STATUS, GOLDEN_SOURCE, LAST_VALIDATED,
                     LINEAGE_ID, CREATED_BY, CREATED_AT, LAST_MODIFIED_BY
-                FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
                 ORDER BY LAST_VALIDATED DESC
             """).to_pandas()
         
@@ -1772,7 +1772,7 @@ with tab7:
                     csv_filename = f"SEC_MASTER_{file_date}_{file_time}.csv"
                     
                     session.sql(f"""
-                        COPY INTO @SECURITIES_MASTER_DB.GOLDEN_RECORD.EXPORT/{csv_filename}
+                        COPY INTO @SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT/{csv_filename}
                         FROM (
                             SELECT 
                                 'GLOBAL_SECURITY_ID' as C1, 'ISSUER' as C2, 'ASSET_CLASS' as C3, 
@@ -1788,7 +1788,7 @@ with tab7:
                                 LINEAGE_ID, CREATED_BY, 
                                 TO_VARCHAR(CREATED_AT, 'YYYY-MM-DD HH24:MI:SS'), 
                                 LAST_MODIFIED_BY
-                            FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+                            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
                             ORDER BY 12 DESC
                         )
                         FILE_FORMAT = (TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY = '"' COMPRESSION = NONE)
@@ -1847,8 +1847,8 @@ with tab7:
                             r.SEDOL as CURRENT_SEDOL,
                             r.CURRENCY as CURRENT_CURRENCY,
                             r.STATUS as CURRENT_STATUS
-                        FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY h
-                        LEFT JOIN SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE r
+                        FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY h
+                        LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE r
                             ON h.GLOBAL_SECURITY_ID = r.GLOBAL_SECURITY_ID
                         WHERE h.CHANGED_AT >= DATEADD('day', -1, CURRENT_TIMESTAMP())
                         ORDER BY h.CHANGED_AT DESC
@@ -1864,7 +1864,7 @@ with tab7:
                     json_str = json.dumps(export_data, indent=2, default=str)
                     
                     session.sql(f"""
-                        COPY INTO @SECURITIES_MASTER_DB.GOLDEN_RECORD.EXPORT/{filename}
+                        COPY INTO @SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT/{filename}
                         FROM (
                             SELECT OBJECT_CONSTRUCT(
                                 'export_timestamp', '{now.strftime("%Y-%m-%d %H:%M:%S")}',
@@ -1901,7 +1901,7 @@ with tab7:
         @st.cache_data(ttl=30)
         def load_history_data():
             return session.sql("""
-                SELECT * FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                 ORDER BY CHANGED_AT DESC
                 LIMIT 1000
             """).to_pandas()
@@ -1909,7 +1909,7 @@ with tab7:
         @st.cache_data(ttl=300)
         def get_unique_users():
             result = session.sql("""
-                SELECT DISTINCT CHANGED_BY FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                SELECT DISTINCT CHANGED_BY FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                 WHERE CHANGED_BY IS NOT NULL ORDER BY CHANGED_BY
             """).to_pandas()
             return result['CHANGED_BY'].tolist()
@@ -1918,7 +1918,7 @@ with tab7:
         def get_unique_tickers_history():
             result = session.sql("""
                 SELECT DISTINCT COALESCE(PRIMARY_TICKER_AFTER, PRIMARY_TICKER_BEFORE) as TICKER 
-                FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                 WHERE COALESCE(PRIMARY_TICKER_AFTER, PRIMARY_TICKER_BEFORE) IS NOT NULL
                 ORDER BY TICKER
             """).to_pandas()
@@ -1928,7 +1928,7 @@ with tab7:
         def get_unique_currencies_history():
             result = session.sql("""
                 SELECT DISTINCT COALESCE(CURRENCY_AFTER, CURRENCY_BEFORE) as CURRENCY 
-                FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                 WHERE COALESCE(CURRENCY_AFTER, CURRENCY_BEFORE) IS NOT NULL
                 ORDER BY CURRENCY
             """).to_pandas()
@@ -1938,7 +1938,7 @@ with tab7:
         def get_unique_exchanges_history():
             result = session.sql("""
                 SELECT DISTINCT COALESCE(PRIMARY_EXCHANGE_AFTER, PRIMARY_EXCHANGE_BEFORE) as EXCHANGE 
-                FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                 WHERE COALESCE(PRIMARY_EXCHANGE_AFTER, PRIMARY_EXCHANGE_BEFORE) IS NOT NULL
                 ORDER BY EXCHANGE
             """).to_pandas()
@@ -2006,7 +2006,7 @@ with tab7:
                         hist_filename = f"SEC_MASTER_HISTORY_{file_date}_{file_time}.csv"
                         
                         session.sql(f"""
-                            COPY INTO @SECURITIES_MASTER_DB.GOLDEN_RECORD.EXPORT/{hist_filename}
+                            COPY INTO @SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT/{hist_filename}
                             FROM (
                                 SELECT 
                                     'HISTORY_ID' as C1, 'GLOBAL_SECURITY_ID' as C2, 'ACTION' as C3,
@@ -2021,7 +2021,7 @@ with tab7:
                                     STATUS_BEFORE, STATUS_AFTER,
                                     EDIT_REASON, CHANGED_BY, TO_VARCHAR(CHANGED_AT, 'YYYY-MM-DD HH24:MI:SS'),
                                     LINEAGE_ID, LINEAGE_PATH
-                                FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                                 ORDER BY 10 DESC
                             )
                             FILE_FORMAT = (TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY = '"')
@@ -2063,7 +2063,7 @@ with tab7:
                         SELECT HISTORY_ID, ACTION, CHANGED_AT, CHANGED_BY, EDIT_REASON,
                                ISSUER_BEFORE, ISSUER_AFTER, STATUS_BEFORE, STATUS_AFTER,
                                LINEAGE_ID, LINEAGE_PARENT_ID, LINEAGE_PATH
-                        FROM SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+                        FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
                         WHERE GLOBAL_SECURITY_ID = '{selected_gsid_lineage}'
                         ORDER BY CHANGED_AT ASC
                     """).to_pandas()
