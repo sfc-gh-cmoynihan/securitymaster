@@ -1462,7 +1462,7 @@ with tab8:
                 g.ISIN,
                 g.CUSIP,
                 g.SEDOL,
-                t.QUANTITY,
+                t.FACE_VALUE as QUANTITY,
                 t.PRICE,
                 t.TOTAL_VALUE as AMOUNT_USD,
                 g.CURRENCY,
