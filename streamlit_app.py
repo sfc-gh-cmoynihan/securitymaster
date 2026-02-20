@@ -807,7 +807,7 @@ with tab5:
             'BUY_VALUE': 'Buys',
             'SELL_VALUE': 'Sells'
         })
-        st.dataframe(top_issuers, use_container_width=True, hide_index=True, height=300)
+        st.dataframe(top_issuers.reset_index(drop=True), use_container_width=True, height=300)
     
     with summary_col2:
         st.markdown("#### 🤝 Trades by Counterparty")
@@ -820,7 +820,7 @@ with tab5:
             'TOTAL_VALUE': 'Total Value',
             'AVG_PRICE': 'Avg Price'
         })
-        st.dataframe(cp_display, use_container_width=True, hide_index=True, height=300)
+        st.dataframe(cp_display.reset_index(drop=True), use_container_width=True, height=300)
 
 with tab6:
     st.markdown("""
