@@ -300,9 +300,9 @@ def load_bond_trades():
             b.CREDIT_RATING,
             t.TRADE_DATE,
             t.SIDE,
-            t.QUANTITY,
+            t.FACE_VALUE as QUANTITY,
             t.PRICE,
-            t.YIELD_AT_TRADE,
+            t.YIELD as YIELD_AT_TRADE,
             t.TOTAL_VALUE,
             t.COUNTERPARTY,
             t.SETTLEMENT_DATE,
@@ -319,12 +319,12 @@ def get_bond_trade_summary():
             b.ISSUER_NAME,
             b.TICKER,
             COUNT(*) as TRADE_COUNT,
-            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.QUANTITY ELSE 0 END) as TOTAL_BOUGHT,
-            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.QUANTITY ELSE 0 END) as TOTAL_SOLD,
+            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.FACE_VALUE ELSE 0 END) as TOTAL_BOUGHT,
+            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.FACE_VALUE ELSE 0 END) as TOTAL_SOLD,
             SUM(CASE WHEN t.SIDE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
             SUM(CASE WHEN t.SIDE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
             AVG(t.PRICE) as AVG_PRICE,
-            AVG(t.YIELD_AT_TRADE) as AVG_YIELD
+            AVG(t.YIELD) as AVG_YIELD
         FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
         JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
         GROUP BY b.ISSUER_NAME, b.TICKER
