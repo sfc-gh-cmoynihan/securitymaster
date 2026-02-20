@@ -832,6 +832,61 @@ with tab6:
     
     import json
     
+    def lookup_isin_external(isin_code):
+        """Lookup security information via External Function (OpenFIGI API)"""
+        try:
+            result = session.sql(f"""
+                SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT
+            """).to_pandas()
+            
+            if not result.empty:
+                raw_result = result.iloc[0]['RESULT']
+                if isinstance(raw_result, str):
+                    return json.loads(raw_result)
+                return raw_result
+            return {'success': False, 'error': 'Failed to call external function'}
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
+    
+    st.markdown("**🌐 ISIN Lookup (External API)**")
+    lookup_col1, lookup_col2, lookup_col3 = st.columns([1, 1, 2])
+    
+    with lookup_col1:
+        isin_lookup = st.text_input("ISIN", placeholder="e.g., US0378331005", max_chars=12, key="isin_lookup_input", label_visibility="collapsed")
+    
+    with lookup_col2:
+        lookup_clicked = st.button("🔎 Lookup", key="lookup_btn", use_container_width=True)
+    
+    if lookup_clicked and isin_lookup:
+        with st.spinner("Calling OpenFIGI API..."):
+            result = lookup_isin_external(isin_lookup.upper().strip())
+            
+            if result and result.get('success'):
+                st.success("✅ Security found via OpenFIGI!")
+                
+                st.markdown(f"**Source:** OpenFIGI External API")
+                result_col1, result_col2, result_col3 = st.columns(3)
+                with result_col1:
+                    st.markdown(f"**Name:** {result.get('name', 'N/A')}")
+                    st.markdown(f"**Ticker:** {result.get('ticker', 'N/A')}")
+                with result_col2:
+                    st.markdown(f"**Exchange:** {result.get('exchange', 'N/A')}")
+                    st.markdown(f"**Type:** {result.get('security_type', 'N/A')}")
+                with result_col3:
+                    st.markdown(f"**Market Sector:** {result.get('market_sector', 'N/A')}")
+                    st.markdown(f"**FIGI:** {result.get('figi', 'N/A')}")
+                
+                all_results = result.get('all_results', [])
+                if all_results and len(all_results) > 1:
+                    with st.expander(f"📋 View all {len(all_results)} listings"):
+                        for i, listing in enumerate(all_results):
+                            st.markdown(f"**{i+1}. {listing.get('name', 'N/A')}** - {listing.get('ticker', 'N/A')} ({listing.get('exchCode', 'N/A')})")
+            else:
+                error_msg = result.get('error', 'Unknown error') if result else 'No response'
+                st.warning(f"⚠️ {error_msg}")
+    
+    st.markdown("---")
+    
     @st.cache_data(ttl=60)
     def load_golden_record():
         return session.sql("""
@@ -1162,6 +1217,15 @@ with tab6:
     st.markdown("---")
     st.subheader("Add New Security")
     
+    st.markdown("**🌐 ISIN Lookup (External API)**")
+    add_lookup_col1, add_lookup_col2, add_lookup_col3 = st.columns([1, 1, 2])
+    
+    with add_lookup_col1:
+        add_isin_lookup = st.text_input("ISIN", placeholder="e.g., US0378331005", max_chars=12, key="add_isin_lookup_input", label_visibility="collapsed")
+    
+    with add_lookup_col2:
+        add_lookup_clicked = st.button("🔎 Lookup", key="add_lookup_btn", use_container_width=True)
+    
     if 'prefill_issuer' not in st.session_state:
         st.session_state.prefill_issuer = ''
     if 'prefill_ticker' not in st.session_state:
@@ -1172,6 +1236,22 @@ with tab6:
         st.session_state.prefill_exchange = ''
     if 'prefill_sector' not in st.session_state:
         st.session_state.prefill_sector = ''
+    
+    if add_lookup_clicked and add_isin_lookup:
+        with st.spinner("Calling OpenFIGI API..."):
+            result = lookup_isin_external(add_isin_lookup.upper().strip())
+            
+            if result and result.get('success'):
+                st.success("✅ Security found! Form populated below.")
+                st.session_state.prefill_issuer = result.get('name', '')
+                st.session_state.prefill_ticker = result.get('ticker', '')
+                st.session_state.prefill_isin = add_isin_lookup.upper().strip()
+                st.session_state.prefill_exchange = result.get('exchange', '')
+                st.session_state.prefill_sector = result.get('market_sector', '')
+                st.rerun()
+            else:
+                error_msg = result.get('error', 'Unknown error') if result else 'No response'
+                st.warning(f"⚠️ {error_msg}")
     
     with st.form("security_entry_form", clear_on_submit=True):
         form_row1_col1, form_row1_col2 = st.columns([2, 1])
