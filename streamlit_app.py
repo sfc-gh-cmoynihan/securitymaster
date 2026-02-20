@@ -1248,7 +1248,7 @@ with tab6:
                 st.session_state.prefill_isin = add_isin_lookup.upper().strip()
                 st.session_state.prefill_exchange = result.get('exchange', '')
                 st.session_state.prefill_sector = result.get('market_sector', '')
-                st.rerun()
+                st.experimental_rerun()
             else:
                 error_msg = result.get('error', 'Unknown error') if result else 'No response'
                 st.warning(f"⚠️ {error_msg}")
