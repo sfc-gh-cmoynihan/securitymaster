@@ -834,16 +834,19 @@ with tab6:
     
     def lookup_isin_external(isin_code):
         """Lookup security information via External Function (OpenFIGI API)"""
-        result = session.sql(f"""
-            SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT
-        """).to_pandas()
-        
-        if not result.empty:
-            raw_result = result.iloc[0]['RESULT']
-            if isinstance(raw_result, str):
-                return json.loads(raw_result)
-            return raw_result
-        return {'success': False, 'error': 'Failed to call external function'}
+        try:
+            result = session.sql(f"""
+                SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT
+            """).to_pandas()
+            
+            if not result.empty:
+                raw_result = result.iloc[0]['RESULT']
+                if isinstance(raw_result, str):
+                    return json.loads(raw_result)
+                return raw_result
+            return {'success': False, 'error': 'Failed to call external function'}
+        except Exception as e:
+            return {'success': False, 'error': 'External API lookup not configured. This feature requires network policy and external access integration setup.'}
     
     st.markdown("**🌐 ISIN Lookup (External API)**")
     lookup_col1, lookup_col2, lookup_col3 = st.columns([1, 1, 2])
