@@ -2,7 +2,7 @@
 
 **Author:** Colm Moynihan  
 **Date:** 20th Feb 2026  
-**Version:** 1.0
+**Version:** 1.1
 
 > **Disclaimer:** This is a custom demo of Security Master built for use by Financial Services clients. The code here is not supported and is provided under an open source license. It is released with this source code publicly available, but with no guarantee of maintenance, security updates, bug fixes, or customer support from the original developer.
 
@@ -81,18 +81,17 @@ The Security Master EDM serves as the **golden source of truth** for all securit
 
 ## Database Schema
 
-### Databases
+### Database
 
 | Database | Purpose |
 |----------|---------|
-| `SECURITIES_MASTER_DB` | Master security reference data and history |
-| `SECURITY_TRADES_DB` | Trade execution data for equities and bonds |
+| `SECURITY_MASTER_DB` | Master security reference data, trades, and history |
 
 ### Key Tables
 
 | Schema | Table | Description |
 |--------|-------|-------------|
-| `SECURITIES` | `SP500` | S&P 500 company reference data |
+| `SECURITIES` | `SP500` | S&P 500 company reference data (503 companies) |
 | `EQUITY` | `NYSE_SECURITIES` | NYSE listed securities with ISINs |
 | `FIXED_INCOME` | `CORPORATE_BONDS` | Corporate bond reference data |
 | `GOLDEN_RECORD` | `SECURITY_MASTER_REFERENCE` | Golden record for all securities |
@@ -108,48 +107,107 @@ The Security Master EDM serves as the **golden source of truth** for all securit
 - Python 3.8+ (for data generation scripts)
 - Snowflake CLI (`snow`) or SnowSQL
 
-### Step 1: Create Database Objects
+### Step 1: Create Database and Load Data
 
 ```sql
--- Run setup script
-!source setup_security_master.sql
+-- Run the main setup script (creates database, schemas, tables, and loads data)
+-- Execute from: data/setup.sql
 ```
 
-### Step 2: Load Reference Data
-
-```bash
-# Load S&P 500 companies
-# (Already included in setup_security_master.sql)
-
-# Load NYSE securities with ISINs
-python create_nyse_table.py
-
-# Load corporate bonds
-python create_corporate_bonds_table.py
-```
-
-### Step 3: Create Sample Trades
+Or run individual components:
 
 ```sql
-!source create_trades.sql
+-- Create database structure and load SP500 data
+-- Execute: data/setup_security_master.sql
+
+-- Create golden record tables
+-- Execute: data/setup_golden_record_tables.sql
+
+-- Create sample trades
+-- Execute: data/create_trades.sql
 ```
 
-### Step 4: Deploy Streamlit App
+### Step 2: Setup OpenFIGI External API Integration
+
+```sql
+-- Create network rule for OpenFIGI API access
+CREATE OR REPLACE NETWORK RULE SECURITY_MASTER_DB.GOLDEN_RECORD.OPENFIGI_NETWORK_RULE
+    MODE = EGRESS
+    TYPE = HOST_PORT
+    VALUE_LIST = ('api.openfigi.com:443');
+
+-- Create external access integration
+CREATE OR REPLACE EXTERNAL ACCESS INTEGRATION OPENFIGI_ACCESS_INTEGRATION
+    ALLOWED_NETWORK_RULES = (SECURITY_MASTER_DB.GOLDEN_RECORD.OPENFIGI_NETWORK_RULE)
+    ENABLED = TRUE;
+
+-- Create the ISIN lookup function
+CREATE OR REPLACE FUNCTION SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL(isin VARCHAR)
+RETURNS VARIANT
+LANGUAGE PYTHON
+RUNTIME_VERSION = '3.11'
+PACKAGES = ('requests')
+EXTERNAL_ACCESS_INTEGRATIONS = (OPENFIGI_ACCESS_INTEGRATION)
+HANDLER = 'lookup_isin'
+AS
+$$
+import requests
+import json
+
+def lookup_isin(isin):
+    try:
+        url = "https://api.openfigi.com/v3/mapping"
+        headers = {"Content-Type": "application/json"}
+        payload = [{"idType": "ID_ISIN", "idValue": isin}]
+        
+        response = requests.post(url, headers=headers, json=payload, timeout=10)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data and len(data) > 0 and 'data' in data[0]:
+                results = data[0]['data']
+                if results:
+                    first = results[0]
+                    return {
+                        'success': True,
+                        'name': first.get('name', ''),
+                        'ticker': first.get('ticker', ''),
+                        'exchange': first.get('exchCode', ''),
+                        'security_type': first.get('securityType', ''),
+                        'market_sector': first.get('marketSector', ''),
+                        'figi': first.get('figi', ''),
+                        'all_results': results
+                    }
+            return {'success': False, 'error': 'No results found for this ISIN'}
+        else:
+            return {'success': False, 'error': f'API returned status {response.status_code}'}
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
+$$;
+
+-- Test the function
+SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('US0378331005') as RESULT;
+```
+
+### Step 3: Deploy Streamlit App
 
 ```sql
 -- Create stage and upload app
-CREATE OR REPLACE STAGE SECURITIES_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE
+CREATE OR REPLACE STAGE SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE
     DIRECTORY = (ENABLE = TRUE);
 
--- Upload the app file
-PUT file:///path/to/streamlit_app.py @SECURITIES_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE 
+-- Upload the app file (using Snowflake CLI)
+-- snow stage copy streamlit_app.py @SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE --overwrite
+
+-- Or using PUT command:
+PUT file:///path/to/streamlit_app.py @SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE 
     AUTO_COMPRESS=FALSE OVERWRITE=TRUE;
 
 -- Create the Streamlit app
-CREATE OR REPLACE STREAMLIT SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP
-    ROOT_LOCATION = '@SECURITIES_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE'
+CREATE OR REPLACE STREAMLIT SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP
+    ROOT_LOCATION = '@SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE'
     MAIN_FILE = 'streamlit_app.py'
-    QUERY_WAREHOUSE = 'COMPUTE_WH'
+    QUERY_WAREHOUSE = 'ADHOC_WH'
     TITLE = 'Security Master EDM';
 ```
 
@@ -158,13 +216,20 @@ CREATE OR REPLACE STREAMLIT SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_A
 ```
 securities_master/
 ├── streamlit_app.py              # Main Streamlit application
-├── setup_security_master.sql     # Database and table creation
-├── create_trades.sql             # Sample trade data
 ├── deploy_streamlit.sql          # Streamlit deployment script
-├── create_nyse_table.py          # NYSE securities data loader
-├── create_corporate_bonds_table.py # Corporate bonds data loader
 ├── DEMO_SCRIPT.md                # Demo walkthrough guide
 ├── README.md                     # This file
+├── data/                         # Data and setup scripts
+│   ├── setup.sql                 # Complete setup script with all data
+│   ├── setup_security_master.sql # Database and SP500 table creation
+│   ├── setup_golden_record_tables.sql # Golden record tables
+│   ├── create_trades.sql         # Sample trade data
+│   ├── create_nyse_table.py      # NYSE securities data loader
+│   ├── create_corporate_bonds_table.py # Corporate bonds data loader
+│   ├── nyse_listed.csv           # NYSE securities CSV data
+│   ├── nyse_with_isins.json      # NYSE securities with ISINs
+│   ├── GOLDEN_RECORD/            # Golden record export data
+│   └── SECURITIES/               # Securities export data
 └── json_data/                    # Sample JSON data files
 ```
 
@@ -174,7 +239,7 @@ securities_master/
 
 Navigate to the Streamlit app URL in Snowsight:
 ```
-https://app.snowflake.com/<account>/#/streamlit-apps/SECURITIES_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP
+https://app.snowflake.com/<account>/#/streamlit-apps/SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP
 ```
 
 ### Adding a New Security
@@ -190,7 +255,7 @@ https://app.snowflake.com/<account>/#/streamlit-apps/SECURITIES_MASTER_DB.GOLDEN
 **CSV Export:**
 - Navigate to **Security Master History** tab
 - Click **📥 Export to CSV**
-- File is saved to `@SECURITIES_MASTER_DB.GOLDEN_RECORD.EXPORT`
+- File is saved to `@SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT`
 
 **JSON Export for Downstream Systems:**
 - Click **🔄 Update Systems** button
@@ -242,6 +307,8 @@ A complete demo script is available in [DEMO_SCRIPT.md](DEMO_SCRIPT.md) that cov
 
 - **Streamlit in Snowflake** - Native app deployment
 - **Snowpark** - Python data processing
+- **External Access Integration** - Secure API calls to OpenFIGI
+- **Network Rules** - Controlled egress to external APIs
 - **Cortex Analyst** - Natural language to SQL
 - **Stages** - File storage for exports
 - **Time Travel** - Historical data access
@@ -252,6 +319,7 @@ A complete demo script is available in [DEMO_SCRIPT.md](DEMO_SCRIPT.md) that cov
 - **OpenFIGI API** - Security identifier lookup
   - Endpoint: `https://api.openfigi.com/v3/mapping`
   - Used for ISIN to security details mapping
+  - Requires External Access Integration setup (see Installation Step 2)
 
 ## Contributing
 
