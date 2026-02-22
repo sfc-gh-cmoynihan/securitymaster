@@ -39,7 +39,7 @@ st.markdown("""
     }
     
     .main .block-container {
-        padding-top: 2rem;
+        padding-top: 0.5rem;
         max-width: 1400px;
         background-color: var(--bg-white);
     }
@@ -124,18 +124,29 @@ st.markdown("""
     
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background: var(--bg-light);
-        border-radius: 12px;
-        padding: 0.5rem;
+        gap: 4px;
+        background: #e5e7eb;
+        border-radius: 8px;
+        padding: 0.4rem 0.5rem;
         border: 1px solid var(--border);
+        width: 100%;
+        justify-content: space-between;
     }
     
     .stTabs [data-baseweb="tab"] {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.85rem;
-        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
         color: var(--text-secondary);
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .stTabs [data-baseweb="tab"]:nth-child(even) {
+        background: #dbeafe !important;
     }
     
     .stTabs [aria-selected="true"] {
@@ -157,20 +168,18 @@ st.markdown("""
 # Get Snowflake session
 session = get_active_session()
 
-# Header with Snowflake logo
+# Header with title center, Snowflake logo right
 st.markdown('''
-<div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" style="height: 50px; width: 50px;">
-        <polygon points="50,5 61,27 85,27 66,42 73,65 50,52 27,65 34,42 15,27 39,27" fill="#29B5E8"/>
-        <polygon points="50,25 56,37 70,37 59,45 63,58 50,50 37,58 41,45 30,37 44,37" fill="white"/>
-    </svg>
-    <span style="font-family: 'Outfit', sans-serif; font-size: 2.5rem; font-weight: 700; 
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+    <div style="width: 40px;"></div>
+    <span style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 700; 
                  background: linear-gradient(135deg, #29b5e8 0%, #0d9488 100%); 
                  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
         Security Master EDM
     </span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg" 
+         style="height: 40px;" alt="Snowflake">
 </div>
-<p style="color: #475569; font-size: 1rem; margin-bottom: 1.5rem;">Powered by Snowflake | Portfolio Analysis & Trade Tracking</p>
 ''', unsafe_allow_html=True)
 
 # Load S&P 500 data
@@ -370,13 +379,17 @@ with col5:
     pnl_color = "🟢" if net_pnl >= 0 else "🔴"
     st.metric("Realized P&L", f"{pnl_color} ${net_pnl:,.0f}")
 
-st.markdown("---")
-
 # Tabs for different views
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["📊 Portfolio Overview", "🔍 Trade History", "📈 Sector Analysis", "🔗 Equity Trades", "📉 Bond Trades", "✏️ Master Data Reference", "📜 Security Master History", "📋 Trades Mapped to Master Data"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["📊 Portfolio", "🔍 Trade History", "📈 Sector Analysis", "🔗 Equity Trades", "📉 Bond Trades", "✏️ Master Data", "📜 Master History", "📋 Trades Mapped", "📝 Stock / ETF Order"])
+st.markdown('<hr style="border: none; height: 4px; background: linear-gradient(90deg, #29b5e8, #0d9488); margin: 0.5rem 0 1rem 0;">', unsafe_allow_html=True)
 
 with tab1:
-    st.subheader("📊 Portfolio Summary by Security")
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #3b82f6 100%); 
+                border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        <h4 style="color: white; margin: 0; font-weight: 600;">📊 Portfolio Summary by Security</h4>
+    </div>
+    """, unsafe_allow_html=True)
     
     portfolio_with_pnl = portfolio_summary.copy()
     portfolio_with_pnl['REALIZED_PNL'] = portfolio_with_pnl['SELL_VALUE'] - portfolio_with_pnl['BUY_VALUE']
@@ -1409,14 +1422,8 @@ with tab6:
 with tab8:
     st.markdown("""
     <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%); 
-                border-radius: 16px; padding: 1.5rem 2rem; margin-bottom: 1.5rem;
-                box-shadow: 0 4px 20px rgba(13, 148, 136, 0.3);">
-        <h2 style="color: white; margin: 0; font-family: 'Outfit', sans-serif; font-weight: 700;">
-            📋 Golden Record Trade Explorer
-        </h2>
-        <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0; font-size: 1rem;">
-            Real-time view of all trades mapped to the Security Master Reference
-        </p>
+                border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        <h4 style="color: white; margin: 0; font-weight: 600;">📋 Golden Record Trade Explorer</h4>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1720,14 +1727,8 @@ with tab8:
 with tab7:
     st.markdown("""
     <div style="background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%); 
-                border-radius: 16px; padding: 1.5rem 2rem; margin-bottom: 1.5rem;
-                box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);">
-        <h2 style="color: white; margin: 0; font-family: 'Outfit', sans-serif; font-weight: 700;">
-            📜 Security Master History & Audit Trail
-        </h2>
-        <p style="color: rgba(255,255,255,0.9); margin: 0.5rem 0 0 0; font-size: 1rem;">
-            Track all changes to Security Master data with full lineage and audit capabilities
-        </p>
+                border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        <h4 style="color: white; margin: 0; font-weight: 600;">📜 Security Master History & Audit Trail</h4>
     </div>
     """, unsafe_allow_html=True)
     
@@ -2093,11 +2094,513 @@ with tab7:
         else:
             st.info("No history records found. Changes will be tracked when securities are added or modified.")
 
+with tab9:
+    import json
+    
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #a5b4fc 0%, #93c5fd 50%, #bfdbfe 100%); 
+                border-radius: 8px; padding: 0.5rem 1rem; margin-bottom: 0.75rem;
+                box-shadow: 0 1px 5px rgba(147, 197, 253, 0.2);">
+        <h4 style="color: #1e3a5f; margin: 0; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.4rem;">
+            📝 Stock / ETF Order
+        </h4>
+        <p style="color: #334155; margin: 0.1rem 0 0 0; font-size: 0.75rem;">
+            Place buy and sell orders for stocks and ETFs
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    order_col1, order_col2 = st.columns([2, 1])
+    
+    with order_col1:
+        st.markdown("""
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; 
+                    padding: 0.75rem; margin-bottom: 0.75rem;">
+            <h4 style="margin: 0; color: #0f172a; font-family: 'Outfit', sans-serif;">
+                Order
+            </h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if 'order_symbol' not in st.session_state:
+            st.session_state.order_symbol = ''
+        if 'order_quantity' not in st.session_state:
+            st.session_state.order_quantity = 100
+        if 'order_limit_price' not in st.session_state:
+            st.session_state.order_limit_price = 0.0
+        if 'order_stop_price' not in st.session_state:
+            st.session_state.order_stop_price = 0.0
+        
+        @st.cache_data(ttl=300)
+        def get_tradeable_securities():
+            return session.sql("""
+                SELECT DISTINCT 
+                    SYMBOL, 
+                    SECURITY_NAME,
+                    GICS_SECTOR
+                FROM SECURITY_MASTER_DB.SECURITIES.SP500
+                ORDER BY SYMBOL
+            """).to_pandas()
+        
+        @st.cache_data(ttl=30)
+        def get_live_stock_price(symbol):
+            try:
+                result = session.sql(f"""
+                    SELECT SECURITY_MASTER_DB.TRADES.GET_STOCK_PRICE('{symbol}') as PRICE_DATA
+                """).to_pandas()
+                if not result.empty:
+                    price_data = result.iloc[0]['PRICE_DATA']
+                    if isinstance(price_data, str):
+                        return json.loads(price_data)
+                    return price_data
+            except Exception as e:
+                return {"error": str(e)}
+            return None
+        
+        @st.cache_data(ttl=60)
+        def get_security_quote(symbol):
+            try:
+                result = session.sql(f"""
+                    SELECT 
+                        t.SYMBOL,
+                        s.SECURITY_NAME,
+                        t.PRICE as LAST_PRICE,
+                        t.TRADE_DATE as LAST_TRADE_DATE,
+                        (SELECT AVG(PRICE) FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES WHERE SYMBOL = '{symbol}') as AVG_PRICE,
+                        (SELECT COUNT(*) FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES WHERE SYMBOL = '{symbol}') as TRADE_COUNT
+                    FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
+                    JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+                    WHERE t.SYMBOL = '{symbol}'
+                    ORDER BY t.TRADE_DATE DESC
+                    LIMIT 1
+                """).to_pandas()
+                return result
+            except:
+                return None
+        
+        tradeable = get_tradeable_securities()
+        
+        symbol_options = ["-- Select a symbol --"] + [f"{row['SYMBOL']} - {row['SECURITY_NAME']}" for _, row in tradeable.iterrows()]
+        
+        st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">SYMBOL</p>', unsafe_allow_html=True)
+        selected_symbol_display = st.selectbox(
+            "Symbol",
+            options=symbol_options,
+            key="order_symbol_select",
+            label_visibility="collapsed"
+        )
+        
+        selected_order_symbol = selected_symbol_display.split(" - ")[0] if selected_symbol_display and selected_symbol_display != "-- Select a symbol --" else ""
+        
+        live_price = None
+        if selected_order_symbol:
+            live_price_data = get_live_stock_price(selected_order_symbol)
+            if live_price_data and not live_price_data.get('error'):
+                live_price = live_price_data.get('price')
+                market_state = live_price_data.get('market_state', 'Unknown')
+                quote_time = live_price_data.get('quote_time', '')
+                prev_close = live_price_data.get('previous_close')
+                change = live_price - prev_close if live_price and prev_close else 0
+                change_pct = (change / prev_close * 100) if prev_close else 0
+                change_color = '#10b981' if change >= 0 else '#ef4444'
+                change_symbol = '+' if change >= 0 else ''
+                
+                security_info = tradeable[tradeable['SYMBOL'] == selected_order_symbol]
+                security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
+                
+                st.markdown(f"""
+                <div style="background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%); 
+                            border: 1px solid #10b981; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; color: #0f172a;">
+                                {selected_order_symbol}
+                            </span>
+                            <span style="color: #64748b; font-size: 0.85rem; margin-left: 0.5rem;">
+                                {security_name[:40]}
+                            </span>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 600; color: #10b981;">
+                                ${live_price:.2f}
+                            </span>
+                            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: {change_color}; margin-left: 0.5rem;">
+                                {change_symbol}{change:.2f} ({change_symbol}{change_pct:.2f}%)
+                            </span>
+                            <p style="margin: 0; font-size: 0.75rem; color: #64748b;">Live Price • {market_state} • {quote_time}</p>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                quote_data = get_security_quote(selected_order_symbol)
+                if quote_data is not None and not quote_data.empty:
+                    q = quote_data.iloc[0]
+                    live_price = q['LAST_PRICE']
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%); 
+                                border: 1px solid #10b981; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 700; color: #0f172a;">
+                                    {selected_order_symbol}
+                                </span>
+                                <span style="color: #64748b; font-size: 0.85rem; margin-left: 0.5rem;">
+                                    {q['SECURITY_NAME'][:40]}
+                                </span>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 600; color: #10b981;">
+                                    ${q['LAST_PRICE']:.2f}
+                                </span>
+                                <p style="margin: 0; font-size: 0.75rem; color: #64748b;">Last Trade Price</p>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        action_col, qty_col = st.columns(2)
+        
+        with action_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">ACTION</p>', unsafe_allow_html=True)
+            order_action = st.selectbox(
+                "Action",
+                options=["Buy", "Sell", "Buy to Cover", "Sell Short"],
+                key="order_action",
+                label_visibility="collapsed"
+            )
+        
+        with qty_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">QUANTITY</p>', unsafe_allow_html=True)
+            order_quantity = st.number_input(
+                "Quantity",
+                min_value=1,
+                max_value=1000000,
+                value=100,
+                step=1,
+                key="order_qty",
+                label_visibility="collapsed"
+            )
+        
+        st.markdown("---")
+        
+        price_col, duration_col = st.columns(2)
+        
+        with price_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">PRICE TYPE</p>', unsafe_allow_html=True)
+            price_type = st.selectbox(
+                "Price Type",
+                options=["Market", "Limit", "Stop", "Stop Limit", "Trailing Stop $", "Trailing Stop %"],
+                key="order_price_type",
+                label_visibility="collapsed"
+            )
+        
+        with duration_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">DURATION</p>', unsafe_allow_html=True)
+            order_duration = st.selectbox(
+                "Duration",
+                options=["Good for Day", "Good till Canceled (GTC)", "Fill or Kill", "Immediate or Cancel", "On the Open", "On the Close"],
+                key="order_duration",
+                label_visibility="collapsed"
+            )
+        
+        if price_type in ["Limit", "Stop Limit"]:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">LIMIT PRICE</p>', unsafe_allow_html=True)
+            limit_price = st.number_input(
+                "Limit Price",
+                min_value=0.01,
+                max_value=100000.00,
+                value=100.00,
+                step=0.01,
+                format="%.2f",
+                key="order_limit",
+                label_visibility="collapsed"
+            )
+        
+        if price_type in ["Stop", "Stop Limit"]:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">STOP PRICE</p>', unsafe_allow_html=True)
+            stop_price = st.number_input(
+                "Stop Price",
+                min_value=0.01,
+                max_value=100000.00,
+                value=95.00,
+                step=0.01,
+                format="%.2f",
+                key="order_stop",
+                label_visibility="collapsed"
+            )
+        
+        if price_type == "Trailing Stop $":
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">TRAIL AMOUNT ($)</p>', unsafe_allow_html=True)
+            trail_amount = st.number_input(
+                "Trail Amount",
+                min_value=0.01,
+                max_value=1000.00,
+                value=5.00,
+                step=0.01,
+                format="%.2f",
+                key="order_trail_amt",
+                label_visibility="collapsed"
+            )
+        
+        if price_type == "Trailing Stop %":
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">TRAIL PERCENTAGE (%)</p>', unsafe_allow_html=True)
+            trail_percent = st.number_input(
+                "Trail Percentage",
+                min_value=0.1,
+                max_value=50.0,
+                value=5.0,
+                step=0.1,
+                format="%.1f",
+                key="order_trail_pct",
+                label_visibility="collapsed"
+            )
+        
+        st.markdown("---")
+        
+        with st.expander("📋 Additional Order Options", expanded=False):
+            special_col1, special_col2 = st.columns(2)
+            with special_col1:
+                all_or_none = st.checkbox("All or None", key="order_aon", help="Execute the entire order quantity or none at all")
+            with special_col2:
+                do_not_reduce = st.checkbox("Do Not Reduce", key="order_dnr", help="Do not reduce order for dividends")
+            
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">ACCOUNT</p>', unsafe_allow_html=True)
+            order_account = st.selectbox(
+                "Account",
+                options=["Individual Brokerage (***1234)", "IRA (***5678)", "Joint Account (***9012)"],
+                key="order_account",
+                label_visibility="collapsed"
+            )
+        
+        st.markdown("""
+        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; margin-top: 0.5rem;">
+        """, unsafe_allow_html=True)
+        
+        preview_col1, preview_col2 = st.columns(2)
+        
+        with preview_col1:
+            preview_clicked = st.button("👁️ Preview Order", key="preview_order_btn", use_container_width=True, type="primary")
+        
+        with preview_col2:
+            clear_clicked = st.button("🔄 Clear Form", key="clear_order_btn", use_container_width=True)
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+        
+        if clear_clicked:
+            st.session_state.order_symbol = ''
+            st.rerun()
+        
+        if preview_clicked:
+            if not selected_order_symbol:
+                st.error("⚠️ Please select a symbol to trade.")
+            else:
+                execution_price = live_price if live_price else 100.00
+                est_value = order_quantity * execution_price
+                
+                st.markdown(f"""
+                <div style="background: #f3f4f6; 
+                            border: 1px solid #d1d5db; border-radius: 10px; padding: 1rem; margin-top: 0.75rem;">
+                    <h4 style="color: #1f2937; margin: 0 0 0.75rem 0; font-size: 1rem;">📋 Order Preview</h4>
+                    <table style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Symbol:</td>
+                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{selected_order_symbol}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Action:</td>
+                            <td style="padding: 0.35rem 0; color: {'#059669' if 'Buy' in order_action else '#dc2626'}; font-weight: 700;">{order_action}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Quantity:</td>
+                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{order_quantity:,} shares</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Price Type:</td>
+                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{price_type}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Duration:</td>
+                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{order_duration}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Execution Price:</td>
+                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">${execution_price:,.2f}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.35rem 0; color: #6b7280;">Est. Value:</td>
+                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 800;">${est_value:,.2f}</td>
+                        </tr>
+                    </table>
+                    <p style="color: #6b7280; margin: 0.75rem 0 0 0; font-size: 0.75rem;">
+                        ⚠️ Review all details before placing your order.
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                st.markdown("""
+                <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; margin-top: 0.5rem;">
+                """, unsafe_allow_html=True)
+                
+                confirm_col1, confirm_col2 = st.columns(2)
+                with confirm_col1:
+                    if st.button("✅ Place Order", key="place_order_btn", use_container_width=True, type="primary"):
+                        import uuid
+                        from datetime import datetime
+                        
+                        order_id = f"ORD-{str(uuid.uuid4())[:8].upper()}"
+                        trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
+                        now = datetime.now()
+                        trade_date = now.strftime('%Y-%m-%d')
+                        settlement_date = (now + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
+                        
+                        side = 'BUY' if 'Buy' in order_action else 'SELL'
+                        total_value = order_quantity * execution_price
+                        
+                        security_info = tradeable[tradeable['SYMBOL'] == selected_order_symbol]
+                        security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
+                        
+                        try:
+                            session.sql(f"""
+                                INSERT INTO SECURITY_MASTER_DB.TRADES.EQUITY_TRADES (
+                                    TRADE_ID, TRADE_DATE, SETTLEMENT_DATE, SYMBOL, SECURITY_NAME,
+                                    SIDE, QUANTITY, PRICE, TOTAL_VALUE, CURRENCY, EXCHANGE,
+                                    COUNTERPARTY, TRADER, STATUS
+                                ) VALUES (
+                                    '{trade_id}',
+                                    '{trade_date}',
+                                    '{settlement_date}',
+                                    '{selected_order_symbol}',
+                                    '{security_name.replace("'", "''")}',
+                                    '{side}',
+                                    {order_quantity},
+                                    {execution_price},
+                                    {total_value},
+                                    'USD',
+                                    'NYSE',
+                                    'INTERNAL',
+                                    'CURRENT_USER',
+                                    'CONFIRMED'
+                                )
+                            """).collect()
+                            
+                            side_code = '1' if 'Buy' in order_action else '2'
+                            ord_type_map = {'Market': '1', 'Limit': '2', 'Stop': '3', 'Stop Limit': '4', 'Trailing Stop $': 'P', 'Trailing Stop %': 'P'}
+                            ord_type = ord_type_map.get(price_type, '1')
+                            tif_map = {'Good for Day': '0', 'Good till Canceled (GTC)': '1', 'Fill or Kill': '4', 'Immediate or Cancel': '3', 'On the Open': '2', 'On the Close': '7'}
+                            time_in_force = tif_map.get(order_duration, '0')
+                            
+                            fixml_msg = f'''<?xml version="1.0" encoding="UTF-8"?>
+<FIXML xmlns="http://www.fixprotocol.org/FIXML-5-0-SP2" v="5.0SP2">
+    <ExecRpt ExecID="{trade_id}" ExecTyp="F" OrdStat="2" Side="{side_code}" LeavesQty="0" CumQty="{order_quantity}" AvgPx="{execution_price}" TrdDt="{trade_date}" TxnTm="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z" SettlDt="{settlement_date}">
+        <Hdr SID="SECMASTER" TID="EXCHANGE" Snt="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z"/>
+        <OrdID ID="{order_id}"/>
+        <Instrmt Sym="{selected_order_symbol}" SecTyp="CS" Exch="XNYS" ID="{selected_order_symbol}" Src="M"/>
+        <OrdQty Qty="{order_quantity}"/>
+        <Px Px="{execution_price}"/>
+        <TrdCapRpt LastQty="{order_quantity}" LastPx="{execution_price}"/>
+        <Amt Typ="SMTL" Amt="{total_value}" Ccy="USD"/>
+        <Comm Typ="3" Comm="0.00" Ccy="USD"/>
+        <Pty ID="SECMASTER" R="1"/>
+        <Pty ID="EXCHANGE" R="17"/>
+    </ExecRpt>
+</FIXML>'''
+                            
+                            fixml_filename = f"FIX_{now.strftime('%d-%b-%Y').upper()}_{now.strftime('%H:%M:%S')}_{selected_order_symbol}_{side}.xml"
+                            
+                            session.sql(f"""
+                                COPY INTO @SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}
+                                FROM (SELECT '{fixml_msg.replace("'", "''")}')
+                                FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = NONE)
+                                OVERWRITE = TRUE
+                                SINGLE = TRUE
+                            """).collect()
+                            
+                            st.success(f"""
+                            ✅ **Order Confirmed and Executed!**
+                            
+                            **Order ID:** {order_id}  
+                            **Trade ID:** {trade_id}  
+                            **Status:** CONFIRMED  
+                            **Executed:** {now.strftime('%Y-%m-%d %H:%M:%S')}
+                            
+                            Trade inserted into `SECURITY_MASTER_DB.TRADES.EQUITY_TRADES`  
+                            FIXML message saved to `@SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}`
+                            """)
+                            
+                            st.balloons()
+                            st.cache_data.clear()
+                            
+                        except Exception as e:
+                            st.error(f"Error executing order: {str(e)}")
+                
+                with confirm_col2:
+                    if st.button("❌ Cancel", key="cancel_order_btn", use_container_width=True):
+                        st.info("Order cancelled.")
+                
+                st.markdown("</div>", unsafe_allow_html=True)
+    
+    with order_col2:
+        st.markdown("""
+        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; 
+                    padding: 0.5rem; margin-bottom: 0.5rem;">
+            <h5 style="margin: 0; color: #0f172a; font-family: 'Outfit', sans-serif; font-size: 0.85rem;">
+                💡 Order Types
+            </h5>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style="font-size: 0.8rem;">
+        
+        **Market Order**  
+        Executes immediately at current market price.
+        
+        ---
+        
+        **Limit Order**  
+        Executes only at your specified price or better.
+        
+        ---
+        
+        **Stop Order**  
+        Triggers a market order when stop price is reached.
+        
+        ---
+        
+        **Stop Limit**  
+        Triggers a limit order when stop price is reached.
+        
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        st.markdown("#### 📊 Quick Stats")
+        
+        if selected_order_symbol:
+            live_price_data = get_live_stock_price(selected_order_symbol)
+            if live_price_data and not live_price_data.get('error'):
+                st.metric("Live Price", f"${live_price_data.get('price', 0):.2f}")
+                st.metric("Previous Close", f"${live_price_data.get('previous_close', 0):.2f}")
+                st.metric("Market State", live_price_data.get('market_state', 'Unknown'))
+                st.metric("Exchange", live_price_data.get('exchange', 'N/A'))
+            else:
+                quote_data = get_security_quote(selected_order_symbol)
+                if quote_data is not None and not quote_data.empty:
+                    q = quote_data.iloc[0]
+                    st.metric("Last Price", f"${q['LAST_PRICE']:.2f}")
+                    st.metric("Avg Price (All Trades)", f"${q['AVG_PRICE']:.2f}")
+                    st.metric("Total Trades", f"{int(q['TRADE_COUNT']):,}")
+        else:
+            st.info("Select a symbol to view stats")
+
 # Footer
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;">
-    Data source: <a href="https://en.wikipedia.org/wiki/List_of_S%26P_500_companies" style="color: #0d9488;">Wikipedia S&P 500 List</a> | 
-    NYSE data via OpenFIGI | Corporate Bonds from Top US Issuers | Built with Streamlit in Snowflake
+    Data Source: Snowflake Marketplace | Built with Streamlit in Snowflake
 </div>
 """, unsafe_allow_html=True)
