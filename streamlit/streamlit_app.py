@@ -1434,9 +1434,11 @@ with tab8:
         
         equity_query = """
             SELECT 
-                'Equity' as SECURITY_TYPE,
+                t.ORDER_ID,
+                'Equity' as ASSET_CLASS,
                 t.TRADE_ID,
                 t.TRADE_DATE,
+                TO_CHAR(t.CREATED_AT, 'HH24:MI:SS') as TRADE_TIME,
                 DATEADD('day', 2, t.TRADE_DATE) as SETTLEMENT_DATE,
                 CASE WHEN CURRENT_DATE() >= DATEADD('day', 2, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
                 t.SIDE,
@@ -1460,9 +1462,11 @@ with tab8:
         
         bond_query = """
             SELECT 
-                'Bond' as SECURITY_TYPE,
+                t.ORDER_ID,
+                'Bond' as ASSET_CLASS,
                 t.TRADE_ID,
                 t.TRADE_DATE,
+                TO_CHAR(t.CREATED_AT, 'HH24:MI:SS') as TRADE_TIME,
                 DATEADD('day', 2, t.TRADE_DATE) as SETTLEMENT_DATE,
                 CASE WHEN CURRENT_DATE() >= DATEADD('day', 2, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
                 t.SIDE,
@@ -1507,7 +1511,7 @@ with tab8:
         if exchange_filter and exchange_filter != "All Exchanges":
             full_query += f" AND EXCHANGE = '{exchange_filter}'"
         
-        full_query += " ORDER BY TRADE_DATE DESC LIMIT 1000"
+        full_query += " ORDER BY ORDER_ID DESC LIMIT 1000"
         
         return session.sql(full_query).to_pandas()
     
@@ -1658,7 +1662,7 @@ with tab8:
         </div>
         """.format(len(mapped_trades)), unsafe_allow_html=True)
     with summary_col3:
-        equity_count = len(mapped_trades[mapped_trades['SECURITY_TYPE'] == 'Equity']) if not mapped_trades.empty else 0
+        equity_count = len(mapped_trades[mapped_trades['ASSET_CLASS'] == 'Equity']) if not mapped_trades.empty else 0
         st.markdown("""
         <div style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius: 8px; 
                     padding: 0.5rem; text-align: center; box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);">
@@ -1667,7 +1671,7 @@ with tab8:
         </div>
         """.format(equity_count), unsafe_allow_html=True)
     with summary_col4:
-        bond_count = len(mapped_trades[mapped_trades['SECURITY_TYPE'] == 'Bond']) if not mapped_trades.empty else 0
+        bond_count = len(mapped_trades[mapped_trades['ASSET_CLASS'] == 'Bond']) if not mapped_trades.empty else 0
         st.markdown("""
         <div style="background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 8px; 
                     padding: 0.5rem; text-align: center; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);">
@@ -1701,19 +1705,19 @@ with tab8:
         </div>
         """, unsafe_allow_html=True)
     
-    st.markdown(f'<p style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.5rem;">Showing <strong>{len(mapped_trades):,}</strong> trades (max 1,000)</p>', unsafe_allow_html=True)
-    
     if not mapped_trades.empty:
-        display_mapped = mapped_trades[['SECURITY_TYPE', 'TRADE_DATE', 'SETTLEMENT_DATE', 'SETTLEMENT_STATUS', 'SIDE', 'TICKER', 
+        display_mapped = mapped_trades[['ORDER_ID', 'ASSET_CLASS', 'TRADE_DATE', 'TRADE_TIME', 'SETTLEMENT_DATE', 'SETTLEMENT_STATUS', 'SIDE', 'TICKER', 
                                         'ISSUER', 'GLOBAL_SECURITY_ID', 'EXCHANGE', 'ISIN', 
-                                        'CUSIP', 'SEDOL', 'QUANTITY', 'PRICE', 'AMOUNT_USD', 
+                                        'QUANTITY', 'PRICE', 'AMOUNT_USD', 
                                         'IN_SP500']].copy()
         display_mapped['AMOUNT_USD'] = display_mapped['AMOUNT_USD'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else "N/A")
         display_mapped['PRICE'] = display_mapped['PRICE'].apply(lambda x: f"${x:,.4f}" if pd.notna(x) else "N/A")
         display_mapped['QUANTITY'] = display_mapped['QUANTITY'].apply(lambda x: f"{x:,.0f}" if pd.notna(x) else "N/A")
         display_mapped = display_mapped.rename(columns={
-            'SECURITY_TYPE': 'Type',
+            'ORDER_ID': 'Order ID',
+            'ASSET_CLASS': 'Type',
             'TRADE_DATE': 'Trade Date',
+            'TRADE_TIME': 'Time',
             'SETTLEMENT_DATE': 'Settle Date',
             'SETTLEMENT_STATUS': 'Status',
             'SIDE': 'Side',
@@ -1726,6 +1730,15 @@ with tab8:
             'AMOUNT_USD': 'Amount USD',
             'IN_SP500': 'S&P 500'
         })
+        
+        count_col, refresh_col = st.columns([0.85, 0.15])
+        with count_col:
+            st.markdown(f'<p style="color: #64748b; font-size: 0.85rem; margin: 0;">Showing <strong>{len(mapped_trades):,}</strong> trades (max 1,000)</p>', unsafe_allow_html=True)
+        with refresh_col:
+            if st.button("🔄 Refresh", key="refresh_settlement"):
+                st.cache_data.clear()
+                st.experimental_rerun()
+        
         st.dataframe(display_mapped, use_container_width=True, height=500)
     else:
         st.info("No trades found matching the selected filters.")
@@ -2136,6 +2149,10 @@ with tab9:
             st.session_state.order_limit_price = 0.0
         if 'order_stop_price' not in st.session_state:
             st.session_state.order_stop_price = 0.0
+        if 'show_preview' not in st.session_state:
+            st.session_state.show_preview = False
+        if 'order_confirmed' not in st.session_state:
+            st.session_state.order_confirmed = None
         
         @st.cache_data(ttl=300)
         def get_tradeable_securities():
@@ -2366,10 +2383,6 @@ with tab9:
         
         st.markdown("---")
         
-        st.markdown("""
-        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; margin-top: 0.5rem;">
-        """, unsafe_allow_html=True)
-        
         preview_col1, preview_col2 = st.columns(2)
         
         with preview_col1:
@@ -2378,11 +2391,12 @@ with tab9:
         with preview_col2:
             clear_clicked = st.button("🔄 Clear Form", key="clear_order_btn", use_container_width=True)
         
-        st.markdown("</div>", unsafe_allow_html=True)
+        order_message = st.empty()
         
         if clear_clicked:
             st.session_state.order_symbol = ''
-            st.rerun()
+            st.session_state.show_preview = False
+            st.session_state.order_confirmed = None
         
         if preview_clicked:
             if not selected_order_symbol:
@@ -2394,135 +2408,184 @@ with tab9:
                     execution_price = live_price if live_price else 100.00
                 else:
                     execution_price = live_price if live_price else 100.00
-                est_value = order_quantity * execution_price
                 
+                security_info = tradeable[tradeable['SYMBOL'] == selected_order_symbol]
+                security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
+                
+                st.session_state.preview_data = {
+                    'symbol': selected_order_symbol,
+                    'security_name': security_name,
+                    'action': order_action,
+                    'quantity': order_quantity,
+                    'price_type': price_type,
+                    'duration': order_duration,
+                    'execution_price': execution_price,
+                    'est_value': order_quantity * execution_price
+                }
+                st.session_state.show_preview = True
+                st.session_state.order_confirmed = None
+        
+        if st.session_state.order_confirmed:
+            if st.session_state.order_confirmed.get('success'):
                 st.markdown(f"""
-                <div style="background: #f3f4f6; 
-                            border: 1px solid #d1d5db; border-radius: 10px; padding: 1rem; margin-top: 0.75rem;">
-                    <h4 style="color: #1f2937; margin: 0 0 0.75rem 0; font-size: 1rem;">📋 Order Preview</h4>
-                    <table style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Symbol:</td>
-                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{selected_order_symbol}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Action:</td>
-                            <td style="padding: 0.35rem 0; color: {'#059669' if 'Buy' in order_action else '#dc2626'}; font-weight: 700;">{order_action}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Quantity:</td>
-                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{order_quantity:,} shares</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Price Type:</td>
-                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{price_type}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Duration:</td>
-                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{order_duration}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Execution Price:</td>
-                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">${execution_price:,.2f}</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 0.35rem 0; color: #6b7280;">Est. Value:</td>
-                            <td style="padding: 0.35rem 0; color: #000000; font-weight: 800;">${est_value:,.2f}</td>
-                        </tr>
-                    </table>
-                    <p style="color: #6b7280; margin: 0.75rem 0 0 0; font-size: 0.75rem;">
-                        ⚠️ Review all details before placing your order.
+                <div style="background: #dcfce7; border: 2px solid #22c55e; border-radius: 10px; padding: 1rem; margin: 0.75rem 0;">
+                    <p style="color: #000000; margin: 0; font-size: 1rem; font-weight: 600;">
+                        ✅ Confirmed {st.session_state.order_confirmed['side']} {st.session_state.order_confirmed['security_name']} ${st.session_state.order_confirmed['price']:,.2f} Quantity {st.session_state.order_confirmed['quantity']:,}
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div style="background: #fee2e2; border: 2px solid #ef4444; border-radius: 10px; padding: 1rem; margin: 0.75rem 0;">
+                    <p style="color: #000000; margin: 0; font-size: 1rem; font-weight: 600;">
+                        ❌ Error: {st.session_state.order_confirmed.get('error', 'Unknown error')}
+                    </p>
+                </div>
+                """, unsafe_allow_html=True)
+        
+        if st.session_state.show_preview and 'preview_data' in st.session_state:
+            pd_data = st.session_state.preview_data
+            
+            st.markdown(f"""
+            <div style="background: #f3f4f6; 
+                        border: 1px solid #d1d5db; border-radius: 10px; padding: 1rem; margin-top: 0.75rem;">
+                <h4 style="color: #1f2937; margin: 0 0 0.75rem 0; font-size: 1rem;">📋 Order Preview</h4>
+                <table style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Symbol:</td>
+                        <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{pd_data['symbol']}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Action:</td>
+                        <td style="padding: 0.35rem 0; color: {'#059669' if 'Buy' in pd_data['action'] else '#dc2626'}; font-weight: 700;">{pd_data['action']}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Quantity:</td>
+                        <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{pd_data['quantity']:,} shares</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Price Type:</td>
+                        <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{pd_data['price_type']}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Duration:</td>
+                        <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{pd_data['duration']}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Execution Price:</td>
+                        <td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">${pd_data['execution_price']:,.2f}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.35rem 0; color: #6b7280;">Est. Value:</td>
+                        <td style="padding: 0.35rem 0; color: #000000; font-weight: 800;">${pd_data['est_value']:,.2f}</td>
+                    </tr>
+                </table>
+                <p style="color: #6b7280; margin: 0.75rem 0 0 0; font-size: 0.75rem;">
+                    ⚠️ Review all details before placing your order.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            confirm_col1, confirm_col2 = st.columns(2)
+            with confirm_col1:
+                place_order_clicked = st.button("✅ Place Order", key="place_order_btn", use_container_width=True, type="primary")
+            with confirm_col2:
+                cancel_clicked = st.button("❌ Cancel", key="cancel_order_btn", use_container_width=True)
+            
+            if place_order_clicked:
+                import uuid
+                from datetime import datetime
                 
-                confirm_col1, confirm_col2 = st.columns(2)
-                with confirm_col1:
-                    place_order_clicked = st.button("✅ Place Order", key="place_order_btn", use_container_width=True, type="primary")
-                with confirm_col2:
-                    cancel_clicked = st.button("❌ Cancel", key="cancel_order_btn", use_container_width=True)
+                order_id = f"ORD-{str(uuid.uuid4())[:8].upper()}"
+                trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
+                now = datetime.now()
+                trade_date = now.strftime('%Y-%m-%d')
+                settlement_date = (now + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
                 
-                if place_order_clicked:
-                    import uuid
-                    from datetime import datetime
+                side = 'BUY' if 'Buy' in pd_data['action'] else 'SELL'
+                total_value = pd_data['quantity'] * pd_data['execution_price']
+                
+                try:
+                    session.sql(f"""
+                        INSERT INTO SECURITY_MASTER_DB.TRADES.EQUITY_TRADES (
+                            TRADE_ID, TRADE_DATE, SETTLEMENT_DATE, SYMBOL, SECURITY_NAME,
+                            SIDE, QUANTITY, PRICE, TOTAL_VALUE, CURRENCY, EXCHANGE,
+                            COUNTERPARTY, TRADER, STATUS
+                        ) VALUES (
+                            '{trade_id}',
+                            '{trade_date}',
+                            '{settlement_date}',
+                            '{pd_data['symbol']}',
+                            '{pd_data['security_name'].replace("'", "''")}',
+                            '{side}',
+                            {pd_data['quantity']},
+                            {pd_data['execution_price']},
+                            {total_value},
+                            'USD',
+                            'NYSE',
+                            'INTERNAL',
+                            'CURRENT_USER',
+                            'CONFIRMED'
+                        )
+                    """).collect()
                     
-                    order_id = f"ORD-{str(uuid.uuid4())[:8].upper()}"
-                    trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
-                    now = datetime.now()
-                    trade_date = now.strftime('%Y-%m-%d')
-                    settlement_date = (now + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
+                    side_code = '1' if 'Buy' in pd_data['action'] else '2'
                     
-                    side = 'BUY' if 'Buy' in order_action else 'SELL'
-                    total_value = order_quantity * execution_price
-                    
-                    security_info = tradeable[tradeable['SYMBOL'] == selected_order_symbol]
-                    security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
-                    
-                    try:
-                        session.sql(f"""
-                            INSERT INTO SECURITY_MASTER_DB.TRADES.EQUITY_TRADES (
-                                TRADE_ID, TRADE_DATE, SETTLEMENT_DATE, SYMBOL, SECURITY_NAME,
-                                SIDE, QUANTITY, PRICE, TOTAL_VALUE, CURRENCY, EXCHANGE,
-                                COUNTERPARTY, TRADER, STATUS
-                            ) VALUES (
-                                '{trade_id}',
-                                '{trade_date}',
-                                '{settlement_date}',
-                                '{selected_order_symbol}',
-                                '{security_name.replace("'", "''")}',
-                                '{side}',
-                                {order_quantity},
-                                {execution_price},
-                                {total_value},
-                                'USD',
-                                'NYSE',
-                                'INTERNAL',
-                                'CURRENT_USER',
-                                'CONFIRMED'
-                            )
-                        """).collect()
-                        
-                        side_code = '1' if 'Buy' in order_action else '2'
-                        ord_type_map = {'Market': '1', 'Limit': '2', 'Stop': '3', 'Stop Limit': '4', 'Trailing Stop $': 'P', 'Trailing Stop %': 'P'}
-                        ord_type = ord_type_map.get(price_type, '1')
-                        tif_map = {'Good for Day': '0', 'Good till Canceled (GTC)': '1', 'Fill or Kill': '4', 'Immediate or Cancel': '3', 'On the Open': '2', 'On the Close': '7'}
-                        time_in_force = tif_map.get(order_duration, '0')
-                        
-                        fixml_msg = f'''<?xml version="1.0" encoding="UTF-8"?>
+                    fixml_msg = f'''<?xml version="1.0" encoding="UTF-8"?>
 <FIXML xmlns="http://www.fixprotocol.org/FIXML-5-0-SP2" v="5.0SP2">
-    <ExecRpt ExecID="{trade_id}" ExecTyp="F" OrdStat="2" Side="{side_code}" LeavesQty="0" CumQty="{order_quantity}" AvgPx="{execution_price}" TrdDt="{trade_date}" TxnTm="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z" SettlDt="{settlement_date}">
+    <ExecRpt ExecID="{trade_id}" ExecTyp="F" OrdStat="2" Side="{side_code}" LeavesQty="0" CumQty="{pd_data['quantity']}" AvgPx="{pd_data['execution_price']}" TrdDt="{trade_date}" TxnTm="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z" SettlDt="{settlement_date}">
         <Hdr SID="SECMASTER" TID="EXCHANGE" Snt="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z"/>
         <OrdID ID="{order_id}"/>
-        <Instrmt Sym="{selected_order_symbol}" SecTyp="CS" Exch="XNYS" ID="{selected_order_symbol}" Src="M"/>
-        <OrdQty Qty="{order_quantity}"/>
-        <Px Px="{execution_price}"/>
-        <TrdCapRpt LastQty="{order_quantity}" LastPx="{execution_price}"/>
+        <Instrmt Sym="{pd_data['symbol']}" SecTyp="CS" Exch="XNYS" ID="{pd_data['symbol']}" Src="M"/>
+        <OrdQty Qty="{pd_data['quantity']}"/>
+        <Px Px="{pd_data['execution_price']}"/>
+        <TrdCapRpt LastQty="{pd_data['quantity']}" LastPx="{pd_data['execution_price']}"/>
         <Amt Typ="SMTL" Amt="{total_value}" Ccy="USD"/>
         <Comm Typ="3" Comm="0.00" Ccy="USD"/>
         <Pty ID="SECMASTER" R="1"/>
         <Pty ID="EXCHANGE" R="17"/>
     </ExecRpt>
 </FIXML>'''
-                        
-                        fixml_filename = f"FIX_{now.strftime('%d-%b-%Y').upper()}_{now.strftime('%H-%M-%S')}_{selected_order_symbol}_{side}.xml"
-                        
-                        session.sql(f"""
-                            COPY INTO @SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}
-                            FROM (SELECT '{fixml_msg.replace("'", "''")}')
-                            FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = NONE)
-                            OVERWRITE = TRUE
-                            SINGLE = TRUE
-                        """).collect()
-                        
-                        st.success(f"✅ **{security_name} {side} order placed on the OMS at ${execution_price:,.2f}**  \nFIX message generated for the OMS system: `{fixml_filename}`")
-                        st.balloons()
-                        st.cache_data.clear()
-                        
-                    except Exception as e:
-                        st.error(f"❌ Error executing order: {str(e)}")
-                
-                if cancel_clicked:
-                    st.info("Order cancelled.")
+                    
+                    fixml_filename = f"FIX_{now.strftime('%d-%b-%Y').upper()}_{now.strftime('%H-%M-%S')}_{pd_data['symbol']}_{side}.xml"
+                    
+                    session.sql(f"""
+                        COPY INTO @SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}
+                        FROM (SELECT '{fixml_msg.replace("'", "''")}')
+                        FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = NONE)
+                        OVERWRITE = TRUE
+                        SINGLE = TRUE
+                    """).collect()
+                    
+                    st.session_state.order_confirmed = {
+                        'success': True,
+                        'side': side,
+                        'security_name': pd_data['security_name'],
+                        'price': pd_data['execution_price'],
+                        'quantity': pd_data['quantity']
+                    }
+                    st.session_state.show_preview = False
+                    st.cache_data.clear()
+                    st.markdown(f"""
+                    <div style="background: #dcfce7; border: 2px solid #22c55e; border-radius: 10px; padding: 1rem; margin: 0.75rem 0;">
+                        <p style="color: #000000; margin: 0; font-size: 1rem; font-weight: 600;">
+                            Confirmed {side} {pd_data['security_name']} ${pd_data['execution_price']:,.2f} Quantity {pd_data['quantity']:,}
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                except Exception as e:
+                    st.session_state.order_confirmed = {
+                        'success': False,
+                        'error': str(e)
+                    }
+                    st.session_state.show_preview = False
+            
+            if cancel_clicked:
+                st.session_state.show_preview = False
+                st.session_state.order_confirmed = None
     
     with order_col2:
         st.markdown("""
