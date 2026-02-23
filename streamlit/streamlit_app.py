@@ -380,7 +380,7 @@ with col5:
     st.metric("Realized P&L", f"{pnl_color} ${net_pnl:,.0f}")
 
 # Tabs for different views
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["📊 Portfolio", "🔍 Trade History", "📈 Sector Analysis", "🔗 Equity Trades", "📉 Bond Trades", "✏️ Master Data", "📜 Master History", "📋 Trades Mapped", "📝 Stock / ETF Order"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["📊 Portfolio", "🔍 Trade History", "📈 Sector Analysis", "🔗 Equity Trades", "📉 Bond Trades", "✏️ Master Data", "📜 Master History", "📋 Settlement Details", "📝 Stock / ETF Order"])
 st.markdown('<hr style="border: none; height: 4px; background: linear-gradient(90deg, #29b5e8, #0d9488); margin: 0.5rem 0 1rem 0;">', unsafe_allow_html=True)
 
 with tab1:
@@ -1423,7 +1423,7 @@ with tab8:
     st.markdown("""
     <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%); 
                 border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-        <h4 style="color: white; margin: 0; font-weight: 600;">📋 Golden Record Trade Explorer</h4>
+        <h4 style="color: white; margin: 0; font-weight: 600;">📋 Settlement Details</h4>
     </div>
     """, unsafe_allow_html=True)
     
@@ -1437,6 +1437,8 @@ with tab8:
                 'Equity' as SECURITY_TYPE,
                 t.TRADE_ID,
                 t.TRADE_DATE,
+                DATEADD('day', 2, t.TRADE_DATE) as SETTLEMENT_DATE,
+                CASE WHEN CURRENT_DATE() >= DATEADD('day', 2, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
                 t.SIDE,
                 t.SYMBOL as TICKER,
                 g.ISSUER,
@@ -1461,6 +1463,8 @@ with tab8:
                 'Bond' as SECURITY_TYPE,
                 t.TRADE_ID,
                 t.TRADE_DATE,
+                DATEADD('day', 2, t.TRADE_DATE) as SETTLEMENT_DATE,
+                CASE WHEN CURRENT_DATE() >= DATEADD('day', 2, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
                 t.SIDE,
                 g.PRIMARY_TICKER as TICKER,
                 g.ISSUER,
@@ -1700,7 +1704,7 @@ with tab8:
     st.markdown(f'<p style="color: #64748b; font-size: 0.85rem; margin-bottom: 0.5rem;">Showing <strong>{len(mapped_trades):,}</strong> trades (max 1,000)</p>', unsafe_allow_html=True)
     
     if not mapped_trades.empty:
-        display_mapped = mapped_trades[['SECURITY_TYPE', 'TRADE_DATE', 'SIDE', 'TICKER', 
+        display_mapped = mapped_trades[['SECURITY_TYPE', 'TRADE_DATE', 'SETTLEMENT_DATE', 'SETTLEMENT_STATUS', 'SIDE', 'TICKER', 
                                         'ISSUER', 'GLOBAL_SECURITY_ID', 'EXCHANGE', 'ISIN', 
                                         'CUSIP', 'SEDOL', 'QUANTITY', 'PRICE', 'AMOUNT_USD', 
                                         'IN_SP500']].copy()
@@ -1709,7 +1713,9 @@ with tab8:
         display_mapped['QUANTITY'] = display_mapped['QUANTITY'].apply(lambda x: f"{x:,.0f}" if pd.notna(x) else "N/A")
         display_mapped = display_mapped.rename(columns={
             'SECURITY_TYPE': 'Type',
-            'TRADE_DATE': 'Date',
+            'TRADE_DATE': 'Trade Date',
+            'SETTLEMENT_DATE': 'Settle Date',
+            'SETTLEMENT_STATUS': 'Status',
             'SIDE': 'Side',
             'TICKER': 'Ticker',
             'ISSUER': 'Issuer',
@@ -2360,21 +2366,6 @@ with tab9:
         
         st.markdown("---")
         
-        with st.expander("📋 Additional Order Options", expanded=False):
-            special_col1, special_col2 = st.columns(2)
-            with special_col1:
-                all_or_none = st.checkbox("All or None", key="order_aon", help="Execute the entire order quantity or none at all")
-            with special_col2:
-                do_not_reduce = st.checkbox("Do Not Reduce", key="order_dnr", help="Do not reduce order for dividends")
-            
-            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">ACCOUNT</p>', unsafe_allow_html=True)
-            order_account = st.selectbox(
-                "Account",
-                options=["Individual Brokerage (***1234)", "IRA (***5678)", "Joint Account (***9012)"],
-                key="order_account",
-                label_visibility="collapsed"
-            )
-        
         st.markdown("""
         <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; margin-top: 0.5rem;">
         """, unsafe_allow_html=True)
@@ -2397,7 +2388,12 @@ with tab9:
             if not selected_order_symbol:
                 st.error("⚠️ Please select a symbol to trade.")
             else:
-                execution_price = live_price if live_price else 100.00
+                if price_type in ["Limit", "Stop Limit"]:
+                    execution_price = limit_price
+                elif price_type == "Market":
+                    execution_price = live_price if live_price else 100.00
+                else:
+                    execution_price = live_price if live_price else 100.00
                 est_value = order_quantity * execution_price
                 
                 st.markdown(f"""
@@ -2440,59 +2436,59 @@ with tab9:
                 </div>
                 """, unsafe_allow_html=True)
                 
-                st.markdown("""
-                <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 0.75rem; margin-top: 0.5rem;">
-                """, unsafe_allow_html=True)
-                
                 confirm_col1, confirm_col2 = st.columns(2)
                 with confirm_col1:
-                    if st.button("✅ Place Order", key="place_order_btn", use_container_width=True, type="primary"):
-                        import uuid
-                        from datetime import datetime
+                    place_order_clicked = st.button("✅ Place Order", key="place_order_btn", use_container_width=True, type="primary")
+                with confirm_col2:
+                    cancel_clicked = st.button("❌ Cancel", key="cancel_order_btn", use_container_width=True)
+                
+                if place_order_clicked:
+                    import uuid
+                    from datetime import datetime
+                    
+                    order_id = f"ORD-{str(uuid.uuid4())[:8].upper()}"
+                    trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
+                    now = datetime.now()
+                    trade_date = now.strftime('%Y-%m-%d')
+                    settlement_date = (now + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
+                    
+                    side = 'BUY' if 'Buy' in order_action else 'SELL'
+                    total_value = order_quantity * execution_price
+                    
+                    security_info = tradeable[tradeable['SYMBOL'] == selected_order_symbol]
+                    security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
+                    
+                    try:
+                        session.sql(f"""
+                            INSERT INTO SECURITY_MASTER_DB.TRADES.EQUITY_TRADES (
+                                TRADE_ID, TRADE_DATE, SETTLEMENT_DATE, SYMBOL, SECURITY_NAME,
+                                SIDE, QUANTITY, PRICE, TOTAL_VALUE, CURRENCY, EXCHANGE,
+                                COUNTERPARTY, TRADER, STATUS
+                            ) VALUES (
+                                '{trade_id}',
+                                '{trade_date}',
+                                '{settlement_date}',
+                                '{selected_order_symbol}',
+                                '{security_name.replace("'", "''")}',
+                                '{side}',
+                                {order_quantity},
+                                {execution_price},
+                                {total_value},
+                                'USD',
+                                'NYSE',
+                                'INTERNAL',
+                                'CURRENT_USER',
+                                'CONFIRMED'
+                            )
+                        """).collect()
                         
-                        order_id = f"ORD-{str(uuid.uuid4())[:8].upper()}"
-                        trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
-                        now = datetime.now()
-                        trade_date = now.strftime('%Y-%m-%d')
-                        settlement_date = (now + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
+                        side_code = '1' if 'Buy' in order_action else '2'
+                        ord_type_map = {'Market': '1', 'Limit': '2', 'Stop': '3', 'Stop Limit': '4', 'Trailing Stop $': 'P', 'Trailing Stop %': 'P'}
+                        ord_type = ord_type_map.get(price_type, '1')
+                        tif_map = {'Good for Day': '0', 'Good till Canceled (GTC)': '1', 'Fill or Kill': '4', 'Immediate or Cancel': '3', 'On the Open': '2', 'On the Close': '7'}
+                        time_in_force = tif_map.get(order_duration, '0')
                         
-                        side = 'BUY' if 'Buy' in order_action else 'SELL'
-                        total_value = order_quantity * execution_price
-                        
-                        security_info = tradeable[tradeable['SYMBOL'] == selected_order_symbol]
-                        security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
-                        
-                        try:
-                            session.sql(f"""
-                                INSERT INTO SECURITY_MASTER_DB.TRADES.EQUITY_TRADES (
-                                    TRADE_ID, TRADE_DATE, SETTLEMENT_DATE, SYMBOL, SECURITY_NAME,
-                                    SIDE, QUANTITY, PRICE, TOTAL_VALUE, CURRENCY, EXCHANGE,
-                                    COUNTERPARTY, TRADER, STATUS
-                                ) VALUES (
-                                    '{trade_id}',
-                                    '{trade_date}',
-                                    '{settlement_date}',
-                                    '{selected_order_symbol}',
-                                    '{security_name.replace("'", "''")}',
-                                    '{side}',
-                                    {order_quantity},
-                                    {execution_price},
-                                    {total_value},
-                                    'USD',
-                                    'NYSE',
-                                    'INTERNAL',
-                                    'CURRENT_USER',
-                                    'CONFIRMED'
-                                )
-                            """).collect()
-                            
-                            side_code = '1' if 'Buy' in order_action else '2'
-                            ord_type_map = {'Market': '1', 'Limit': '2', 'Stop': '3', 'Stop Limit': '4', 'Trailing Stop $': 'P', 'Trailing Stop %': 'P'}
-                            ord_type = ord_type_map.get(price_type, '1')
-                            tif_map = {'Good for Day': '0', 'Good till Canceled (GTC)': '1', 'Fill or Kill': '4', 'Immediate or Cancel': '3', 'On the Open': '2', 'On the Close': '7'}
-                            time_in_force = tif_map.get(order_duration, '0')
-                            
-                            fixml_msg = f'''<?xml version="1.0" encoding="UTF-8"?>
+                        fixml_msg = f'''<?xml version="1.0" encoding="UTF-8"?>
 <FIXML xmlns="http://www.fixprotocol.org/FIXML-5-0-SP2" v="5.0SP2">
     <ExecRpt ExecID="{trade_id}" ExecTyp="F" OrdStat="2" Side="{side_code}" LeavesQty="0" CumQty="{order_quantity}" AvgPx="{execution_price}" TrdDt="{trade_date}" TxnTm="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z" SettlDt="{settlement_date}">
         <Hdr SID="SECMASTER" TID="EXCHANGE" Snt="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z"/>
@@ -2507,40 +2503,26 @@ with tab9:
         <Pty ID="EXCHANGE" R="17"/>
     </ExecRpt>
 </FIXML>'''
-                            
-                            fixml_filename = f"FIX_{now.strftime('%d-%b-%Y').upper()}_{now.strftime('%H:%M:%S')}_{selected_order_symbol}_{side}.xml"
-                            
-                            session.sql(f"""
-                                COPY INTO @SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}
-                                FROM (SELECT '{fixml_msg.replace("'", "''")}')
-                                FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = NONE)
-                                OVERWRITE = TRUE
-                                SINGLE = TRUE
-                            """).collect()
-                            
-                            st.success(f"""
-                            ✅ **Order Confirmed and Executed!**
-                            
-                            **Order ID:** {order_id}  
-                            **Trade ID:** {trade_id}  
-                            **Status:** CONFIRMED  
-                            **Executed:** {now.strftime('%Y-%m-%d %H:%M:%S')}
-                            
-                            Trade inserted into `SECURITY_MASTER_DB.TRADES.EQUITY_TRADES`  
-                            FIXML message saved to `@SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}`
-                            """)
-                            
-                            st.balloons()
-                            st.cache_data.clear()
-                            
-                        except Exception as e:
-                            st.error(f"Error executing order: {str(e)}")
+                        
+                        fixml_filename = f"FIX_{now.strftime('%d-%b-%Y').upper()}_{now.strftime('%H-%M-%S')}_{selected_order_symbol}_{side}.xml"
+                        
+                        session.sql(f"""
+                            COPY INTO @SECURITY_MASTER_DB.TRADES.FIX_STAGE/{fixml_filename}
+                            FROM (SELECT '{fixml_msg.replace("'", "''")}')
+                            FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = NONE)
+                            OVERWRITE = TRUE
+                            SINGLE = TRUE
+                        """).collect()
+                        
+                        st.success(f"✅ **{security_name} {side} order placed on the OMS at ${execution_price:,.2f}**  \nFIX message generated for the OMS system: `{fixml_filename}`")
+                        st.balloons()
+                        st.cache_data.clear()
+                        
+                    except Exception as e:
+                        st.error(f"❌ Error executing order: {str(e)}")
                 
-                with confirm_col2:
-                    if st.button("❌ Cancel", key="cancel_order_btn", use_container_width=True):
-                        st.info("Order cancelled.")
-                
-                st.markdown("</div>", unsafe_allow_html=True)
+                if cancel_clicked:
+                    st.info("Order cancelled.")
     
     with order_col2:
         st.markdown("""
