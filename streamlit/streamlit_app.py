@@ -63,11 +63,41 @@ session = get_active_session()
 st.markdown('''
 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
     <div style="width: 40px;"></div>
-    <span style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 700; 
-                 background: linear-gradient(135deg, #29b5e8 0%, #0d9488 100%); 
-                 -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-        SnowTrade App
-    </span>
+    <div style="display: flex; flex-direction: column; align-items: center;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 2.2rem; font-weight: 800; 
+                         color: #29b5e8;
+                         letter-spacing: -0.5px;">
+                Snow-Trade
+            </span>
+            <svg width="45" height="45" viewBox="0 0 100 100" style="filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.3));">
+                <defs>
+                    <linearGradient id="tradeGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#ef4444"/>
+                        <stop offset="50%" style="stop-color:#f59e0b"/>
+                        <stop offset="100%" style="stop-color:#10b981"/>
+                    </linearGradient>
+                    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#0d9488"/>
+                        <stop offset="100%" style="stop-color:#10b981"/>
+                    </linearGradient>
+                </defs>
+                <polyline points="10,75 30,55 50,65 70,35 90,20" fill="none" stroke="url(#tradeGrad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <polygon points="90,20 90,38 72,20" fill="url(#arrowGrad)"/>
+                <circle cx="30" cy="55" r="4" fill="#f59e0b"/>
+                <circle cx="50" cy="65" r="4" fill="#f59e0b"/>
+                <circle cx="70" cy="35" r="4" fill="#10b981"/>
+                <rect x="15" y="80" width="8" height="12" rx="2" fill="#64748b" opacity="0.5"/>
+                <rect x="30" y="75" width="8" height="17" rx="2" fill="#64748b" opacity="0.5"/>
+                <rect x="45" y="78" width="8" height="14" rx="2" fill="#64748b" opacity="0.5"/>
+                <rect x="60" y="70" width="8" height="22" rx="2" fill="#64748b" opacity="0.5"/>
+                <rect x="75" y="65" width="8" height="27" rx="2" fill="#64748b" opacity="0.5"/>
+            </svg>
+        </div>
+        <p style="margin: 0; font-size: 0.85rem; color: #64748b; font-family: 'Outfit', sans-serif; letter-spacing: 0.5px;">
+            Security Trading, Settlement & Master
+        </p>
+    </div>
     <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg" 
          style="height: 40px;" alt="Snowflake">
 </div>
