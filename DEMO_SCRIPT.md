@@ -1,170 +1,241 @@
-# SnowTrade Demo Script
+# Snow-Trade Demo Script
 
-This demo script walks through the key features of the SnowTrade application, demonstrating how the system handles trade execution, settlement matching, and master data management.
+## Overview
+This demo showcases Snow-Trade, a Snowflake-native application for **Security Trading, Settlement & Master** data management. The app demonstrates real-time trading capabilities, security master management, and settlement workflows—all powered by Snowflake.
+
+---
 
 ## Pre-Demo Setup
 
-Ensure you have:
-- Access to the Snowflake account with the SnowTrade application
-- The SNOWTRADE_APP Streamlit application running
-- Test securities available (ideally with some missing from master data for demo purposes)
+1. **Ensure Installation Complete**
+   ```sql
+   -- Run install script if not already done
+   @install_snowtrade.sql
+   ```
+
+2. **Open the App**
+   - Navigate to Snowsight → Streamlit Apps → `SNOWTRADE_APP`
+   - Or use direct link: `https://app.snowflake.com/<account>/#/streamlit-apps/SECURITY_MASTER_DB.GOLDEN_RECORD.SNOWTRADE_APP`
 
 ---
 
-## Demo Flow
+## Demo Flow (15-20 minutes)
 
-### Part 1: Execute New Trades (Missing Master Data)
+### 1. Introduction (2 min)
+> "Welcome to Snow-Trade—a complete securities trading and master data management platform built natively on Snowflake. Today I'll show you how we handle everything from trade execution to settlement, all with real-time data and external API integrations."
 
-**Objective:** Show what happens when trades are executed for securities not yet in the master data.
+**Key Points:**
+- Built 100% on Snowflake (Streamlit, Hybrid Tables, External Access)
+- Real-time market data via Yahoo Finance API
+- Security lookup via OpenFIGI API
+- FIX/FIXML protocol support for trade messaging
 
-#### Step 1.1: Execute an Equity Trade (AAPL - Not in Master)
+---
 
-1. Navigate to **📝 Stock / ETF Order** tab
-2. Select **AAPL - Apple Inc** from the symbol dropdown
-3. Notice the live price quote appears (via Yahoo Finance integration)
-4. Set:
-   - Action: **BUY**
+### 2. Portfolio Overview (3 min)
+**Navigate to: 📊 Portfolio Tab**
+
+> "Let's start with our portfolio dashboard. Here you can see our current positions across equities and fixed income."
+
+**Demo Actions:**
+- Point out the **Top 5 metrics**: Total AUM, Cash Balance, US Treasury holdings, Total Trades, Realized P&L
+- Show the **Top 10 Gainers/Losers** charts
+- Scroll to **Sector Analysis** - explain how trades are automatically categorized by GICS sector
+- Highlight the **Bond Portfolio Yield Analysis** section
+
+**Talking Points:**
+- "All data is live from Snowflake—no external BI tools needed"
+- "Sector breakdown comes from joining trade data with our S&P 500 reference table"
+- "Bond yields are calculated in real-time from our corporate bonds master"
+
+---
+
+### 3. Live Stock Trading (5 min)
+**Navigate to: 📝 Stock / ETF Order Tab**
+
+> "Now let's execute a live trade. Watch how we pull real-time market data."
+
+**Demo Actions:**
+1. Select a symbol (e.g., **AAPL** or **MSFT**)
+2. Point out the **live price quote** appearing with:
+   - Current price
+   - Previous close
+   - Change % (green/red)
+   - Market state
+3. Configure order:
+   - Action: **Buy**
    - Quantity: **100**
+   - Price Type: **Market**
+   - Duration: **Good for Day**
+4. Click **Preview Order** - review the order summary
+5. Click **Place Order** - show confirmation message
+
+**Talking Points:**
+- "Live prices come from Yahoo Finance via Snowflake External Access Integration"
+- "When we place this order, three things happen automatically:
+  1. Trade is inserted into our Hybrid Table for ACID compliance
+  2. A FIX/FIXML message is generated and stored in our stage
+  3. Portfolio metrics update in real-time"
+
+**Show the FIXML:**
+```sql
+-- Show generated FIXML messages
+LIST @SECURITY_MASTER_DB.TRADES.FIX_STAGE;
+```
+
+---
+
+### 4. Bond Trading (3 min)
+**Navigate to: 🏦 Bond Order Tab**
+
+> "We also support fixed income trading with the same workflow."
+
+**Demo Actions:**
+1. Search for a bond (e.g., **Apple** or **Microsoft**)
+2. Show bond details: CUSIP, Credit Rating, Yield, Coupon Rate
+3. Configure order:
+   - Action: **Buy**
+   - Quantity: **10** ($10,000 face value)
    - Execution Type: **Market**
-5. Click **Preview Order**
-6. Review the order details including:
-   - Estimated total value
-   - T+1 Settlement date
-7. Click **Place Order**
-8. Note the green confirmation message
+4. Toggle between **Price** and **Yield** modes
+5. Preview and place the order
 
-**Talking Point:** *"We've just executed a buy order for Apple stock. The system automatically calculates T+1 settlement and generates a unique trade ID. But notice - Apple isn't in our master data yet..."*
-
-#### Step 1.2: Execute a Bond Trade (New Bond)
-
-1. Navigate to **🏦 Bond Order** tab
-2. Select a corporate bond from the dropdown (e.g., a Goldman Sachs or JPMorgan bond)
-3. Set:
-   - Action: **BUY**
-   - Face Value: **10,000**
-   - Price Mode: Select **Price** or **Yield**
-   - Enter appropriate price/yield
-4. Click **Preview Order**
-5. Click **Place Order**
-6. Note the confirmation with FIXML generation
-
-**Talking Point:** *"For fixed income, we also generate FIXML messages that are stored in a Snowflake stage - this enables downstream integration with settlement systems and regulatory reporting."*
+**Talking Points:**
+- "Bonds are identified by CUSIP and linked to our corporate bonds master"
+- "Notice we can trade by either price or yield—common in fixed income"
 
 ---
 
-### Part 2: View Settlement Issues
+### 5. Security Master Management (4 min)
+**Navigate to: ✏️ Master Data Tab**
 
-**Objective:** Demonstrate how unmatched trades appear in settlement details.
+> "The heart of any trading system is the security master. Let me show you our golden record management."
 
-1. Navigate to **📋 Settlement Details** tab
-2. Set filters:
-   - Type: **Equity** (or **<ALL>**)
-   - Status: **Pending**
-3. Look for the Apple trade - notice the **ISSUER** and **EXCHANGE** columns show **NULL** or are empty
+**Demo Actions:**
+1. **ISIN Lookup Demo:**
+   - Select "ISIN" from dropdown
+   - Enter: `US0378331005` (Apple's ISIN)
+   - Click **Lookup**
+   - Show how fields auto-populate from OpenFIGI API
 
-**Talking Point:** *"Here we can see our pending settlements. Notice the Apple trade has no issuer information - that's because Apple isn't in our SnowTrade Reference data. This is a settlement risk - we can't properly route or match this trade."*
+2. **Ticker Lookup Demo:**
+   - Select "Ticker" from dropdown
+   - Enter: `GOOGL`
+   - Click **Lookup**
+   - Show S&P 500 data populating
 
-4. Click **🔄 Refresh** to show real-time updates
+3. **Create New Security:**
+   - Fill in remaining fields
+   - Click **Save Security**
 
----
+**Talking Points:**
+- "We integrate with OpenFIGI—the industry standard for security identification"
+- "Every security gets a unique Global Security ID (GSID)"
+- "All changes are tracked in our audit history"
 
-### Part 3: Add Missing Securities to Master Data
-
-**Objective:** Show how adding master data resolves settlement matching.
-
-#### Step 3.1: Add Apple to Master Data
-
-1. Navigate to **✏️ Master Data** tab
-2. Click **➕ Add New Security**
-3. Fill in the form:
-   - **Asset Class:** Equity
-   - **Primary Ticker:** AAPL
-   - **ISIN:** US0378331005
-   - **CUSIP:** 037833100
-   - **Issuer:** Apple Inc
-   - **Primary Exchange:** NASDAQ
-   - **Currency:** USD
-   - **Country:** United States
-4. Click **Add Security**
-5. Verify the success message
-
-**Talking Point:** *"Now we're adding Apple to our golden record. This master data will be used to enrich all our trades and enable proper settlement matching."*
-
-#### Step 3.2: Verify Master History
-
-1. Navigate to **📜 Master History** tab
-2. Find the Apple entry showing:
-   - OPERATION: INSERT
-   - Timestamp of when it was added
-   - Full record details
-
-**Talking Point:** *"Every change to our master data is tracked with full audit history using Snowflake Streams and Change Data Capture. This is critical for regulatory compliance and data governance."*
+**Navigate to: 📜 Master History Tab**
+- Show the audit trail of all security master changes
+- Point out INSERT vs UPDATE actions
+- Demonstrate the CSV export feature
 
 ---
 
-### Part 4: Verify Settlement Resolution
+### 6. Trade Matching & Settlement (3 min)
+**Navigate to: 🔗 Equity Trades Tab**
 
-**Objective:** Show that settlements now match properly.
+> "Let's look at how we match trades against our NYSE security master."
 
-1. Navigate back to **📋 Settlement Details** tab
-2. Click **🔄 Refresh**
-3. Find the Apple trade - now shows:
-   - **ISSUER:** Apple Inc
-   - **EXCHANGE:** NASDAQ
+**Demo Actions:**
+- Show the **Match Rate** metric
+- Filter by "Unmatched" to show trades needing attention
+- Explain how trades are matched by symbol to NYSE reference data
 
-**Talking Point:** *"After adding Apple to our master data, the settlement details are now enriched. The LEFT JOIN to our SnowTrade Reference now finds a match, and we have complete trade information for settlement."*
+**Navigate to: 📋 Settlement Details Tab**
+- Filter by **Type**: Equity
+- Filter by **Status**: Pending
+- Show T+1 settlement dates
+- Demonstrate filtering by Trade Date and Exchange
 
----
-
-### Part 5: Portfolio & Analytics
-
-**Objective:** Show the business intelligence capabilities.
-
-1. Navigate to **📊 Portfolio** tab
-2. Point out:
-   - Top 10 Gainers/Losers charts
-   - Sector allocation breakdown
-   - Portfolio summary table with P&L
-
-**Talking Point:** *"All this trade data flows into our portfolio analytics in real-time. We can see positions, P&L, and sector exposure - all powered by Snowflake's unified data platform."*
-
-2. Navigate to **🔍 Trade History** tab
-3. Use filters to find specific trades
-4. Show the trade blotter with full details
+**Talking Points:**
+- "Settlement follows T+1 standard"
+- "Status automatically updates based on current date vs settlement date"
+- "All filters work in real-time against Snowflake"
 
 ---
 
-## Key Value Propositions
+### 7. Architecture Deep Dive (Optional - 2 min)
 
-Throughout the demo, emphasize:
-
-1. **Real-Time Data:** Live price quotes, instant trade execution, immediate settlement visibility
-2. **Data Quality:** Missing master data is immediately visible in settlement details
-3. **Audit Trail:** Full change history via Snowflake Streams
-4. **Integration Ready:** FIXML generation for downstream systems
-5. **Single Platform:** Trading, settlement, master data, and analytics all in Snowflake
-
----
-
-## Technical Highlights
-
-- **Hybrid Tables:** Used for EQUITY_TRADES and BOND_TRADES for low-latency transactional workloads
-- **External Access:** Yahoo Finance integration for live stock prices
-- **Streams & CDC:** Automatic change tracking on master data
-- **Stages:** FIXML files stored in Snowflake stages for integration
-- **Caching:** Optimized Streamlit with `@st.cache_data` for performance
-
----
-
-## Cleanup (Post-Demo)
-
-If you need to reset for another demo:
+> "Let me quickly show you what's under the hood."
 
 ```sql
--- Remove test trades
-DELETE FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES WHERE SYMBOL = 'AAPL';
-DELETE FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES WHERE CUSIP = '<test_cusip>';
+-- Show the database structure
+SHOW SCHEMAS IN DATABASE SECURITY_MASTER_DB;
 
--- Remove test master data
-DELETE FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE WHERE PRIMARY_TICKER = 'AAPL';
+-- Show hybrid tables for ACID compliance
+SHOW TABLES LIKE '%TRADES%' IN SCHEMA SECURITY_MASTER_DB.TRADES;
+
+-- Show external integrations
+SHOW INTEGRATIONS LIKE '%YAHOO%';
+SHOW INTEGRATIONS LIKE '%OPENFIGI%';
+
+-- Show the UDFs
+SHOW USER FUNCTIONS IN SCHEMA SECURITY_MASTER_DB.GOLDEN_RECORD;
+SHOW USER FUNCTIONS IN SCHEMA SECURITY_MASTER_DB.TRADES;
 ```
+
+**Talking Points:**
+- "Hybrid Tables give us ACID transactions for trade data"
+- "External Access Integrations securely connect to Yahoo Finance and OpenFIGI"
+- "Python UDFs handle the API calls—all running in Snowflake's secure sandbox"
+
+---
+
+## Key Differentiators
+
+| Feature | Snow-Trade Advantage |
+|---------|---------------------|
+| **Data Platform** | 100% Snowflake-native—no external databases |
+| **Real-time Pricing** | Yahoo Finance API via External Access |
+| **Security Lookup** | OpenFIGI integration for ISIN/FIGI resolution |
+| **Trade Messaging** | FIX/FIXML protocol support |
+| **Audit Trail** | Complete history with before/after tracking |
+| **Settlement** | Automated T+1 calculation and status |
+| **UI** | Streamlit in Snowflake—no separate hosting |
+
+---
+
+## Common Questions
+
+**Q: How does this handle high-frequency trading?**
+> A: Hybrid Tables provide single-digit millisecond latency for transactional workloads. For true HFT, you'd want to add Snowpark Container Services for co-located processing.
+
+**Q: Can we connect to Bloomberg instead of Yahoo Finance?**
+> A: Absolutely. The External Access Integration pattern works with any REST API. You'd just update the network rules and UDF to call Bloomberg's API.
+
+**Q: How do we handle corporate actions?**
+> A: The Security Master History table tracks all changes. You could extend this with a dedicated corporate actions table and event-driven processing via Streams and Tasks.
+
+**Q: What about regulatory reporting?**
+> A: All data is in Snowflake, so you can easily generate TRACE, CAT, or MiFID II reports using standard SQL. The audit trail provides complete lineage.
+
+---
+
+## Cleanup (if needed)
+
+```sql
+-- To remove all Snow-Trade objects
+@uninstall_snowtrade.sql
+```
+
+---
+
+## Resources
+
+- **GitHub**: https://github.com/sfc-gh-cmoynihan/snowtrade
+- **Snowflake Docs**: [Streamlit in Snowflake](https://docs.snowflake.com/en/developer-guide/streamlit/about-streamlit)
+- **OpenFIGI API**: https://www.openfigi.com/api
+- **FIX Protocol**: https://www.fixtrading.org/
+
+---
+
+*Demo created for Snow-Trade v1.0 - February 2026*
