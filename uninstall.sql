@@ -1,11 +1,11 @@
 -- ============================================
--- SECURITY MASTER EDM - UNINSTALL SCRIPT
+-- SNOWTRADE APP - UNINSTALL SCRIPT
 -- ============================================
 -- Author: Colm Moynihan
 -- Date: February 2026
 -- Version: 1.0
 -- ============================================
--- WARNING: This script will permanently delete all Security Master objects!
+-- WARNING: This script will permanently delete all SnowTrade objects!
 -- Make sure to backup any data you want to keep before running.
 -- ============================================
 
@@ -16,7 +16,7 @@ USE WAREHOUSE ADHOC_WH;
 -- ============================================
 -- STEP 1: Drop Streamlit Application
 -- ============================================
-DROP STREAMLIT IF EXISTS SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP;
+DROP STREAMLIT IF EXISTS SECURITY_MASTER_DB.GOLDEN_RECORD.SNOWTRADE_APP;
 
 -- ============================================
 -- STEP 2: Drop External Access Integrations
@@ -89,4 +89,4 @@ DROP DATABASE IF EXISTS SECURITY_MASTER_DB;
 -- SHOW INTEGRATIONS LIKE '%OPENFIGI%';
 -- SHOW INTEGRATIONS LIKE '%YAHOO%';
 
-SELECT 'Security Master EDM uninstall complete.' AS STATUS;
+SELECT 'SnowTrade EDM uninstall complete.' AS STATUS;

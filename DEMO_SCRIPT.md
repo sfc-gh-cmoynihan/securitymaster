@@ -1,12 +1,12 @@
-# Security Master Demo Script
+# SnowTrade Demo Script
 
-This demo script walks through the key features of the Security Master application, demonstrating how the system handles trade execution, settlement matching, and master data management.
+This demo script walks through the key features of the SnowTrade application, demonstrating how the system handles trade execution, settlement matching, and master data management.
 
 ## Pre-Demo Setup
 
 Ensure you have:
-- Access to the Snowflake account with the Security Master application
-- The SECURITY_MASTER_APP Streamlit application running
+- Access to the Snowflake account with the SnowTrade application
+- The SNOWTRADE_APP Streamlit application running
 - Test securities available (ideally with some missing from master data for demo purposes)
 
 ---
@@ -62,7 +62,7 @@ Ensure you have:
    - Status: **Pending**
 3. Look for the Apple trade - notice the **ISSUER** and **EXCHANGE** columns show **NULL** or are empty
 
-**Talking Point:** *"Here we can see our pending settlements. Notice the Apple trade has no issuer information - that's because Apple isn't in our Security Master Reference data. This is a settlement risk - we can't properly route or match this trade."*
+**Talking Point:** *"Here we can see our pending settlements. Notice the Apple trade has no issuer information - that's because Apple isn't in our SnowTrade Reference data. This is a settlement risk - we can't properly route or match this trade."*
 
 4. Click **🔄 Refresh** to show real-time updates
 
@@ -112,7 +112,7 @@ Ensure you have:
    - **ISSUER:** Apple Inc
    - **EXCHANGE:** NASDAQ
 
-**Talking Point:** *"After adding Apple to our master data, the settlement details are now enriched. The LEFT JOIN to our Security Master Reference now finds a match, and we have complete trade information for settlement."*
+**Talking Point:** *"After adding Apple to our master data, the settlement details are now enriched. The LEFT JOIN to our SnowTrade Reference now finds a match, and we have complete trade information for settlement."*
 
 ---
 

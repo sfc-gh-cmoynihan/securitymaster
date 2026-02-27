@@ -1,12 +1,12 @@
 -- ============================================
--- SECURITY MASTER EDM - INSTALLATION SCRIPT
+-- SNOWTRADE APP - INSTALLATION SCRIPT
 -- ============================================
 -- Author: Colm Moynihan
 -- Date: February 2026
 -- Version: 1.2
 -- ============================================
 
--- This script installs the complete Security Master EDM application
+-- This script installs the complete SnowTrade EDM application
 -- Run each section in order
 
 -- ============================================
@@ -142,14 +142,14 @@ CREATE OR REPLACE STAGE SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE
 -- Upload streamlit/streamlit_app.py to the stage:
 -- PUT file:///path/to/streamlit/streamlit_app.py @SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE AUTO_COMPRESS=FALSE OVERWRITE=TRUE;
 
-CREATE OR REPLACE STREAMLIT SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP
+CREATE OR REPLACE STREAMLIT SECURITY_MASTER_DB.GOLDEN_RECORD.SNOWTRADE_APP
     ROOT_LOCATION = '@SECURITY_MASTER_DB.GOLDEN_RECORD.STREAMLIT_STAGE'
     MAIN_FILE = 'streamlit_app.py'
     QUERY_WAREHOUSE = 'ADHOC_WH'
-    TITLE = 'Security Master EDM';
+    TITLE = 'SnowTrade EDM';
 
 -- ============================================
 -- INSTALLATION COMPLETE
 -- ============================================
 -- Access the app at:
--- https://app.snowflake.com/<account>/#/streamlit-apps/SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_APP
+-- https://app.snowflake.com/<account>/#/streamlit-apps/SECURITY_MASTER_DB.GOLDEN_RECORD.SNOWTRADE_APP

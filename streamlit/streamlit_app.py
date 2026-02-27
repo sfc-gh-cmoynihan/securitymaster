@@ -1,5 +1,5 @@
 # ============================================
-# SECURITY MASTER STREAMLIT APP
+# SNOWTRADE APP
 # Portfolio Analysis & Trade Viewer
 # OPTIMIZED FOR PERFORMANCE
 # ============================================
@@ -10,7 +10,7 @@ from snowflake.snowpark.context import get_active_session
 
 # Page configuration
 st.set_page_config(
-    page_title="Security Master EDM",
+    page_title="SnowTrade App",
     page_icon="❄️",
     layout="wide"
 )
@@ -66,7 +66,7 @@ st.markdown('''
     <span style="font-family: 'Outfit', sans-serif; font-size: 1.75rem; font-weight: 700; 
                  background: linear-gradient(135deg, #29b5e8 0%, #0d9488 100%); 
                  -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-        Security Master EDM
+        SnowTrade App
     </span>
     <img src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Snowflake_Logo.svg" 
          style="height: 40px;" alt="Snowflake">
