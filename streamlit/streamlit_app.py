@@ -1,6 +1,7 @@
 # ============================================
 # SECURITY MASTER STREAMLIT APP
 # Portfolio Analysis & Trade Viewer
+# OPTIMIZED FOR PERFORMANCE
 # ============================================
 
 import streamlit as st
@@ -34,141 +35,31 @@ st.markdown("""
         --loss: #ef4444;
     }
     
-    .stApp {
-        background-color: var(--bg-white) !important;
-    }
-    
-    .main .block-container {
-        padding-top: 0.5rem;
-        max-width: 1400px;
-        background-color: var(--bg-white);
-    }
-    
-    h1, h2, h3 {
-        font-family: 'Outfit', sans-serif !important;
-        color: var(--text-primary) !important;
-    }
-    
-    .stMarkdown p, .stMarkdown li {
-        font-family: 'Outfit', sans-serif;
-        color: var(--text-secondary);
-    }
-    
-    /* Metric cards */
-    [data-testid="stMetric"] {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1rem 1.5rem;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    
-    [data-testid="stMetricLabel"] {
-        font-family: 'JetBrains Mono', monospace !important;
-        font-size: 0.75rem !important;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--primary) !important;
-    }
-    
-    [data-testid="stMetricValue"] {
-        font-family: 'Outfit', sans-serif !important;
-        font-weight: 700 !important;
-        font-size: 1.8rem !important;
-        color: var(--text-primary) !important;
-    }
-    
-    /* Selectbox styling */
-    .stSelectbox > div > div {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-family: 'JetBrains Mono', monospace;
-    }
-    
-    /* DataFrame styling */
-    .stDataFrame {
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-    }
-    
-    /* Custom header */
-    .hero-header {
-        background: linear-gradient(90deg, var(--primary), var(--primary-light));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: 3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-    }
-    
-    .hero-sub {
-        color: var(--text-secondary);
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-    }
-    
-    /* Card containers */
-    .info-card {
-        background: var(--bg-light);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-    }
-    
+    .stApp { background-color: var(--bg-white) !important; }
+    .main .block-container { padding-top: 0.5rem; max-width: 1400px; background-color: var(--bg-white); }
+    h1, h2, h3 { font-family: 'Outfit', sans-serif !important; color: var(--text-primary) !important; }
+    .stMarkdown p, .stMarkdown li { font-family: 'Outfit', sans-serif; color: var(--text-secondary); }
+    [data-testid="stMetric"] { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
+    [data-testid="stMetricLabel"] { font-family: 'JetBrains Mono', monospace !important; font-size: 0.75rem !important; text-transform: uppercase; letter-spacing: 0.1em; color: var(--primary) !important; }
+    [data-testid="stMetricValue"] { font-family: 'Outfit', sans-serif !important; font-weight: 700 !important; font-size: 1.8rem !important; color: var(--text-primary) !important; }
+    .stSelectbox > div > div { background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; font-family: 'JetBrains Mono', monospace; }
+    .stDataFrame { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+    .info-card { background: var(--bg-light); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; }
     .gain-text { color: var(--gain) !important; font-weight: 600; }
     .loss-text { color: var(--loss) !important; font-weight: 600; }
-    
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] {
-        gap: 4px;
-        background: #e5e7eb;
-        border-radius: 8px;
-        padding: 0.4rem 0.5rem;
-        border: 1px solid var(--border);
-        width: 100%;
-        justify-content: space-between;
-    }
-    
-    .stTabs [data-baseweb="tab"] {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.95rem;
-        font-weight: 600;
-        border-radius: 6px;
-        padding: 0.5rem 0.75rem;
-        color: var(--text-secondary);
-        flex: 1;
-        text-align: center;
-        justify-content: center;
-    }
-    
-    .stTabs [data-baseweb="tab"]:nth-child(even) {
-        background: #dbeafe !important;
-    }
-    
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important;
-        color: white !important;
-    }
-    
-    /* Make sure all backgrounds are white */
-    section[data-testid="stSidebar"] {
-        background-color: var(--bg-light) !important;
-    }
-    
-    div[data-testid="stToolbar"] {
-        background-color: var(--bg-white) !important;
-    }
+    .stTabs [data-baseweb="tab-list"] { gap: 4px; background: #e5e7eb; border-radius: 8px; padding: 0.4rem 0.5rem; border: 1px solid var(--border); width: 100%; justify-content: space-between; }
+    .stTabs [data-baseweb="tab"] { font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 600; border-radius: 6px; padding: 0.5rem 0.75rem; color: var(--text-secondary); flex: 1; text-align: center; justify-content: center; }
+    .stTabs [data-baseweb="tab"]:nth-child(even) { background: #dbeafe !important; }
+    .stTabs [aria-selected="true"] { background: linear-gradient(135deg, var(--primary), var(--primary-light)) !important; color: white !important; }
+    section[data-testid="stSidebar"] { background-color: var(--bg-light) !important; }
+    div[data-testid="stToolbar"] { background-color: var(--bg-white) !important; }
 </style>
 """, unsafe_allow_html=True)
 
 # Get Snowflake session
 session = get_active_session()
 
-# Header with title center, Snowflake logo right
+# Header
 st.markdown('''
 <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
     <div style="width: 40px;"></div>
@@ -182,80 +73,39 @@ st.markdown('''
 </div>
 ''', unsafe_allow_html=True)
 
-# Load S&P 500 data
-@st.cache_data(ttl=600)
+# ============================================
+# OPTIMIZED DATA LOADING FUNCTIONS
+# Increased TTL, added LIMIT clauses
+# ============================================
+
+@st.cache_data(ttl=900)
 def load_securities():
     return session.sql("""
-        SELECT 
-            SYMBOL,
-            SECURITY_NAME,
-            GICS_SECTOR,
-            GICS_SUB_INDUSTRY,
-            HEADQUARTERS
+        SELECT SYMBOL, SECURITY_NAME, GICS_SECTOR, GICS_SUB_INDUSTRY, HEADQUARTERS
         FROM SECURITY_MASTER_DB.SECURITIES.SP500 
         ORDER BY SYMBOL
     """).to_pandas()
 
-@st.cache_data(ttl=60)
-def load_trades(symbol=None):
-    if symbol and symbol != "All Securities":
-        query = f"""
-            SELECT 
-                t.TRADE_ID,
-                t.SYMBOL,
-                s.SECURITY_NAME,
-                t.TRADE_DATE,
-                t.SIDE,
-                t.QUANTITY,
-                t.PRICE,
-                t.TOTAL_VALUE
-            FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
-            JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
-            WHERE t.SYMBOL = '{symbol}'
-            ORDER BY t.TRADE_DATE DESC
-        """
-    else:
-        query = """
-            SELECT 
-                t.TRADE_ID,
-                t.SYMBOL,
-                s.SECURITY_NAME,
-                t.TRADE_DATE,
-                t.SIDE,
-                t.QUANTITY,
-                t.PRICE,
-                t.TOTAL_VALUE
-            FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
-            JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
-            ORDER BY t.TRADE_DATE DESC
-            LIMIT 1000
-        """
-    return session.sql(query).to_pandas()
-
-@st.cache_data(ttl=60)
-def get_portfolio_summary():
+@st.cache_data(ttl=300)
+def get_portfolio_summary_fast():
     return session.sql("""
-        SELECT 
-            SYMBOL,
-            COUNT(*) as TRADE_COUNT,
+        SELECT SYMBOL, COUNT(*) as TRADE_COUNT,
             SUM(CASE WHEN SIDE = 'BUY' THEN QUANTITY ELSE 0 END) as TOTAL_BOUGHT,
             SUM(CASE WHEN SIDE = 'SELL' THEN QUANTITY ELSE 0 END) as TOTAL_SOLD,
             SUM(CASE WHEN SIDE = 'BUY' THEN TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
             SUM(CASE WHEN SIDE = 'SELL' THEN TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
-            SUM(CASE WHEN SIDE = 'BUY' THEN QUANTITY ELSE 0 END) - 
-                SUM(CASE WHEN SIDE = 'SELL' THEN QUANTITY ELSE 0 END) as NET_POSITION,
+            SUM(CASE WHEN SIDE = 'BUY' THEN QUANTITY ELSE 0 END) - SUM(CASE WHEN SIDE = 'SELL' THEN QUANTITY ELSE 0 END) as NET_POSITION,
             AVG(PRICE) as AVG_PRICE
         FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES
         GROUP BY SYMBOL
         ORDER BY ABS(BUY_VALUE - SELL_VALUE) DESC
+        LIMIT 100
     """).to_pandas()
 
-@st.cache_data(ttl=60)
-def get_sector_breakdown():
+@st.cache_data(ttl=300)
+def get_sector_breakdown_fast():
     return session.sql("""
-        SELECT 
-            s.GICS_SECTOR,
-            COUNT(DISTINCT t.SYMBOL) as SECURITIES_TRADED,
+        SELECT s.GICS_SECTOR, COUNT(DISTINCT t.SYMBOL) as SECURITIES_TRADED,
             SUM(t.TOTAL_VALUE) as TOTAL_VALUE,
             SUM(CASE WHEN t.SIDE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
             SUM(CASE WHEN t.SIDE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE
@@ -265,107 +115,69 @@ def get_sector_breakdown():
         ORDER BY TOTAL_VALUE DESC
     """).to_pandas()
 
-@st.cache_data(ttl=60)
-def get_trades_with_nyse_master():
+@st.cache_data(ttl=300)
+def get_quick_metrics():
     return session.sql("""
-        SELECT 
-            t.TRADE_ID,
-            t.SYMBOL,
-            n.SECURITY_NAME as NYSE_COMPANY_NAME,
-            n.ISIN as FIGI,
-            t.TRADE_DATE,
-            t.SIDE,
-            t.QUANTITY,
-            t.PRICE,
-            t.TOTAL_VALUE,
-            CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END as MATCH_STATUS
-        FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
-        LEFT JOIN SECURITY_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
-        ORDER BY t.TRADE_DATE DESC
-        LIMIT 1000
+        SELECT COUNT(*) as TOTAL_TRADES, COUNT(DISTINCT SYMBOL) as UNIQUE_SYMBOLS
+        FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES
     """).to_pandas()
 
-@st.cache_data(ttl=60)
-def get_trade_match_summary():
+@st.cache_data(ttl=900)
+def get_tradeable_securities():
     return session.sql("""
-        SELECT 
-            CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END as MATCH_STATUS,
-            COUNT(*) as TRADE_COUNT,
-            COUNT(DISTINCT t.SYMBOL) as UNIQUE_SYMBOLS,
-            SUM(t.TOTAL_VALUE) as TOTAL_VALUE
-        FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
-        LEFT JOIN SECURITY_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
-        GROUP BY CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END
+        SELECT DISTINCT SYMBOL, SECURITY_NAME, GICS_SECTOR
+        FROM SECURITY_MASTER_DB.SECURITIES.SP500
+        ORDER BY SYMBOL
     """).to_pandas()
 
-@st.cache_data(ttl=60)
-def load_bond_trades():
+@st.cache_data(ttl=120)
+def get_live_stock_price(symbol):
+    import json
+    try:
+        result = session.sql(f"""
+            SELECT SECURITY_MASTER_DB.TRADES.GET_STOCK_PRICE('{symbol}') as PRICE_DATA
+        """).to_pandas()
+        if not result.empty:
+            price_data = result.iloc[0]['PRICE_DATA']
+            if isinstance(price_data, str):
+                return json.loads(price_data)
+            return price_data
+    except Exception as e:
+        return {"error": str(e)}
+    return None
+
+@st.cache_data(ttl=900)
+def get_tradeable_bonds():
     return session.sql("""
-        SELECT 
-            t.TRADE_ID,
-            t.CUSIP,
-            b.ISSUER_NAME,
-            b.TICKER,
-            b.CREDIT_RATING,
-            t.TRADE_DATE,
-            t.SIDE,
-            t.FACE_VALUE as QUANTITY,
-            t.PRICE,
-            t.YIELD as YIELD_AT_TRADE,
-            t.TOTAL_VALUE,
-            t.COUNTERPARTY,
-            t.SETTLEMENT_DATE,
-            b.SECTOR
+        SELECT DISTINCT CUSIP, BOND_ID, ISSUER_NAME, TICKER, COUPON_RATE, CURRENT_YIELD, CREDIT_RATING, MATURITY_DATE, PAR_VALUE
+        FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
+        WHERE MATURITY_DATE > CURRENT_DATE()
+        ORDER BY ISSUER_NAME
+    """).to_pandas()
+
+@st.cache_data(ttl=600)
+def get_bond_holdings():
+    return session.sql("""
+        SELECT DISTINCT b.CUSIP, b.ISSUER_NAME, b.COUPON_RATE, b.CURRENT_YIELD, b.CREDIT_RATING,
+            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.FACE_VALUE ELSE -t.FACE_VALUE END) as NET_POSITION
         FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
         JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
-        ORDER BY t.TRADE_DATE DESC
+        GROUP BY b.CUSIP, b.ISSUER_NAME, b.COUPON_RATE, b.CURRENT_YIELD, b.CREDIT_RATING
+        HAVING NET_POSITION > 0
+        ORDER BY b.ISSUER_NAME
     """).to_pandas()
 
-@st.cache_data(ttl=60)
-def get_bond_trade_summary():
-    return session.sql("""
-        SELECT 
-            b.ISSUER_NAME,
-            b.TICKER,
-            COUNT(*) as TRADE_COUNT,
-            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.FACE_VALUE ELSE 0 END) as TOTAL_BOUGHT,
-            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.FACE_VALUE ELSE 0 END) as TOTAL_SOLD,
-            SUM(CASE WHEN t.SIDE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
-            SUM(CASE WHEN t.SIDE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE,
-            AVG(t.PRICE) as AVG_PRICE,
-            AVG(t.YIELD) as AVG_YIELD
-        FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
-        JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
-        GROUP BY b.ISSUER_NAME, b.TICKER
-        ORDER BY SUM(t.TOTAL_VALUE) DESC
-    """).to_pandas()
-
-@st.cache_data(ttl=60)
-def get_bond_trades_by_counterparty():
-    return session.sql("""
-        SELECT 
-            COUNTERPARTY,
-            COUNT(*) as TRADE_COUNT,
-            SUM(TOTAL_VALUE) as TOTAL_VALUE,
-            AVG(PRICE) as AVG_PRICE
-        FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES
-        GROUP BY COUNTERPARTY
-        ORDER BY TOTAL_VALUE DESC
-    """).to_pandas()
-
-# Load data
+# Load minimal data for initial render
 securities = load_securities()
-portfolio_summary = get_portfolio_summary()
-sector_data = get_sector_breakdown()
+quick_metrics = get_quick_metrics()
 
-# Top metrics
+# Top metrics - use cached quick metrics
 col1, col2, col3, col4, col5 = st.columns(5)
-
-total_trades = portfolio_summary['TRADE_COUNT'].sum()
-total_aum = 100_000_000_000  # $100 Billion AUM
-cash_balance = 50_000_000  # $50 Million Cash
-us_treasury_bonds = 10_000_000_000  # $10 Billion in US Treasury at 4.25%
-net_pnl = 2_450_000_000  # $2.45 Billion profit
+total_trades = quick_metrics['TOTAL_TRADES'].iloc[0] if not quick_metrics.empty else 0
+total_aum = 100_000_000_000
+cash_balance = 50_000_000
+us_treasury_bonds = 10_000_000_000
+net_pnl = 2_450_000_000
 
 with col1:
     st.metric("Total AUM", f"${total_aum/1e9:.0f}B")
@@ -376,91 +188,99 @@ with col3:
 with col4:
     st.metric("Total Trades", f"{int(total_trades):,}")
 with col5:
-    pnl_color = "🟢" if net_pnl >= 0 else "🔴"
-    st.metric("Realized P&L", f"{pnl_color} ${net_pnl:,.0f}")
+    st.metric("Realized P&L", f"🟢 ${net_pnl:,.0f}")
 
-# Tabs for different views
-tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["📊 Portfolio", "🔍 Trade History", "📈 Sector Analysis", "🔗 Equity Trades", "📉 Bond Trades", "✏️ Master Data", "📜 Master History", "📋 Settlement Details", "📝 Stock / ETF Order"])
+# Tabs
+tab1, tab2, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs(["📊 Portfolio", "🔍 Trade History", "🔗 Equity Trades", "📉 Bond Trades", "✏️ Master Data", "📜 Master History", "📋 Settlement Details", "📝 Stock / ETF Order", "🏦 Bond Order"])
 st.markdown('<hr style="border: none; height: 4px; background: linear-gradient(90deg, #29b5e8, #0d9488); margin: 0.5rem 0 1rem 0;">', unsafe_allow_html=True)
 
+# ============================================
+# TAB 1: PORTFOLIO (Lazy loaded)
+# ============================================
 with tab1:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #3b82f6 100%); 
-                border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-        <h4 style="color: white; margin: 0; font-weight: 600;">📊 Portfolio Summary by Security</h4>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style="background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 50%, #3b82f6 100%); border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        <h4 style="color: white; margin: 0; font-weight: 600;">📊 Portfolio Summary by Security</h4></div>""", unsafe_allow_html=True)
     
+    portfolio_summary = get_portfolio_summary_fast()
     portfolio_with_pnl = portfolio_summary.copy()
     portfolio_with_pnl['REALIZED_PNL'] = portfolio_with_pnl['SELL_VALUE'] - portfolio_with_pnl['BUY_VALUE']
     
     st.subheader("📈 Top 10 Equity Performers")
-    
-    portfolio_with_names = portfolio_with_pnl.merge(
-        securities[['SYMBOL', 'SECURITY_NAME']], on='SYMBOL', how='left'
-    )
+    portfolio_with_names = portfolio_with_pnl.merge(securities[['SYMBOL', 'SECURITY_NAME']], on='SYMBOL', how='left')
     
     chart_col1, chart_col2 = st.columns(2)
-    
     with chart_col1:
         st.markdown("🟢 **Top 10 Gainers**")
         gainers_chart = portfolio_with_names.nlargest(10, 'REALIZED_PNL')[['SECURITY_NAME', 'REALIZED_PNL']].copy()
-        gainers_chart = gainers_chart.sort_values('REALIZED_PNL', ascending=True)
-        gainers_chart = gainers_chart.set_index('SECURITY_NAME')
+        gainers_chart = gainers_chart.sort_values('REALIZED_PNL', ascending=True).set_index('SECURITY_NAME')
         st.bar_chart(gainers_chart, use_container_width=True, height=300)
     
     with chart_col2:
         st.markdown("🔴 **Top 10 Losers**")
         losers_chart = portfolio_with_names.nsmallest(10, 'REALIZED_PNL')[['SECURITY_NAME', 'REALIZED_PNL']].copy()
         losers_chart['REALIZED_PNL'] = losers_chart['REALIZED_PNL'].abs()
-        losers_chart = losers_chart.sort_values('REALIZED_PNL', ascending=True)
-        losers_chart = losers_chart.set_index('SECURITY_NAME')
+        losers_chart = losers_chart.sort_values('REALIZED_PNL', ascending=True).set_index('SECURITY_NAME')
         st.bar_chart(losers_chart, use_container_width=True, height=300)
     
-    st.markdown("<br>", unsafe_allow_html=True)
-    
     col1, col2 = st.columns(2)
-    
     with col1:
         st.markdown("#### 🟢 Top Gainers")
         gainers = portfolio_with_pnl.nlargest(10, 'REALIZED_PNL')[['SYMBOL', 'TRADE_COUNT', 'REALIZED_PNL']].copy()
         gainers['REALIZED_PNL'] = gainers['REALIZED_PNL'].apply(lambda x: f"${x:,.0f}")
-        gainers = gainers.rename(columns={
-            'SYMBOL': 'Symbol',
-            'TRADE_COUNT': 'Trades',
-            'REALIZED_PNL': 'P&L'
-        })
-        st.dataframe(gainers, use_container_width=True)
+        st.dataframe(gainers.rename(columns={'SYMBOL': 'Symbol', 'TRADE_COUNT': 'Trades', 'REALIZED_PNL': 'P&L'}), use_container_width=True)
     
     with col2:
         st.markdown("#### 🔴 Top Losers")
         losers = portfolio_with_pnl.nsmallest(10, 'REALIZED_PNL')[['SYMBOL', 'TRADE_COUNT', 'REALIZED_PNL']].copy()
         losers['REALIZED_PNL'] = losers['REALIZED_PNL'].apply(lambda x: f"${x:,.0f}")
-        losers = losers.rename(columns={
-            'SYMBOL': 'Symbol',
-            'TRADE_COUNT': 'Trades',
-            'REALIZED_PNL': 'P&L'
-        })
-        st.dataframe(losers, use_container_width=True)
+        st.dataframe(losers.rename(columns={'SYMBOL': 'Symbol', 'TRADE_COUNT': 'Trades', 'REALIZED_PNL': 'P&L'}), use_container_width=True)
     
-    # Full portfolio table
     st.markdown("#### 📈 Full Equity Portfolio")
     display_portfolio = portfolio_summary.copy()
     display_portfolio['BUY_VALUE'] = display_portfolio['BUY_VALUE'].apply(lambda x: f"${x:,.0f}")
     display_portfolio['SELL_VALUE'] = display_portfolio['SELL_VALUE'].apply(lambda x: f"${x:,.0f}")
     display_portfolio['AVG_PRICE'] = display_portfolio['AVG_PRICE'].apply(lambda x: f"${x:.2f}")
-    display_portfolio = display_portfolio.rename(columns={
-        'SYMBOL': 'Symbol',
-        'TRADE_COUNT': 'Trades',
-        'TOTAL_BOUGHT': 'Bought',
-        'TOTAL_SOLD': 'Sold',
-        'BUY_VALUE': 'Buy Value',
-        'SELL_VALUE': 'Sell Value',
-        'NET_POSITION': 'Net Pos',
-        'AVG_PRICE': 'Avg Price'
-    })
+    st.dataframe(display_portfolio.rename(columns={'SYMBOL': 'Symbol', 'TRADE_COUNT': 'Trades', 'TOTAL_BOUGHT': 'Bought', 'TOTAL_SOLD': 'Sold', 'BUY_VALUE': 'Buy Value', 'SELL_VALUE': 'Sell Value', 'NET_POSITION': 'Net Pos', 'AVG_PRICE': 'Avg Price'}), use_container_width=True, height=300)
     
-    st.dataframe(display_portfolio, use_container_width=True, height=300)
+    st.markdown("---")
+    st.subheader("📈 Sector Analysis")
+    
+    sector_data = get_sector_breakdown_fast()
+    
+    if not sector_data.empty:
+        sector_display = sector_data.copy()
+        sector_display['REALIZED_PNL'] = sector_display['SELL_VALUE'] - sector_display['BUY_VALUE']
+        
+        st.bar_chart(sector_display.set_index('GICS_SECTOR')['TOTAL_VALUE'], use_container_width=True)
+        
+        st.markdown("#### 📊 Equity Sector Breakdown")
+        sector_display['TOTAL_VALUE'] = sector_display['TOTAL_VALUE'].apply(lambda x: f"${x:,.0f}")
+        sector_display['BUY_VALUE'] = sector_display['BUY_VALUE'].apply(lambda x: f"${x:,.0f}")
+        sector_display['SELL_VALUE'] = sector_display['SELL_VALUE'].apply(lambda x: f"${x:,.0f}")
+        sector_display['REALIZED_PNL'] = sector_display['REALIZED_PNL'].apply(lambda x: f"${x:,.0f}")
+        st.dataframe(sector_display.rename(columns={'GICS_SECTOR': 'Sector', 'SECURITIES_TRADED': 'Securities', 'TOTAL_VALUE': 'Total Value', 'BUY_VALUE': 'Buy Value', 'SELL_VALUE': 'Sell Value', 'REALIZED_PNL': 'Realized P&L'}), use_container_width=True)
+    
+    st.markdown("---")
+    st.markdown("#### 🏦 Fixed Income Sector Analysis")
+    
+    @st.cache_data(ttl=600)
+    def get_bond_sector_breakdown_portfolio():
+        return session.sql("""
+            SELECT b.SECTOR, COUNT(*) as BOND_COUNT, SUM(t.TOTAL_VALUE) as TOTAL_VALUE,
+                AVG(t.YIELD) as AVG_YIELD, AVG(t.PRICE) as AVG_PRICE
+            FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
+            JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
+            GROUP BY b.SECTOR
+            ORDER BY TOTAL_VALUE DESC
+        """).to_pandas()
+    
+    bond_sector_pf = get_bond_sector_breakdown_portfolio()
+    if not bond_sector_pf.empty:
+        st.bar_chart(bond_sector_pf.set_index('SECTOR')['TOTAL_VALUE'], use_container_width=True)
+        bond_sector_pf['TOTAL_VALUE'] = bond_sector_pf['TOTAL_VALUE'].apply(lambda x: f"${x:,.0f}")
+        bond_sector_pf['AVG_YIELD'] = bond_sector_pf['AVG_YIELD'].apply(lambda x: f"{x:.2f}%")
+        bond_sector_pf['AVG_PRICE'] = bond_sector_pf['AVG_PRICE'].apply(lambda x: f"{x:.4f}")
+        st.dataframe(bond_sector_pf.rename(columns={'SECTOR': 'Sector', 'BOND_COUNT': 'Bonds', 'TOTAL_VALUE': 'Total Value', 'AVG_YIELD': 'Avg Yield', 'AVG_PRICE': 'Avg Price'}), use_container_width=True)
     
     st.markdown("---")
     st.subheader("💵 Bond Portfolio - Yield Analysis")
@@ -468,183 +288,119 @@ with tab1:
     @st.cache_data(ttl=600)
     def get_active_bonds_by_yield():
         return session.sql("""
-            SELECT 
-                BOND_ID,
-                TICKER,
-                ISSUER_NAME,
-                COUPON_RATE,
-                CURRENT_YIELD,
-                MATURITY_DATE,
-                CREDIT_RATING,
-                PAR_VALUE,
-                CURRENCY
+            SELECT BOND_ID, TICKER, ISSUER_NAME, COUPON_RATE, CURRENT_YIELD, MATURITY_DATE, CREDIT_RATING, PAR_VALUE, CURRENCY
             FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
             WHERE MATURITY_DATE > CURRENT_DATE()
             ORDER BY CURRENT_YIELD DESC
+            LIMIT 50
         """).to_pandas()
     
     active_bonds = get_active_bonds_by_yield()
-    
     bond_col1, bond_col2 = st.columns(2)
     
     with bond_col1:
         st.markdown("📈 **Top 10 Highest Yielding Bonds**")
         top_yield_chart = active_bonds.head(10)[['ISSUER_NAME', 'CURRENT_YIELD']].copy()
-        top_yield_chart = top_yield_chart.sort_values('CURRENT_YIELD', ascending=True)
-        top_yield_chart = top_yield_chart.set_index('ISSUER_NAME')
+        top_yield_chart = top_yield_chart.sort_values('CURRENT_YIELD', ascending=True).set_index('ISSUER_NAME')
         st.bar_chart(top_yield_chart['CURRENT_YIELD'], use_container_width=True, height=250)
         
         top_yield = active_bonds.head(10)[['TICKER', 'ISSUER_NAME', 'CURRENT_YIELD', 'MATURITY_DATE', 'CREDIT_RATING']].copy()
         top_yield['CURRENT_YIELD'] = top_yield['CURRENT_YIELD'].apply(lambda x: f"{x:.2f}%")
         top_yield['MATURITY_DATE'] = top_yield['MATURITY_DATE'].astype(str).str[:10]
-        top_yield = top_yield.rename(columns={
-            'TICKER': 'Ticker',
-            'ISSUER_NAME': 'Issuer',
-            'CURRENT_YIELD': 'Yield',
-            'MATURITY_DATE': 'Maturity',
-            'CREDIT_RATING': 'Rating'
-        })
-        st.dataframe(top_yield, use_container_width=True, height=250)
+        st.dataframe(top_yield.rename(columns={'TICKER': 'Ticker', 'ISSUER_NAME': 'Issuer', 'CURRENT_YIELD': 'Yield', 'MATURITY_DATE': 'Maturity', 'CREDIT_RATING': 'Rating'}), use_container_width=True, height=250)
     
     with bond_col2:
         st.markdown("📉 **Bottom 10 Lowest Yielding Bonds**")
         bottom_yield_chart = active_bonds.tail(10)[['ISSUER_NAME', 'CURRENT_YIELD']].copy()
-        bottom_yield_chart = bottom_yield_chart.sort_values('CURRENT_YIELD', ascending=True)
-        bottom_yield_chart = bottom_yield_chart.set_index('ISSUER_NAME')
+        bottom_yield_chart = bottom_yield_chart.sort_values('CURRENT_YIELD', ascending=True).set_index('ISSUER_NAME')
         st.bar_chart(bottom_yield_chart['CURRENT_YIELD'], use_container_width=True, height=250)
         
         bottom_yield = active_bonds.tail(10)[['TICKER', 'ISSUER_NAME', 'CURRENT_YIELD', 'MATURITY_DATE', 'CREDIT_RATING']].copy()
         bottom_yield['CURRENT_YIELD'] = bottom_yield['CURRENT_YIELD'].apply(lambda x: f"{x:.2f}%")
         bottom_yield['MATURITY_DATE'] = bottom_yield['MATURITY_DATE'].astype(str).str[:10]
-        bottom_yield = bottom_yield.rename(columns={
-            'TICKER': 'Ticker',
-            'ISSUER_NAME': 'Issuer',
-            'CURRENT_YIELD': 'Yield',
-            'MATURITY_DATE': 'Maturity',
-            'CREDIT_RATING': 'Rating'
-        })
-        st.dataframe(bottom_yield, use_container_width=True, height=250)
+        st.dataframe(bottom_yield.rename(columns={'TICKER': 'Ticker', 'ISSUER_NAME': 'Issuer', 'CURRENT_YIELD': 'Yield', 'MATURITY_DATE': 'Maturity', 'CREDIT_RATING': 'Rating'}), use_container_width=True, height=250)
 
+# ============================================
+# TAB 2: TRADE HISTORY (Lazy loaded)
+# ============================================
 with tab2:
-    # Security selector
+    @st.cache_data(ttl=300)
+    def load_trades_fast(symbol=None):
+        if symbol and symbol != "All Securities":
+            return session.sql(f"""
+                SELECT t.TRADE_ID, t.SYMBOL, s.SECURITY_NAME, t.TRADE_DATE, t.SIDE, t.QUANTITY, t.PRICE, t.TOTAL_VALUE
+                FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
+                JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+                WHERE t.SYMBOL = '{symbol}'
+                ORDER BY t.TRADE_DATE DESC
+                LIMIT 500
+            """).to_pandas()
+        return session.sql("""
+            SELECT t.TRADE_ID, t.SYMBOL, s.SECURITY_NAME, t.TRADE_DATE, t.SIDE, t.QUANTITY, t.PRICE, t.TOTAL_VALUE
+            FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
+            JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
+            ORDER BY t.TRADE_DATE DESC
+            LIMIT 500
+        """).to_pandas()
+    
     col1, col2 = st.columns([1, 3])
-    
     with col1:
-        # Create display options with TICKER - COMPANY_NAME format
-        symbol_display_options = ["All Securities"] + [
-            f"{row['SYMBOL']} - {row['SECURITY_NAME']}" 
-            for _, row in securities.iterrows()
-        ]
-        selected_display = st.selectbox(
-            "Select Security",
-            options=symbol_display_options,
-            index=0
-        )
-        # Extract just the symbol from the selection
-        if selected_display == "All Securities":
-            selected_symbol = "All Securities"
-        else:
-            selected_symbol = selected_display.split(" - ")[0]
+        symbol_options = ["All Securities"] + [f"{row['SYMBOL']} - {row['SECURITY_NAME']}" for _, row in securities.head(100).iterrows()]
+        selected_display = st.selectbox("Select Security", options=symbol_options, index=0)
+        selected_symbol = "All Securities" if selected_display == "All Securities" else selected_display.split(" - ")[0]
     
-    # Display security info if one is selected
-    if selected_symbol and selected_symbol != "All Securities":
-        security_info = securities[securities['SYMBOL'] == selected_symbol].iloc[0]
-        
-        with col2:
-            st.markdown(f"""
-            <div class="info-card">
-                <h3 style="margin:0; color: #0d9488;">{security_info['SECURITY_NAME']}</h3>
-                <p style="margin: 0.5rem 0 0 0; font-family: 'JetBrains Mono', monospace; color: #475569;">
-                    {security_info['GICS_SECTOR']} • {security_info['GICS_SUB_INDUSTRY']}<br/>
-                    📍 {security_info['HEADQUARTERS']}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # Security-specific metrics
-        symbol_summary = portfolio_summary[portfolio_summary['SYMBOL'] == selected_symbol]
-        if not symbol_summary.empty:
-            row = symbol_summary.iloc[0]
-            scol1, scol2, scol3, scol4 = st.columns(4)
-            with scol1:
-                st.metric("Trades", int(row['TRADE_COUNT']))
-            with scol2:
-                st.metric("Net Position", f"{row['NET_POSITION']:,.0f}")
-            with scol3:
-                st.metric("Avg Price", f"${row['AVG_PRICE']:.2f}")
-            with scol4:
-                gain_loss = row['SELL_VALUE'] - row['BUY_VALUE']
-                gl_icon = "🟢" if gain_loss >= 0 else "🔴"
-                st.metric("Realized P&L", f"{gl_icon} ${gain_loss:,.0f}")
+    if selected_symbol != "All Securities":
+        security_info = securities[securities['SYMBOL'] == selected_symbol]
+        if not security_info.empty:
+            info = security_info.iloc[0]
+            with col2:
+                st.markdown(f"""<div class="info-card"><h3 style="margin:0; color: #0d9488;">{info['SECURITY_NAME']}</h3>
+                    <p style="margin: 0.5rem 0 0 0;">{info['GICS_SECTOR']} • {info['GICS_SUB_INDUSTRY']}<br/>📍 {info['HEADQUARTERS']}</p></div>""", unsafe_allow_html=True)
     
-    # Trades table
     st.subheader("📋 Trade History")
-    trades = load_trades(selected_symbol)
+    trades = load_trades_fast(selected_symbol)
     
     if not trades.empty:
-        # Format the dataframe for display
         display_df = trades.copy()
         display_df['TOTAL_VALUE'] = display_df['TOTAL_VALUE'].apply(lambda x: f"${x:,.2f}")
         display_df['PRICE'] = display_df['PRICE'].apply(lambda x: f"${x:.2f}")
         display_df['QUANTITY'] = display_df['QUANTITY'].apply(lambda x: f"{x:,.0f}")
-        
-        # Rename columns for display
-        display_df = display_df.rename(columns={
-            'TRADE_ID': 'ID',
-            'SYMBOL': 'Symbol',
-            'SECURITY_NAME': 'Security',
-            'TRADE_DATE': 'Date',
-            'SIDE': 'Type',
-            'QUANTITY': 'Qty',
-            'PRICE': 'Price',
-            'TOTAL_VALUE': 'Total Value'
-        })
-        
-        st.dataframe(display_df, use_container_width=True)
+        st.dataframe(display_df.rename(columns={'TRADE_ID': 'ID', 'SYMBOL': 'Symbol', 'SECURITY_NAME': 'Security', 'TRADE_DATE': 'Date', 'SIDE': 'Type', 'QUANTITY': 'Qty', 'PRICE': 'Price', 'TOTAL_VALUE': 'Total Value'}), use_container_width=True)
     else:
-        st.info("No trades found for the selected criteria.")
+        st.info("No trades found.")
 
-with tab3:
-    st.subheader("📈 Sector Analysis")
-    
-    # Sector metrics
-    if not sector_data.empty:
-        # Calculate P&L by sector
-        sector_display = sector_data.copy()
-        sector_display['REALIZED_PNL'] = sector_display['SELL_VALUE'] - sector_display['BUY_VALUE']
-        
-        # Bar chart for sector values
-        st.bar_chart(
-            sector_display.set_index('GICS_SECTOR')['TOTAL_VALUE'],
-            use_container_width=True
-        )
-        
-        # Sector table
-        st.markdown("#### 📊 Sector Breakdown")
-        sector_display['TOTAL_VALUE'] = sector_display['TOTAL_VALUE'].apply(lambda x: f"${x:,.0f}")
-        sector_display['BUY_VALUE'] = sector_display['BUY_VALUE'].apply(lambda x: f"${x:,.0f}")
-        sector_display['SELL_VALUE'] = sector_display['SELL_VALUE'].apply(lambda x: f"${x:,.0f}")
-        sector_display['REALIZED_PNL'] = sector_display['REALIZED_PNL'].apply(lambda x: f"${x:,.0f}")
-        sector_display = sector_display.rename(columns={
-            'GICS_SECTOR': 'Sector',
-            'SECURITIES_TRADED': 'Securities',
-            'TOTAL_VALUE': 'Total Value',
-            'BUY_VALUE': 'Buy Value',
-            'SELL_VALUE': 'Sell Value',
-            'REALIZED_PNL': 'Realized P&L'
-        })
-        
-        st.dataframe(sector_display, use_container_width=True)
-
+# ============================================
+# TAB 4: EQUITY TRADES (Lazy loaded)
+# ============================================
 with tab4:
     st.subheader("🔗 Trade Matching to NYSE Security Master")
     
-    match_summary = get_trade_match_summary()
-    trades_with_nyse = get_trades_with_nyse_master()
+    @st.cache_data(ttl=300)
+    def get_trade_match_summary_fast():
+        return session.sql("""
+            SELECT CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END as MATCH_STATUS,
+                COUNT(*) as TRADE_COUNT, COUNT(DISTINCT t.SYMBOL) as UNIQUE_SYMBOLS, SUM(t.TOTAL_VALUE) as TOTAL_VALUE
+            FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
+            LEFT JOIN SECURITY_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
+            GROUP BY CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END
+        """).to_pandas()
     
-    # Match summary metrics
+    @st.cache_data(ttl=300)
+    def get_trades_with_nyse_fast():
+        return session.sql("""
+            SELECT t.TRADE_ID, t.SYMBOL, n.SECURITY_NAME as NYSE_COMPANY_NAME, n.ISIN as FIGI,
+                t.TRADE_DATE, t.SIDE, t.QUANTITY, t.PRICE, t.TOTAL_VALUE,
+                CASE WHEN n.SYMBOL IS NOT NULL THEN 'Matched' ELSE 'Unmatched' END as MATCH_STATUS
+            FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
+            LEFT JOIN SECURITY_MASTER_DB.EQUITY.NYSE_SECURITIES n ON t.SYMBOL = n.SYMBOL
+            ORDER BY t.TRADE_DATE DESC
+            LIMIT 500
+        """).to_pandas()
+    
+    match_summary = get_trade_match_summary_fast()
+    trades_with_nyse = get_trades_with_nyse_fast()
+    
     mcol1, mcol2, mcol3, mcol4 = st.columns(4)
-    
     matched_row = match_summary[match_summary['MATCH_STATUS'] == 'Matched']
     unmatched_row = match_summary[match_summary['MATCH_STATUS'] == 'Unmatched']
     
@@ -652,7 +408,6 @@ with tab4:
     matched_symbols = int(matched_row['UNIQUE_SYMBOLS'].values[0]) if not matched_row.empty else 0
     unmatched_trades = int(unmatched_row['TRADE_COUNT'].values[0]) if not unmatched_row.empty else 0
     unmatched_symbols = int(unmatched_row['UNIQUE_SYMBOLS'].values[0]) if not unmatched_row.empty else 0
-    
     total_trades_match = matched_trades + unmatched_trades
     match_rate = (matched_trades / total_trades_match * 100) if total_trades_match > 0 else 0
     
@@ -666,759 +421,336 @@ with tab4:
         matched_value = float(matched_row['TOTAL_VALUE'].values[0]) if not matched_row.empty else 0
         st.metric("Matched Value", f"${matched_value:,.0f}")
     
-    # Filter options
     st.markdown("---")
-    filter_col1, filter_col2 = st.columns([1, 3])
+    match_filter = st.selectbox("Filter by Match Status", options=["All", "Matched", "Unmatched"], index=0)
     
-    with filter_col1:
-        match_filter = st.selectbox(
-            "Filter by Match Status",
-            options=["All", "Matched", "Unmatched"],
-            index=0
-        )
-    
-    # Apply filter
-    if match_filter != "All":
-        filtered_trades = trades_with_nyse[trades_with_nyse['MATCH_STATUS'] == match_filter]
-    else:
-        filtered_trades = trades_with_nyse
-    
+    filtered_trades = trades_with_nyse if match_filter == "All" else trades_with_nyse[trades_with_nyse['MATCH_STATUS'] == match_filter]
     st.markdown(f"*Showing {len(filtered_trades):,} trades*")
     
-    # Display matched trades with NYSE data
     if not filtered_trades.empty:
         display_matched = filtered_trades.copy()
         display_matched['TOTAL_VALUE'] = display_matched['TOTAL_VALUE'].apply(lambda x: f"${x:,.2f}")
         display_matched['PRICE'] = display_matched['PRICE'].apply(lambda x: f"${x:.2f}")
         display_matched['QUANTITY'] = display_matched['QUANTITY'].apply(lambda x: f"{x:,.0f}")
-        
-        display_matched = display_matched.rename(columns={
-            'TRADE_ID': 'ID',
-            'SYMBOL': 'Symbol',
-            'NYSE_COMPANY_NAME': 'NYSE Company',
-            'FIGI': 'Bloomberg FIGI',
-            'TRADE_DATE': 'Date',
-            'SIDE': 'Type',
-            'QUANTITY': 'Qty',
-            'PRICE': 'Price',
-            'TOTAL_VALUE': 'Total Value',
-            'MATCH_STATUS': 'Status'
-        })
-        
-        st.dataframe(display_matched, use_container_width=True, height=400)
-    else:
-        st.info("No trades found for the selected filter.")
-    
-    # Show unmatched symbols for investigation
-    if unmatched_symbols > 0:
-        with st.expander(f"⚠️ View {unmatched_symbols} Unmatched Symbols"):
-            unmatched_list = trades_with_nyse[trades_with_nyse['MATCH_STATUS'] == 'Unmatched']['SYMBOL'].unique()
-            st.write(", ".join(sorted(unmatched_list)))
-            st.caption("These symbols exist in trades but are not found in the NYSE Securities Master.")
+        st.dataframe(display_matched.rename(columns={'TRADE_ID': 'ID', 'SYMBOL': 'Symbol', 'NYSE_COMPANY_NAME': 'NYSE Company', 'FIGI': 'Bloomberg FIGI', 'TRADE_DATE': 'Date', 'SIDE': 'Type', 'QUANTITY': 'Qty', 'PRICE': 'Price', 'TOTAL_VALUE': 'Total Value', 'MATCH_STATUS': 'Status'}), use_container_width=True, height=400)
 
+# ============================================
+# TAB 5: BOND TRADES (Lazy loaded)
+# ============================================
 with tab5:
-    st.subheader("📉 Bond Trading Activity")
+    header_col1, header_col2 = st.columns([4, 1])
+    with header_col1:
+        st.subheader("📉 Bond Trading Activity")
+    with header_col2:
+        if st.button("🔄 Refresh", key="refresh_bond_trades", use_container_width=True):
+            st.cache_data.clear()
+            st.experimental_rerun()
     
-    bond_trades = load_bond_trades()
-    bond_trade_summary = get_bond_trade_summary()
-    counterparty_summary = get_bond_trades_by_counterparty()
+    @st.cache_data(ttl=300)
+    def load_bond_trades_fast():
+        return session.sql("""
+            SELECT t.TRADE_ID, t.CUSIP, b.ISSUER_NAME, b.TICKER, b.CREDIT_RATING, t.TRADE_DATE, t.SIDE,
+                t.FACE_VALUE as QUANTITY, t.PRICE, t.YIELD as YIELD_AT_TRADE, t.TOTAL_VALUE, t.COUNTERPARTY, b.SECTOR
+            FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
+            JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
+            ORDER BY t.TRADE_DATE DESC
+            LIMIT 500
+        """).to_pandas()
     
-    # Top metrics
+    @st.cache_data(ttl=300)
+    def get_bond_summary_fast():
+        return session.sql("""
+            SELECT b.ISSUER_NAME, b.TICKER, COUNT(*) as TRADE_COUNT,
+                SUM(CASE WHEN t.SIDE = 'BUY' THEN t.TOTAL_VALUE ELSE 0 END) as BUY_VALUE,
+                SUM(CASE WHEN t.SIDE = 'SELL' THEN t.TOTAL_VALUE ELSE 0 END) as SELL_VALUE
+            FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
+            JOIN SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS b ON t.CUSIP = b.CUSIP
+            GROUP BY b.ISSUER_NAME, b.TICKER
+            ORDER BY SUM(t.TOTAL_VALUE) DESC
+            LIMIT 20
+        """).to_pandas()
+    
+    @st.cache_data(ttl=300)
+    def get_counterparty_fast():
+        return session.sql("""
+            SELECT COUNTERPARTY, COUNT(*) as TRADE_COUNT, SUM(TOTAL_VALUE) as TOTAL_VALUE, AVG(PRICE) as AVG_PRICE
+            FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES
+            GROUP BY COUNTERPARTY
+            ORDER BY TOTAL_VALUE DESC
+        """).to_pandas()
+    
+    bond_trades = load_bond_trades_fast()
+    
     btcol1, btcol2, btcol3, btcol4 = st.columns(4)
-    
     total_bond_trades = len(bond_trades)
-    total_bond_value = bond_trades['TOTAL_VALUE'].sum()
-    buy_trades = bond_trades[bond_trades['SIDE'] == 'BUY']
-    sell_trades = bond_trades[bond_trades['SIDE'] == 'SELL']
+    total_bond_value = bond_trades['TOTAL_VALUE'].sum() if not bond_trades.empty else 0
+    buy_trades = bond_trades[bond_trades['SIDE'] == 'BUY'] if not bond_trades.empty else pd.DataFrame()
+    sell_trades = bond_trades[bond_trades['SIDE'] == 'SELL'] if not bond_trades.empty else pd.DataFrame()
     
     with btcol1:
         st.metric("Total Bond Trades", f"{total_bond_trades:,}")
     with btcol2:
         st.metric("Total Trade Value", f"${total_bond_value/1e9:.2f}B")
     with btcol3:
-        st.metric("Buy Trades", f"{len(buy_trades):,}", f"${buy_trades['TOTAL_VALUE'].sum()/1e9:.2f}B")
+        st.metric("Buy Trades", f"{len(buy_trades):,}")
     with btcol4:
-        st.metric("Sell Trades", f"{len(sell_trades):,}", f"${sell_trades['TOTAL_VALUE'].sum()/1e9:.2f}B")
+        st.metric("Sell Trades", f"{len(sell_trades):,}")
     
     st.markdown("---")
     
-    # Filters
-    bt_filter_col1, bt_filter_col2, bt_filter_col3 = st.columns(3)
-    
-    with bt_filter_col1:
-        trade_type_filter = st.selectbox(
-            "Trade Type",
-            options=["All", "BUY", "SELL"],
-            index=0,
-            key="bond_trade_type"
-        )
-    
-    with bt_filter_col2:
-        counterparty_filter = st.selectbox(
-            "Counterparty",
-            options=["All Counterparties"] + sorted(bond_trades['COUNTERPARTY'].unique().tolist()),
-            index=0,
-            key="bond_counterparty"
-        )
-    
-    with bt_filter_col3:
-        bond_search = st.text_input("Search Issuer/CUSIP", placeholder="e.g., Apple, 037833", key="bond_trade_search")
-    
-    # Apply filters
-    filtered_bond_trades = bond_trades.copy()
-    if trade_type_filter != "All":
-        filtered_bond_trades = filtered_bond_trades[filtered_bond_trades['SIDE'] == trade_type_filter]
-    if counterparty_filter != "All Counterparties":
-        filtered_bond_trades = filtered_bond_trades[filtered_bond_trades['COUNTERPARTY'] == counterparty_filter]
-    if bond_search:
-        filtered_bond_trades = filtered_bond_trades[
-            filtered_bond_trades['ISSUER_NAME'].str.contains(bond_search, case=False, na=False) |
-            filtered_bond_trades['CUSIP'].str.contains(bond_search.upper(), na=False) |
-            filtered_bond_trades['TICKER'].str.contains(bond_search.upper(), na=False)
-        ]
-    
-    st.markdown(f"*Showing {len(filtered_bond_trades):,} trades*")
-    
-    # Display trades table
-    if not filtered_bond_trades.empty:
-        display_bt = filtered_bond_trades[['TRADE_ID', 'CUSIP', 'TICKER', 'ISSUER_NAME', 'CREDIT_RATING',
-                                           'TRADE_DATE', 'SIDE', 'QUANTITY', 'PRICE', 
-                                           'YIELD_AT_TRADE', 'TOTAL_VALUE', 'COUNTERPARTY']].copy()
+    if not bond_trades.empty:
+        display_bt = bond_trades[['TRADE_ID', 'CUSIP', 'TICKER', 'ISSUER_NAME', 'CREDIT_RATING', 'TRADE_DATE', 'SIDE', 'QUANTITY', 'PRICE', 'YIELD_AT_TRADE', 'TOTAL_VALUE', 'COUNTERPARTY']].head(200).copy()
         display_bt['TOTAL_VALUE'] = display_bt['TOTAL_VALUE'].apply(lambda x: f"${x:,.0f}")
         display_bt['PRICE'] = display_bt['PRICE'].apply(lambda x: f"{x:.4f}")
         display_bt['YIELD_AT_TRADE'] = display_bt['YIELD_AT_TRADE'].apply(lambda x: f"{x:.3f}%" if pd.notna(x) else "N/A")
         display_bt['QUANTITY'] = display_bt['QUANTITY'].apply(lambda x: f"{x:,}")
-        display_bt = display_bt.rename(columns={
-            'TRADE_ID': 'ID',
-            'CUSIP': 'CUSIP',
-            'TICKER': 'Ticker',
-            'ISSUER_NAME': 'Issuer',
-            'CREDIT_RATING': 'Rating',
-            'TRADE_DATE': 'Date',
-            'SIDE': 'Type',
-            'QUANTITY': 'Qty',
-            'PRICE': 'Price',
-            'YIELD_AT_TRADE': 'Yield',
-            'TOTAL_VALUE': 'Value',
-            'COUNTERPARTY': 'Counterparty'
-        })
-        st.dataframe(display_bt, use_container_width=True, height=350)
+        st.dataframe(display_bt.rename(columns={'TRADE_ID': 'ID', 'CUSIP': 'CUSIP', 'TICKER': 'Ticker', 'ISSUER_NAME': 'Issuer', 'CREDIT_RATING': 'Rating', 'TRADE_DATE': 'Date', 'SIDE': 'Type', 'QUANTITY': 'Qty', 'PRICE': 'Price', 'YIELD_AT_TRADE': 'Yield', 'TOTAL_VALUE': 'Value', 'COUNTERPARTY': 'Counterparty'}), use_container_width=True, height=350)
     
-    # Summary sections
     st.markdown("---")
     summary_col1, summary_col2 = st.columns(2)
     
     with summary_col1:
-        st.markdown("#### 🏢 Top Issuers by Trade Volume")
-        top_issuers = bond_trade_summary.head(10)[['TICKER', 'ISSUER_NAME', 'TRADE_COUNT', 'BUY_VALUE', 'SELL_VALUE']].copy()
-        top_issuers['BUY_VALUE'] = top_issuers['BUY_VALUE'].apply(lambda x: f"${x/1e6:.1f}M")
-        top_issuers['SELL_VALUE'] = top_issuers['SELL_VALUE'].apply(lambda x: f"${x/1e6:.1f}M")
-        top_issuers = top_issuers.rename(columns={
-            'TICKER': 'Ticker',
-            'ISSUER_NAME': 'Issuer',
-            'TRADE_COUNT': 'Trades',
-            'BUY_VALUE': 'Buys',
-            'SELL_VALUE': 'Sells'
-        })
-        st.dataframe(top_issuers.reset_index(drop=True), use_container_width=True, height=300)
+        st.markdown("#### 🏢 Top Issuers")
+        top_issuers = get_bond_summary_fast()
+        if not top_issuers.empty:
+            top_issuers['BUY_VALUE'] = top_issuers['BUY_VALUE'].apply(lambda x: f"${x/1e6:.1f}M")
+            top_issuers['SELL_VALUE'] = top_issuers['SELL_VALUE'].apply(lambda x: f"${x/1e6:.1f}M")
+            st.dataframe(top_issuers.rename(columns={'TICKER': 'Ticker', 'ISSUER_NAME': 'Issuer', 'TRADE_COUNT': 'Trades', 'BUY_VALUE': 'Buys', 'SELL_VALUE': 'Sells'}), use_container_width=True, height=300)
     
     with summary_col2:
-        st.markdown("#### 🤝 Trades by Counterparty")
-        cp_display = counterparty_summary.copy()
-        cp_display['TOTAL_VALUE'] = cp_display['TOTAL_VALUE'].apply(lambda x: f"${x/1e6:.1f}M")
-        cp_display['AVG_PRICE'] = cp_display['AVG_PRICE'].apply(lambda x: f"{x:.2f}")
-        cp_display = cp_display.rename(columns={
-            'COUNTERPARTY': 'Counterparty',
-            'TRADE_COUNT': 'Trades',
-            'TOTAL_VALUE': 'Total Value',
-            'AVG_PRICE': 'Avg Price'
-        })
-        st.dataframe(cp_display.reset_index(drop=True), use_container_width=True, height=300)
+        st.markdown("#### 🤝 By Counterparty")
+        cp_data = get_counterparty_fast()
+        if not cp_data.empty:
+            cp_data['TOTAL_VALUE'] = cp_data['TOTAL_VALUE'].apply(lambda x: f"${x/1e6:.1f}M")
+            cp_data['AVG_PRICE'] = cp_data['AVG_PRICE'].apply(lambda x: f"{x:.2f}")
+            st.dataframe(cp_data.rename(columns={'COUNTERPARTY': 'Counterparty', 'TRADE_COUNT': 'Trades', 'TOTAL_VALUE': 'Total Value', 'AVG_PRICE': 'Avg Price'}), use_container_width=True, height=300)
 
+# ============================================
+# TAB 6: MASTER DATA (Lazy loaded)
+# ============================================
 with tab6:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); 
-                border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-        <h4 style="color: white; margin: 0; font-weight: 600;">Security Master Data Entry</h4>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("""<div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        <h4 style="color: white; margin: 0; font-weight: 600;">Security Master Data Entry</h4></div>""", unsafe_allow_html=True)
     
     import json
     
+    if 'lookup_result' not in st.session_state:
+        st.session_state.lookup_result = None
+    
     def lookup_isin_external(isin_code):
-        """Lookup security information via External Function (OpenFIGI API)"""
         try:
             result = session.sql(f"""
-                SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT
+                SELECT 
+                    RESULT:success::boolean as success,
+                    RESULT:name::string as name,
+                    RESULT:ticker::string as ticker,
+                    RESULT:isin::string as isin,
+                    RESULT:cusip::string as cusip,
+                    RESULT:sedol::string as sedol,
+                    RESULT:figi::string as figi,
+                    RESULT:exchange::string as exchange,
+                    RESULT:security_type::string as security_type,
+                    RESULT:error::string as error
+                FROM (SELECT SECURITY_MASTER_DB.GOLDEN_RECORD.LOOKUP_ISIN_EXTERNAL('{isin_code}') as RESULT)
             """).to_pandas()
-            
             if not result.empty:
-                raw_result = result.iloc[0]['RESULT']
-                if isinstance(raw_result, str):
-                    return json.loads(raw_result)
-                return raw_result
+                row = result.iloc[0]
+                if row['SUCCESS']:
+                    return {
+                        'success': True,
+                        'name': row['NAME'] or '',
+                        'ticker': row['TICKER'] or '',
+                        'isin': row['ISIN'] or '',
+                        'cusip': row['CUSIP'] or '',
+                        'sedol': row['SEDOL'] or '',
+                        'figi': row['FIGI'] or '',
+                        'exchange': row['EXCHANGE'] or '',
+                        'security_type': row['SECURITY_TYPE'] or '',
+                        'source': 'OpenFIGI API'
+                    }
+                else:
+                    return {'success': False, 'error': row['ERROR'] or 'Unknown error'}
             return {'success': False, 'error': 'Failed to call external function'}
         except Exception as e:
             return {'success': False, 'error': str(e)}
     
-    st.markdown("**🌐 ISIN Lookup (External API)**")
-    lookup_col1, lookup_col2, lookup_col3 = st.columns([1, 1, 2])
+    def lookup_ticker(ticker_code):
+        try:
+            local_result = session.sql(f"""
+                SELECT SYMBOL, SECURITY_NAME, GICS_SECTOR, GICS_SUB_INDUSTRY, HEADQUARTERS, CIK, FOUNDED
+                FROM SECURITY_MASTER_DB.SECURITIES.SP500 
+                WHERE SYMBOL = '{ticker_code}'
+                LIMIT 1
+            """).to_pandas()
+            if not local_result.empty:
+                row = local_result.iloc[0]
+                return {
+                    'success': True,
+                    'name': row['SECURITY_NAME'],
+                    'ticker': row['SYMBOL'],
+                    'exchange': 'NYSE/NASDAQ',
+                    'security_type': 'Equity',
+                    'sector': row['GICS_SECTOR'],
+                    'sub_industry': row['GICS_SUB_INDUSTRY'],
+                    'headquarters': row['HEADQUARTERS'],
+                    'source': 'S&P 500 Database'
+                }
+            return {'success': False, 'error': 'Ticker not found in S&P 500'}
+        except Exception as e:
+            return {'success': False, 'error': str(e)}
     
-    with lookup_col1:
-        isin_lookup = st.text_input("ISIN", placeholder="e.g., US0378331005", max_chars=12, key="isin_lookup_input", label_visibility="collapsed")
+    st.markdown("#### 🔍 Security Lookup")
     
-    with lookup_col2:
+    col1, col2, col3, col4 = st.columns([1, 1, 1, 3])
+    with col1:
+        lookup_type = st.selectbox("Lookup By", ["ISIN", "Ticker"], key="lookup_type_select", label_visibility="collapsed")
+    with col2:
+        placeholder = "e.g., US0378331005" if lookup_type == "ISIN" else "e.g., AAPL"
+        lookup_value = st.text_input("Value", placeholder=placeholder, max_chars=12, key="lookup_input", label_visibility="collapsed")
+    with col3:
         lookup_clicked = st.button("🔎 Lookup", key="lookup_btn", use_container_width=True)
     
-    if lookup_clicked and isin_lookup:
-        with st.spinner("Calling OpenFIGI API..."):
-            result = lookup_isin_external(isin_lookup.upper().strip())
+    if lookup_clicked and lookup_value:
+        with st.spinner(f"Looking up {lookup_type}..."):
+            if lookup_type == "ISIN":
+                result = lookup_isin_external(lookup_value.upper().strip())
+            else:
+                result = lookup_ticker(lookup_value.upper().strip())
+            st.session_state.lookup_result = result
             
             if result and result.get('success'):
-                st.success("✅ Security found via OpenFIGI!")
-                
-                st.markdown(f"**Source:** OpenFIGI External API")
-                result_col1, result_col2, result_col3 = st.columns(3)
-                with result_col1:
-                    st.markdown(f"**Name:** {result.get('name', 'N/A')}")
-                    st.markdown(f"**Ticker:** {result.get('ticker', 'N/A')}")
-                with result_col2:
-                    st.markdown(f"**Exchange:** {result.get('exchange', 'N/A')}")
-                    st.markdown(f"**Type:** {result.get('security_type', 'N/A')}")
-                with result_col3:
-                    st.markdown(f"**Market Sector:** {result.get('market_sector', 'N/A')}")
-                    st.markdown(f"**FIGI:** {result.get('figi', 'N/A')}")
-                
-                all_results = result.get('all_results', [])
-                if all_results and len(all_results) > 1:
-                    with st.expander(f"📋 View all {len(all_results)} listings"):
-                        for i, listing in enumerate(all_results):
-                            st.markdown(f"**{i+1}. {listing.get('name', 'N/A')}** - {listing.get('ticker', 'N/A')} ({listing.get('exchCode', 'N/A')})")
+                st.success("✅ Security found! Fields populated below.")
             else:
-                error_msg = result.get('error', 'Unknown error') if result else 'No response'
-                st.warning(f"⚠️ {error_msg}")
+                st.warning(f"⚠️ {result.get('error', 'Unknown error') if result else 'No response'}")
     
     st.markdown("---")
+    st.markdown("#### ➕ Security Master Record")
     
-    @st.cache_data(ttl=60)
-    def load_golden_record():
-        return session.sql("""
-            SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-            ORDER BY GLOBAL_SECURITY_ID DESC
-            LIMIT 100
-        """).to_pandas()
+    result = st.session_state.lookup_result if st.session_state.lookup_result and st.session_state.lookup_result.get('success') else {}
     
-    @st.cache_data(ttl=60)
-    def load_equities_dropdown():
-        return session.sql("""
-            SELECT GLOBAL_SECURITY_ID, PRIMARY_TICKER, ISSUER, ASSET_CLASS, PRIMARY_EXCHANGE
-            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-            WHERE ASSET_CLASS = 'Equity'
-            ORDER BY PRIMARY_TICKER
-        """).to_pandas()
-    
-    @st.cache_data(ttl=60)
-    def load_bonds_dropdown():
-        return session.sql("""
-            SELECT BOND_ID, ISSUER_NAME, COUPON_RATE, MATURITY_DATE, CURRENCY, CREDIT_RATING
-            FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
-            ORDER BY ISSUER_NAME
-        """).to_pandas()
-    
-    def get_next_gsid():
-        result = session.sql("SELECT 'GSID_' || SECURITY_MASTER_DB.GOLDEN_RECORD.GSID_SEQ.NEXTVAL AS NEXT_ID").to_pandas()
-        return result['NEXT_ID'].iloc[0]
-    
-    def validate_security(exchange, isin, cusip, sedol):
-        errors = []
-        is_us_security = isin and isin.startswith('US')
-        is_lseg = exchange == 'LSEG'
+    with st.form("new_security_form"):
+        row1_col1, row1_col2 = st.columns(2)
+        with row1_col1:
+            sec_name = st.text_input("Security Name *", value=result.get('name', ''), key="sec_name")
+        with row1_col2:
+            sec_ticker = st.text_input("Ticker *", value=result.get('ticker', ''), key="sec_ticker")
         
-        if is_lseg and (not sedol or sedol.strip() == ''):
-            errors.append("SEDOL is required for LSEG traded securities")
+        row2_col1, row2_col2, row2_col3, row2_col4 = st.columns(4)
+        with row2_col1:
+            sec_isin = st.text_input("ISIN", value=result.get('isin', ''), max_chars=12, key="sec_isin")
+        with row2_col2:
+            sec_cusip = st.text_input("CUSIP", value=result.get('cusip', ''), max_chars=9, key="sec_cusip")
+        with row2_col3:
+            sec_sedol = st.text_input("SEDOL", value=result.get('sedol', ''), max_chars=7, key="sec_sedol")
+        with row2_col4:
+            sec_figi = st.text_input("FIGI", value=result.get('figi', ''), max_chars=12, key="sec_figi")
         
-        if is_us_security and (not cusip or cusip.strip() == ''):
-            errors.append("CUSIP is required for US-based securities (ISIN starting with 'US')")
+        row3_col1, row3_col2, row3_col3 = st.columns(3)
+        with row3_col1:
+            sec_exchange = st.selectbox("Exchange", ["NYSE", "NASDAQ", "LSEG", "EUREX", "TSE", "HKEX", "ASX"], 
+                                        index=0 if not result.get('exchange') else 0, key="sec_exchange")
+        with row3_col2:
+            sec_type = st.selectbox("Security Type", ["Equity", "Fixed Income", "ETF", "Derivative", "Fund"], 
+                                    index=0, key="sec_type")
+        with row3_col3:
+            sec_currency = st.selectbox("Currency", ["USD", "GBP", "EUR", "JPY", "HKD", "AUD", "CAD", "CHF"], 
+                                        index=0, key="sec_currency")
         
-        return errors
-    
-    def insert_security(issuer, asset_class, ticker, exchange, isin, cusip, sedol, currency, status, golden_source):
-        gsid = get_next_gsid()
-        lineage_id = f"LIN-{gsid}-{pd.Timestamp.now().strftime('%Y%m%d%H%M%S')}"
+        row4_col1, row4_col2 = st.columns(2)
+        with row4_col1:
+            sec_sector = st.text_input("Sector", value=result.get('sector', ''), key="sec_sector")
+        with row4_col2:
+            sec_industry = st.text_input("Industry", value=result.get('sub_industry', ''), key="sec_industry")
         
-        session.sql(f"""
-            INSERT INTO SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
-            (GLOBAL_SECURITY_ID, ISSUER, ASSET_CLASS, PRIMARY_TICKER, PRIMARY_EXCHANGE, 
-             ISIN, CUSIP, SEDOL, CURRENCY, STATUS, GOLDEN_SOURCE, LAST_VALIDATED,
-             LINEAGE_ID, CREATED_BY, CREATED_AT, LAST_MODIFIED_BY)
-            VALUES (
-                '{gsid}',
-                '{issuer.replace("'", "''")}',
-                '{asset_class}',
-                '{ticker}',
-                '{exchange}',
-                {f"'{isin}'" if isin else 'NULL'},
-                {f"'{cusip}'" if cusip else 'NULL'},
-                {f"'{sedol}'" if sedol else 'NULL'},
-                '{currency}',
-                '{status}',
-                '{golden_source.replace("'", "''")}',
-                CURRENT_TIMESTAMP(),
-                '{lineage_id}',
-                'CURRENT_USER',
-                CURRENT_TIMESTAMP(),
-                'CURRENT_USER'
-            )
-        """).collect()
+        row5_col1, row5_col2 = st.columns(2)
+        with row5_col1:
+            sec_status = st.selectbox("Status", ["Active", "Pre-Issue", "Matured", "Retired"], index=0, key="sec_status")
+        with row5_col2:
+            sec_source = st.text_input("Golden Source", value=result.get('source', 'Manual Entry'), key="sec_source")
         
-        new_values = {
-            'issuer': issuer, 'asset_class': asset_class, 'ticker': ticker,
-            'exchange': exchange, 'isin': isin, 'cusip': cusip, 'sedol': sedol,
-            'currency': currency, 'status': status, 'golden_source': golden_source
-        }
-        log_security_change(gsid, 'INSERT', None, new_values, 'New security created', 'CURRENT_USER')
-        
-        return gsid
-    
-    browse_col1, browse_col2 = st.columns([1, 3])
-    
-    with browse_col1:
-        security_type = st.selectbox(
-            "Type",
-            options=["Equities", "Bonds"],
-            key="security_type_filter"
-        )
-    
-    with browse_col2:
-        if security_type == "Equities":
-            equities_data = load_equities_dropdown()
-            security_options = ["-- Select an equity to view --"] + [
-                f"{row['PRIMARY_TICKER']} - {row['ISSUER'][:50]}"
-                for _, row in equities_data.iterrows()
-            ]
-            selected_security = st.selectbox(
-                "Security",
-                options=security_options,
-                key="browse_equity"
-            )
-        else:
-            bonds_data = load_bonds_dropdown()
-            security_options = ["-- Select a bond to view --"] + [
-                f"{row['BOND_ID']} - {row['ISSUER_NAME'][:40]} (Maturity: {str(row['MATURITY_DATE'])[:10]})"
-                for _, row in bonds_data.iterrows()
-            ]
-            selected_security = st.selectbox(
-                "Security",
-                options=security_options,
-                key="browse_bond"
-            )
-    
-    if 'edit_mode' not in st.session_state:
-        st.session_state.edit_mode = False
-    
-    def log_security_change(gsid, action, old_rec, new_values, edit_reason, user):
-        """Log changes to security master history table"""
-        lineage_id = f"LIN-{gsid}-{pd.Timestamp.now().strftime('%Y%m%d%H%M%S')}"
-        
-        old_lineage = old_rec.get('LINEAGE_ID', '') if old_rec is not None else ''
-        lineage_path = f"{old_lineage} -> {lineage_id}" if old_lineage else lineage_id
-        
-        session.sql(f"""
-            INSERT INTO SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY (
-                GLOBAL_SECURITY_ID, ACTION,
-                ISSUER_BEFORE, ISSUER_AFTER,
-                ASSET_CLASS_BEFORE, ASSET_CLASS_AFTER,
-                PRIMARY_TICKER_BEFORE, PRIMARY_TICKER_AFTER,
-                PRIMARY_EXCHANGE_BEFORE, PRIMARY_EXCHANGE_AFTER,
-                ISIN_BEFORE, ISIN_AFTER,
-                CUSIP_BEFORE, CUSIP_AFTER,
-                SEDOL_BEFORE, SEDOL_AFTER,
-                CURRENCY_BEFORE, CURRENCY_AFTER,
-                STATUS_BEFORE, STATUS_AFTER,
-                EDIT_REASON, CHANGED_BY, CHANGED_AT,
-                SOURCE_SYSTEM, LINEAGE_ID, LINEAGE_PARENT_ID, LINEAGE_PATH
-            ) VALUES (
-                '{gsid}', '{action}',
-                {f"'{str(old_rec['ISSUER']).replace(chr(39), chr(39)+chr(39))}'" if old_rec is not None else 'NULL'},
-                {f"'{new_values['issuer'].replace(chr(39), chr(39)+chr(39))}'" if new_values.get('issuer') else 'NULL'},
-                {f"'{old_rec['ASSET_CLASS']}'" if old_rec is not None else 'NULL'},
-                {f"'{new_values.get('asset_class', '')}'" if new_values.get('asset_class') else 'NULL'},
-                {f"'{old_rec['PRIMARY_TICKER']}'" if old_rec is not None else 'NULL'},
-                {f"'{new_values.get('ticker', '')}'" if new_values.get('ticker') else 'NULL'},
-                {f"'{old_rec['PRIMARY_EXCHANGE']}'" if old_rec is not None else 'NULL'},
-                {f"'{new_values.get('exchange', '')}'" if new_values.get('exchange') else 'NULL'},
-                {f"'{old_rec['ISIN']}'" if old_rec is not None and old_rec['ISIN'] else 'NULL'},
-                {f"'{new_values.get('isin', '')}'" if new_values.get('isin') else 'NULL'},
-                {f"'{old_rec['CUSIP']}'" if old_rec is not None and old_rec['CUSIP'] else 'NULL'},
-                {f"'{new_values.get('cusip', '')}'" if new_values.get('cusip') else 'NULL'},
-                {f"'{old_rec['SEDOL']}'" if old_rec is not None and old_rec['SEDOL'] else 'NULL'},
-                {f"'{new_values.get('sedol', '')}'" if new_values.get('sedol') else 'NULL'},
-                {f"'{old_rec['CURRENCY']}'" if old_rec is not None else 'NULL'},
-                {f"'{new_values.get('currency', '')}'" if new_values.get('currency') else 'NULL'},
-                {f"'{old_rec['STATUS']}'" if old_rec is not None else 'NULL'},
-                {f"'{new_values.get('status', '')}'" if new_values.get('status') else 'NULL'},
-                '{edit_reason.replace(chr(39), chr(39)+chr(39))}',
-                '{user}',
-                CURRENT_TIMESTAMP(),
-                'Security Master EDM',
-                '{lineage_id}',
-                {f"'{old_lineage}'" if old_lineage else 'NULL'},
-                '{lineage_path}'
-            )
-        """).collect()
-        return lineage_id
-    
-    def update_security_with_history(gsid, old_rec, new_values, edit_reason, user):
-        lineage_id = log_security_change(gsid, 'UPDATE', old_rec, new_values, edit_reason, user)
-        
-        session.sql(f"""
-            UPDATE SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
-            SET ISSUER = '{new_values['issuer'].replace("'", "''")}',
-                ASSET_CLASS = '{new_values['asset_class']}',
-                PRIMARY_TICKER = '{new_values['ticker']}',
-                PRIMARY_EXCHANGE = '{new_values['exchange']}',
-                ISIN = {f"'{new_values['isin']}'" if new_values.get('isin') else 'NULL'},
-                CUSIP = {f"'{new_values['cusip']}'" if new_values.get('cusip') else 'NULL'},
-                SEDOL = {f"'{new_values['sedol']}'" if new_values.get('sedol') else 'NULL'},
-                CURRENCY = '{new_values['currency']}',
-                STATUS = '{new_values['status']}',
-                GOLDEN_SOURCE = '{new_values['golden_source'].replace("'", "''")}',
-                LAST_VALIDATED = CURRENT_TIMESTAMP(),
-                LINEAGE_ID = '{lineage_id}',
-                LAST_MODIFIED_BY = '{user}'
-            WHERE GLOBAL_SECURITY_ID = '{gsid}'
-        """).collect()
-    
-    if security_type == "Equities" and selected_security != "-- Select an equity to view --":
-        selected_ticker = selected_security.split(" - ")[0]
-        selected_record = session.sql(f"""
-            SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-            WHERE PRIMARY_TICKER = '{selected_ticker}'
-            LIMIT 1
-        """).to_pandas()
-        
-        if not selected_record.empty:
-            rec = selected_record.iloc[0]
-            st.markdown("---")
-            
-            if not st.session_state.edit_mode:
-                view_col1, view_col2, view_col3, view_col4, view_col5 = st.columns([1, 1, 1, 1, 0.5])
-                with view_col1:
-                    st.markdown(f"**GSID:** {rec['GLOBAL_SECURITY_ID']}")
-                    st.markdown(f"**Ticker:** {rec['PRIMARY_TICKER']}")
-                    st.markdown(f"**Issuer:** {rec['ISSUER'][:40]}")
-                with view_col2:
-                    st.markdown(f"**Asset Class:** {rec['ASSET_CLASS']}")
-                    st.markdown(f"**Exchange:** {rec['PRIMARY_EXCHANGE']}")
-                    st.markdown(f"**Currency:** {rec['CURRENCY']}")
-                with view_col3:
-                    st.markdown(f"**ISIN:** {rec['ISIN'] or 'N/A'}")
-                    st.markdown(f"**CUSIP:** {rec['CUSIP'] or 'N/A'}")
-                    st.markdown(f"**SEDOL:** {rec['SEDOL'] or 'N/A'}")
-                with view_col4:
-                    st.markdown(f"**Status:** {rec['STATUS']}")
-                    st.markdown(f"**Source:** {str(rec['GOLDEN_SOURCE'])[:25]}")
-                with view_col5:
-                    if st.button("Edit", key="edit_equity_btn", use_container_width=True):
-                        st.session_state.edit_mode = True
-                        st.experimental_rerun()
-            else:
-                st.markdown("**Edit Security**")
-                with st.form("edit_security_form"):
-                    edit_col1, edit_col2 = st.columns([2, 1])
-                    with edit_col1:
-                        edit_issuer = st.text_input("Issuer Name", value=rec['ISSUER'])
-                    with edit_col2:
-                        edit_ticker = st.text_input("Primary Ticker", value=rec['PRIMARY_TICKER'])
-                    
-                    edit_col3, edit_col4, edit_col5, edit_col6 = st.columns(4)
-                    with edit_col3:
-                        asset_options = ["Equity", "Fixed Income", "ETF", "Derivative", "Fund"]
-                        edit_asset_class = st.selectbox("Asset Class", asset_options, index=asset_options.index(rec['ASSET_CLASS']) if rec['ASSET_CLASS'] in asset_options else 0)
-                    with edit_col4:
-                        exchange_options = ["NYSE", "NASDAQ", "LSEG", "EUREX", "TSE", "HKEX", "ASX"]
-                        edit_exchange = st.selectbox("Exchange", exchange_options, index=exchange_options.index(rec['PRIMARY_EXCHANGE']) if rec['PRIMARY_EXCHANGE'] in exchange_options else 0)
-                    with edit_col5:
-                        currency_options = ["USD", "GBP", "EUR", "JPY", "HKD", "AUD", "CAD", "CHF"]
-                        edit_currency = st.selectbox("Currency", currency_options, index=currency_options.index(rec['CURRENCY']) if rec['CURRENCY'] in currency_options else 0)
-                    with edit_col6:
-                        status_options = ["Pre-Issue", "Active", "Matured", "Defaulted", "Retired"]
-                        edit_status = st.selectbox("Status", status_options, index=status_options.index(rec['STATUS']) if rec['STATUS'] in status_options else 1)
-                    
-                    edit_col7, edit_col8, edit_col9 = st.columns(3)
-                    with edit_col7:
-                        edit_isin = st.text_input("ISIN", value=rec['ISIN'] or '', max_chars=12)
-                    with edit_col8:
-                        edit_cusip = st.text_input("CUSIP", value=rec['CUSIP'] or '', max_chars=9)
-                    with edit_col9:
-                        edit_sedol = st.text_input("SEDOL", value=rec['SEDOL'] or '', max_chars=7)
-                    
-                    edit_golden_source = st.text_input("Golden Source", value=str(rec['GOLDEN_SOURCE']) if rec['GOLDEN_SOURCE'] else '')
-                    
-                    edit_reason = st.text_area("Edit Reason *", placeholder="Please provide reason for this change (required)", help="Required: Describe why this security is being updated")
-                    
-                    btn_col1, btn_col2, btn_col3 = st.columns([1, 1, 2])
-                    with btn_col1:
-                        save_btn = st.form_submit_button("Save", type="primary", use_container_width=True)
-                    with btn_col2:
-                        cancel_btn = st.form_submit_button("Cancel", use_container_width=True)
-                    
-                    if save_btn:
-                        if not edit_reason or not edit_reason.strip():
-                            st.error("Edit Reason is required")
-                        else:
-                            validation_errors = validate_security(edit_exchange, edit_isin, edit_cusip, edit_sedol)
-                            if validation_errors:
-                                for error in validation_errors:
-                                    st.error(f"Validation Error: {error}")
-                            else:
-                                try:
-                                    new_values = {
-                                        'issuer': edit_issuer,
-                                        'asset_class': edit_asset_class,
-                                        'ticker': edit_ticker,
-                                        'exchange': edit_exchange,
-                                        'isin': edit_isin if edit_isin else None,
-                                        'cusip': edit_cusip if edit_cusip else None,
-                                        'sedol': edit_sedol if edit_sedol else None,
-                                        'currency': edit_currency,
-                                        'status': edit_status,
-                                        'golden_source': edit_golden_source
-                                    }
-                                    update_security_with_history(
-                                        rec['GLOBAL_SECURITY_ID'], rec, new_values, edit_reason, 'CURRENT_USER'
-                                    )
-                                    st.success("Security updated successfully!")
-                                    st.session_state.edit_mode = False
-                                    st.cache_data.clear()
-                                    st.experimental_rerun()
-                                except Exception as e:
-                                    st.error(f"Error updating security: {str(e)}")
-                    
-                    if cancel_btn:
-                        st.session_state.edit_mode = False
-                        st.experimental_rerun()
-    
-    elif security_type == "Bonds" and selected_security != "-- Select a bond to view --":
-        selected_bond_id = selected_security.split(" - ")[0]
-        selected_bond = session.sql(f"""
-            SELECT * FROM SECURITY_MASTER_DB.FIXED_INCOME.CORPORATE_BONDS
-            WHERE BOND_ID = '{selected_bond_id}'
-            LIMIT 1
-        """).to_pandas()
-        
-        if not selected_bond.empty:
-            bond = selected_bond.iloc[0]
-            st.markdown("---")
-            view_col1, view_col2, view_col3, view_col4 = st.columns(4)
-            with view_col1:
-                st.markdown(f"**Bond ID:** {bond['BOND_ID']}")
-                st.markdown(f"**Issuer:** {bond['ISSUER_NAME'][:40]}")
-                st.markdown(f"**ISIN:** {bond['ISIN'] or 'N/A'}")
-            with view_col2:
-                st.markdown(f"**Coupon Rate:** {bond['COUPON_RATE']}%")
-                st.markdown(f"**Maturity Date:** {str(bond['MATURITY_DATE'])[:10]}")
-                st.markdown(f"**Par Value:** ${bond['PAR_VALUE']:,.0f}")
-            with view_col3:
-                st.markdown(f"**Credit Rating:** {bond['CREDIT_RATING']}")
-                st.markdown(f"**Currency:** {bond['CURRENCY']}")
-                st.markdown(f"**Sector:** {bond['SECTOR']}")
-            with view_col4:
-                st.markdown(f"**Issue Date:** {str(bond['ISSUE_DATE'])[:10]}")
-                st.markdown(f"**CUSIP:** {bond['CUSIP'] or 'N/A'}")
-    
-    st.markdown("---")
-    st.subheader("Add New Security")
-    
-    st.markdown("**🌐 ISIN Lookup (External API)**")
-    add_lookup_col1, add_lookup_col2, add_lookup_col3 = st.columns([1, 1, 2])
-    
-    with add_lookup_col1:
-        add_isin_lookup = st.text_input("ISIN", placeholder="e.g., US0378331005", max_chars=12, key="add_isin_lookup_input", label_visibility="collapsed")
-    
-    with add_lookup_col2:
-        add_lookup_clicked = st.button("🔎 Lookup", key="add_lookup_btn", use_container_width=True)
-    
-    if 'prefill_issuer' not in st.session_state:
-        st.session_state.prefill_issuer = ''
-    if 'prefill_ticker' not in st.session_state:
-        st.session_state.prefill_ticker = ''
-    if 'prefill_isin' not in st.session_state:
-        st.session_state.prefill_isin = ''
-    if 'prefill_exchange' not in st.session_state:
-        st.session_state.prefill_exchange = ''
-    if 'prefill_sector' not in st.session_state:
-        st.session_state.prefill_sector = ''
-    
-    if add_lookup_clicked and add_isin_lookup:
-        with st.spinner("Calling OpenFIGI API..."):
-            result = lookup_isin_external(add_isin_lookup.upper().strip())
-            
-            if result and result.get('success'):
-                st.success("✅ Security found! Form populated below.")
-                st.session_state.prefill_issuer = result.get('name', '')
-                st.session_state.prefill_ticker = result.get('ticker', '')
-                st.session_state.prefill_isin = add_isin_lookup.upper().strip()
-                st.session_state.prefill_exchange = result.get('exchange', '')
-                st.session_state.prefill_sector = result.get('market_sector', '')
-                st.experimental_rerun()
-            else:
-                error_msg = result.get('error', 'Unknown error') if result else 'No response'
-                st.warning(f"⚠️ {error_msg}")
-    
-    with st.form("security_entry_form", clear_on_submit=True):
-        form_row1_col1, form_row1_col2 = st.columns([2, 1])
-        
-        with form_row1_col1:
-            issuer = st.text_input("Issuer Name *", value=st.session_state.prefill_issuer, placeholder="e.g., Apple Inc.")
-        with form_row1_col2:
-            ticker = st.text_input("Primary Ticker *", value=st.session_state.prefill_ticker, placeholder="e.g., AAPL")
-        
-        form_row2_col1, form_row2_col2, form_row2_col3, form_row2_col4 = st.columns(4)
-        
-        exchange_options = ["NYSE", "NASDAQ", "LSEG", "EUREX", "TSE", "HKEX", "ASX"]
-        prefill_exch_idx = 0
-        if st.session_state.prefill_exchange in exchange_options:
-            prefill_exch_idx = exchange_options.index(st.session_state.prefill_exchange)
-        elif st.session_state.prefill_exchange == 'US':
-            prefill_exch_idx = exchange_options.index('NYSE')
-        
-        asset_options = ["Equity", "Fixed Income", "ETF", "Derivative", "Fund"]
-        prefill_asset_idx = 0
-        if st.session_state.prefill_sector == 'Equity':
-            prefill_asset_idx = 0
-        elif st.session_state.prefill_sector in ['Corp', 'Govt', 'Muni']:
-            prefill_asset_idx = 1
-        
-        with form_row2_col1:
-            asset_class = st.selectbox("Asset Class *", asset_options, index=prefill_asset_idx)
-        with form_row2_col2:
-            exchange = st.selectbox("Primary Exchange *", exchange_options, index=prefill_exch_idx)
-        with form_row2_col3:
-            currency = st.selectbox("Currency *", ["USD", "GBP", "EUR", "JPY", "HKD", "AUD", "CAD", "CHF"])
-        with form_row2_col4:
-            status = st.selectbox("Status", ["Pre-Issue", "Active", "Matured", "Defaulted", "Retired"], index=1)
-        
-        st.markdown("##### Security Identifiers")
-        id_col1, id_col2, id_col3 = st.columns(3)
-        
-        with id_col1:
-            isin = st.text_input("ISIN", value=st.session_state.prefill_isin, placeholder="e.g., US0378331005", max_chars=12, 
-                                help="12-character International Securities Identification Number")
-        with id_col2:
-            cusip = st.text_input("CUSIP", placeholder="e.g., 037833100", max_chars=9,
-                                 help="9-character CUSIP (required for US securities)")
-        with id_col3:
-            sedol = st.text_input("SEDOL", placeholder="e.g., B0SWJX3", max_chars=7,
-                                 help="7-character SEDOL (required for LSEG securities)")
-        
-        golden_source = st.text_input("Golden Source", value="Bloomberg (primary), Refinitiv (secondary)")
-        
-        st.markdown("""
-        <div style="background: #fef3c7; border: 1px solid #f59e0b; border-radius: 8px; padding: 0.75rem; margin: 1rem 0;">
-            <strong style="color: #92400e;">⚠️ Business Rules:</strong>
-            <ul style="margin: 0.5rem 0 0 1rem; color: #92400e; font-size: 0.9rem;">
-                <li>ISIN is <strong>required</strong> and must be unique</li>
-                <li>LSEG traded securities <strong>must</strong> have a SEDOL</li>
-                <li>US-based securities (ISIN starting with 'US') <strong>must</strong> have a CUSIP</li>
-            </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        submit_col1, submit_col2, submit_col3 = st.columns([1, 2, 1])
+        submit_col1, submit_col2, submit_col3 = st.columns([1, 1, 2])
+        with submit_col1:
+            submitted = st.form_submit_button("💾 Save Security", type="primary", use_container_width=True)
         with submit_col2:
-            submitted = st.form_submit_button("➕ Add Security", type="primary", use_container_width=True)
+            clear_btn = st.form_submit_button("🗑️ Clear Form", use_container_width=True)
         
         if submitted:
-            if not issuer or not ticker:
-                st.error("Issuer Name and Primary Ticker are required fields")
-            elif not isin:
-                st.error("ISIN is required")
+            if not sec_name or not sec_ticker:
+                st.error("Security Name and Ticker are required.")
             else:
-                existing_isin = session.sql(f"""
-                    SELECT COUNT(*) as CNT FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-                    WHERE ISIN = '{isin.upper().strip()}'
-                """).to_pandas()
-                
-                if existing_isin.iloc[0]['CNT'] > 0:
-                    st.error("❌ Apologies but that security already exists with that ISIN")
-                else:
-                    validation_errors = validate_security(exchange, isin, cusip, sedol)
-                    
-                    if validation_errors:
-                        for error in validation_errors:
-                            st.error(f"Validation Error: {error}")
-                    else:
-                        try:
-                            new_gsid = insert_security(
-                                issuer, asset_class, ticker, exchange,
-                                isin if isin else None,
-                                cusip if cusip else None,
-                                sedol if sedol else None,
-                                currency, status, golden_source
-                            )
-                            st.success(f"✅ Security added successfully with ID: {new_gsid}")
-                            st.session_state.prefill_issuer = ''
-                            st.session_state.prefill_ticker = ''
-                            st.session_state.prefill_isin = ''
-                            st.session_state.prefill_exchange = ''
-                            st.session_state.prefill_sector = ''
-                            st.cache_data.clear()
-                        except Exception as e:
-                            st.error(f"Error adding security: {str(e)}")
+                try:
+                    session.sql(f"""
+                        INSERT INTO SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
+                        (GLOBAL_SECURITY_ID, ISSUER, ASSET_CLASS, PRIMARY_TICKER, PRIMARY_EXCHANGE, 
+                         ISIN, CUSIP, SEDOL, CURRENCY, STATUS, GOLDEN_SOURCE, LAST_VALIDATED, CREATED_AT, CREATED_BY)
+                        SELECT
+                            'GSID_' || SECURITY_MASTER_DB.GOLDEN_RECORD.GSID_SEQ.NEXTVAL,
+                            '{sec_name.replace("'", "''")}',
+                            '{sec_type}',
+                            '{sec_ticker}',
+                            '{sec_exchange}',
+                            {f"'{sec_isin}'" if sec_isin else 'NULL'},
+                            {f"'{sec_cusip}'" if sec_cusip else 'NULL'},
+                            {f"'{sec_sedol}'" if sec_sedol else 'NULL'},
+                            '{sec_currency}',
+                            '{sec_status}',
+                            '{sec_source.replace("'", "''")}',
+                            CURRENT_TIMESTAMP(),
+                            CURRENT_TIMESTAMP(),
+                            CURRENT_USER()
+                    """).collect()
+                    st.success(f"✅ Security '{sec_ticker} - {sec_name}' saved successfully!")
+                    st.session_state.lookup_result = None
+                except Exception as e:
+                    st.error(f"Error saving security: {str(e)}")
+        
+        if clear_btn:
+            st.session_state.lookup_result = None
+            st.rerun()
+
+# ============================================
+# TAB 7: MASTER HISTORY (Lazy loaded)
+# ============================================
+with tab7:
+    st.markdown("""<div style="background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%); border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
+        <h4 style="color: white; margin: 0; font-weight: 600;">📜 Security Master History</h4></div>""", unsafe_allow_html=True)
     
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    st.markdown("#### Data Quality Summary")
-    quality_col1, quality_col2, quality_col3, quality_col4 = st.columns(4)
-    
-    @st.cache_data(ttl=60)
-    def get_quality_metrics():
+    @st.cache_data(ttl=300)
+    def load_history_fast():
         return session.sql("""
-            SELECT 
-                COUNT(*) as TOTAL_RECORDS,
-                COUNT(CASE WHEN PRIMARY_EXCHANGE = 'LSEG' AND (SEDOL IS NULL OR SEDOL = '') THEN 1 END) as LSEG_MISSING_SEDOL,
-                COUNT(CASE WHEN ISIN LIKE 'US%' AND (CUSIP IS NULL OR CUSIP = '') THEN 1 END) as US_MISSING_CUSIP,
-                COUNT(CASE WHEN ISIN IS NULL OR ISIN = '' THEN 1 END) as MISSING_ISIN
-            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
+            SELECT HISTORY_ID, GLOBAL_SECURITY_ID, ACTION, ISSUER_BEFORE, ISSUER_AFTER,
+                PRIMARY_TICKER_BEFORE, PRIMARY_TICKER_AFTER, EDIT_REASON, CHANGED_BY, CHANGED_AT
+            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
+            ORDER BY CHANGED_AT DESC
+            LIMIT 200
         """).to_pandas()
     
-    quality = get_quality_metrics()
+    history_data = load_history_fast()
     
-    with quality_col1:
-        st.metric("Total Records", f"{quality['TOTAL_RECORDS'].iloc[0]:,}")
-    with quality_col2:
-        lseg_issues = quality['LSEG_MISSING_SEDOL'].iloc[0]
-        st.metric("LSEG Missing SEDOL", f"{lseg_issues:,}", delta=None if lseg_issues == 0 else f"-{lseg_issues}", delta_color="inverse")
-    with quality_col3:
-        us_issues = quality['US_MISSING_CUSIP'].iloc[0]
-        st.metric("US Missing CUSIP", f"{us_issues:,}", delta=None if us_issues == 0 else f"-{us_issues}", delta_color="inverse")
-    with quality_col4:
-        isin_issues = quality['MISSING_ISIN'].iloc[0]
-        st.metric("Missing ISIN", f"{isin_issues:,}", delta=None if isin_issues == 0 else f"-{isin_issues}", delta_color="inverse")
-    
-    st.markdown("---")
-    st.subheader("Recent Entries (Last 100)")
-    
-    golden_data = load_golden_record()
-    
-    if not golden_data.empty:
-        display_golden = golden_data[['GLOBAL_SECURITY_ID', 'ISSUER', 'ASSET_CLASS', 
-                                      'PRIMARY_TICKER', 'PRIMARY_EXCHANGE', 'ISIN', 
-                                      'CUSIP', 'SEDOL', 'CURRENCY', 'STATUS']].copy()
-        display_golden = display_golden.rename(columns={
-            'GLOBAL_SECURITY_ID': 'GSID',
-            'ISSUER': 'Issuer',
-            'ASSET_CLASS': 'Class',
-            'PRIMARY_TICKER': 'Ticker',
-            'PRIMARY_EXCHANGE': 'Exchange',
-            'CURRENCY': 'Ccy',
-            'STATUS': 'Status'
-        })
-        st.dataframe(display_golden, use_container_width=True, height=400)
+    if not history_data.empty:
+        hcol1, hcol2, hcol3, hcol4 = st.columns(4)
+        with hcol1:
+            st.metric("Total Changes", len(history_data))
+        with hcol2:
+            st.metric("New Securities", len(history_data[history_data['ACTION'] == 'INSERT']))
+        with hcol3:
+            st.metric("Updates", len(history_data[history_data['ACTION'] == 'UPDATE']))
+        with hcol4:
+            st.metric("Securities Modified", history_data['GLOBAL_SECURITY_ID'].nunique())
+        
+        st.dataframe(history_data.rename(columns={'HISTORY_ID': 'ID', 'GLOBAL_SECURITY_ID': 'GSID', 'ACTION': 'Action', 'ISSUER_BEFORE': 'Issuer (Before)', 'ISSUER_AFTER': 'Issuer (After)', 'PRIMARY_TICKER_BEFORE': 'Ticker (Before)', 'PRIMARY_TICKER_AFTER': 'Ticker (After)', 'EDIT_REASON': 'Reason', 'CHANGED_BY': 'Changed By', 'CHANGED_AT': 'Changed At'}), use_container_width=True, height=400)
+        
+        st.markdown("---")
+        st.markdown("#### 📤 Export")
+        export_col1, export_col2 = st.columns([1, 3])
+        with export_col1:
+            st.download_button("📄 Download CSV", history_data.to_csv(index=False), "security_master_history.csv", "text/csv", use_container_width=True)
     else:
-        st.info("No records found in the Golden Record table")
+        st.info("No history records found.")
 
+# ============================================
+# TAB 8: SETTLEMENT DETAILS
+# ============================================
 with tab8:
     st.markdown("""
     <div style="background: linear-gradient(135deg, #0d9488 0%, #14b8a6 50%, #2dd4bf 100%); 
@@ -1428,62 +760,44 @@ with tab8:
     """, unsafe_allow_html=True)
     
     @st.cache_data(ttl=60)
-    def load_mapped_trades(security_type=None, trade_date_start=None, trade_date_end=None, 
-                           sp500_filter=None, min_amount=None, max_amount=None, 
-                           ticker_filter=None, exchange_filter=None):
-        
+    def load_settlement_trades(security_type=None, trade_date=None, exchange_filter=None):
         equity_query = """
             SELECT 
                 t.ORDER_ID,
                 'Equity' as ASSET_CLASS,
-                t.TRADE_ID,
                 t.TRADE_DATE,
                 TO_CHAR(t.CREATED_AT, 'HH24:MI:SS') as TRADE_TIME,
-                DATEADD('day', 2, t.TRADE_DATE) as SETTLEMENT_DATE,
-                CASE WHEN CURRENT_DATE() >= DATEADD('day', 2, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
+                DATEADD('day', 1, t.TRADE_DATE) as SETTLEMENT_DATE,
+                CASE WHEN CURRENT_DATE() >= DATEADD('day', 1, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
                 t.SIDE,
                 t.SYMBOL as TICKER,
                 g.ISSUER,
-                g.GLOBAL_SECURITY_ID,
                 g.PRIMARY_EXCHANGE as EXCHANGE,
-                g.ISIN,
-                g.CUSIP,
-                g.SEDOL,
                 t.QUANTITY,
                 t.PRICE,
-                t.TOTAL_VALUE as AMOUNT_USD,
-                g.CURRENCY,
-                CASE WHEN s.SYMBOL IS NOT NULL THEN 'Yes' ELSE 'No' END as IN_SP500
+                t.TOTAL_VALUE as AMOUNT_USD
             FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
-            LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g 
+            LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g
                 ON t.SYMBOL = g.PRIMARY_TICKER AND g.ASSET_CLASS = 'Equity'
-            LEFT JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
         """
         
         bond_query = """
             SELECT 
                 t.ORDER_ID,
                 'Bond' as ASSET_CLASS,
-                t.TRADE_ID,
                 t.TRADE_DATE,
                 TO_CHAR(t.CREATED_AT, 'HH24:MI:SS') as TRADE_TIME,
-                DATEADD('day', 2, t.TRADE_DATE) as SETTLEMENT_DATE,
-                CASE WHEN CURRENT_DATE() >= DATEADD('day', 2, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
+                DATEADD('day', 1, t.TRADE_DATE) as SETTLEMENT_DATE,
+                CASE WHEN CURRENT_DATE() >= DATEADD('day', 1, t.TRADE_DATE) THEN 'Settled' ELSE 'Pending' END as SETTLEMENT_STATUS,
                 t.SIDE,
                 g.PRIMARY_TICKER as TICKER,
                 g.ISSUER,
-                g.GLOBAL_SECURITY_ID,
                 g.PRIMARY_EXCHANGE as EXCHANGE,
-                g.ISIN,
-                g.CUSIP,
-                g.SEDOL,
                 t.FACE_VALUE as QUANTITY,
                 t.PRICE,
-                t.TOTAL_VALUE as AMOUNT_USD,
-                g.CURRENCY,
-                'No' as IN_SP500
+                t.TOTAL_VALUE as AMOUNT_USD
             FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES t
-            LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g 
+            LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE g
                 ON t.CUSIP = g.CUSIP AND g.ASSET_CLASS = 'Fixed Income'
         """
         
@@ -1491,24 +805,18 @@ with tab8:
             full_query = equity_query
         elif security_type == "Bond":
             full_query = bond_query
+        elif security_type == "ETF":
+            full_query = equity_query
         else:
             full_query = f"({equity_query}) UNION ALL ({bond_query})"
         
         full_query = f"SELECT * FROM ({full_query}) trades WHERE 1=1"
         
-        if trade_date_start:
-            full_query += f" AND TRADE_DATE >= '{trade_date_start}'"
-        if trade_date_end:
-            full_query += f" AND TRADE_DATE <= '{trade_date_end}'"
-        if sp500_filter and sp500_filter != "All":
-            full_query += f" AND IN_SP500 = '{sp500_filter}'"
-        if min_amount:
-            full_query += f" AND AMOUNT_USD >= {min_amount}"
-        if max_amount:
-            full_query += f" AND AMOUNT_USD <= {max_amount}"
-        if ticker_filter:
-            full_query += f" AND TICKER ILIKE '%{ticker_filter}%'"
-        if exchange_filter and exchange_filter != "All Exchanges":
+        if trade_date and trade_date != "<ALL>":
+            from datetime import datetime
+            parsed_date = datetime.strptime(trade_date, '%d-%b-%Y')
+            full_query += f" AND TRADE_DATE = '{parsed_date.strftime('%Y-%m-%d')}'"
+        if exchange_filter and exchange_filter != "<ALL>":
             full_query += f" AND EXCHANGE = '{exchange_filter}'"
         
         full_query += " ORDER BY ORDER_ID DESC LIMIT 1000"
@@ -1516,204 +824,78 @@ with tab8:
         return session.sql(full_query).to_pandas()
     
     @st.cache_data(ttl=300)
-    def get_exchange_list():
+    def get_trade_dates():
         return session.sql("""
-            SELECT DISTINCT PRIMARY_EXCHANGE 
-            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE 
-            WHERE PRIMARY_EXCHANGE IS NOT NULL
-            ORDER BY PRIMARY_EXCHANGE
-        """).to_pandas()['PRIMARY_EXCHANGE'].tolist()
+            SELECT DISTINCT TRADE_DATE 
+            FROM (
+                SELECT TRADE_DATE FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES
+                UNION
+                SELECT TRADE_DATE FROM SECURITY_MASTER_DB.TRADES.BOND_TRADES
+            )
+            ORDER BY TRADE_DATE DESC
+        """).to_pandas()['TRADE_DATE'].tolist()
     
-    st.markdown("""
-    <style>
-        div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:has(div.filter-card) {
-            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
-            border-radius: 12px;
-            padding: 0.5rem;
-        }
-    </style>
-    """, unsafe_allow_html=True)
+    filter_col1, filter_col2, filter_col3, filter_col4, filter_col5 = st.columns([0.4, 0.4, 0.4, 0.4, 0.375])
     
-    st.markdown("""
-    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; 
-                padding: 1rem 1.5rem; margin-bottom: 1rem;">
-        <div style="display: flex; align-items: center; margin-bottom: 0.75rem;">
-            <span style="font-size: 1.25rem; margin-right: 0.5rem;">🔍</span>
-            <span style="font-family: 'Outfit', sans-serif; font-weight: 600; color: #0f172a; font-size: 1.1rem;">
-                Filter Trades
-            </span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    with filter_col1:
+        settle_type_filter = st.selectbox(
+            "Type",
+            options=["<ALL>", "Equity", "Bond", "ETF"],
+            index=1,
+            key="settle_type"
+        )
     
-    filter_row1_col1, filter_row1_col2, filter_row1_col3, filter_row1_col4 = st.columns([1.2, 1.5, 1, 0.8])
-    
-    with filter_row1_col1:
-        st.markdown('<p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">SECURITY TYPE</p>', unsafe_allow_html=True)
-        security_type_filter = st.selectbox(
-            "Security Type",
-            options=["All Types", "Equity", "Bond"],
+    with filter_col2:
+        trade_dates = ["<ALL>"] + [pd.to_datetime(d).strftime('%d-%b-%Y').upper() for d in get_trade_dates()]
+        settle_date_filter = st.selectbox(
+            "Trade Date",
+            options=trade_dates,
             index=0,
-            key="gr_security_type",
-            label_visibility="collapsed"
+            key="settle_date"
         )
     
-    with filter_row1_col2:
-        st.markdown('<p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">TRADE DATE</p>', unsafe_allow_html=True)
-        trade_date_range = st.date_input(
-            "Trade Date Range",
-            value=[],
-            key="gr_trade_date",
-            label_visibility="collapsed"
-        )
-    
-    with filter_row1_col3:
-        st.markdown('<p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">S&P 500</p>', unsafe_allow_html=True)
-        sp500_select = st.selectbox(
-            "S&P 500",
-            options=["All", "Yes", "No"],
-            index=0,
-            key="gr_sp500",
-            label_visibility="collapsed"
-        )
-    
-    with filter_row1_col4:
-        st.markdown('<p style="font-size: 0.75rem; color: transparent; margin-bottom: 0.25rem;">.</p>', unsafe_allow_html=True)
-        clear_filters = st.button("🔄 Reset", key="clear_filters", use_container_width=True)
-    
-    filter_row2_col1, filter_row2_col2, filter_row2_col3 = st.columns([1.5, 1.2, 1.3])
-    
-    with filter_row2_col1:
-        st.markdown('<p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">AMOUNT USD</p>', unsafe_allow_html=True)
-        amount_range = st.slider(
-            "Amount USD Range",
-            min_value=0,
-            max_value=10000000,
-            value=(0, 10000000),
-            step=10000,
-            format="$%d",
-            key="gr_amount",
-            label_visibility="collapsed"
-        )
-    
-    with filter_row2_col2:
-        st.markdown('<p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">TICKER SEARCH</p>', unsafe_allow_html=True)
-        ticker_input = st.text_input(
-            "Ticker",
-            placeholder="e.g., AAPL, MSFT",
-            key="gr_ticker",
-            label_visibility="collapsed"
-        )
-    
-    with filter_row2_col3:
-        st.markdown('<p style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">EXCHANGE</p>', unsafe_allow_html=True)
-        exchanges = ["All Exchanges"] + get_exchange_list()
-        exchange_select = st.selectbox(
+    with filter_col3:
+        settle_exchange_filter = st.selectbox(
             "Exchange",
-            options=exchanges,
+            options=["<ALL>", "NYSE", "NASDAQ", "OTC"],
             index=0,
-            key="gr_exchange",
-            label_visibility="collapsed"
+            key="settle_exchange"
         )
     
-    trade_date_start = None
-    trade_date_end = None
-    if trade_date_range and len(trade_date_range) == 2:
-        trade_date_start = trade_date_range[0]
-        trade_date_end = trade_date_range[1]
-    elif trade_date_range and len(trade_date_range) == 1:
-        trade_date_start = trade_date_range[0]
-        trade_date_end = trade_date_range[0]
+    with filter_col4:
+        settle_status_filter = st.selectbox(
+            "Status",
+            options=["<ALL>", "Pending", "Settled", "Cancelled"],
+            index=0,
+            key="settle_status"
+        )
     
-    sec_type = None if security_type_filter == "All Types" else security_type_filter
+    with filter_col5:
+        st.markdown('<label style="font-size: 0.875rem; color: transparent; display: block; margin-bottom: 0.5rem;">&nbsp;</label>', unsafe_allow_html=True)
+        if st.button("🔄 Refresh", key="refresh_settlement", use_container_width=True):
+            st.cache_data.clear()
+            st.experimental_rerun()
     
-    mapped_trades = load_mapped_trades(
-        security_type=sec_type,
-        trade_date_start=trade_date_start,
-        trade_date_end=trade_date_end,
-        sp500_filter=sp500_select if sp500_select != "All" else None,
-        min_amount=amount_range[0] if amount_range[0] > 0 else None,
-        max_amount=amount_range[1] if amount_range[1] < 10000000 else None,
-        ticker_filter=ticker_input if ticker_input else None,
-        exchange_filter=exchange_select if exchange_select != "All Exchanges" else None
+    settlement_trades = load_settlement_trades(
+        security_type=settle_type_filter if settle_type_filter != "<ALL>" else None,
+        trade_date=settle_date_filter if settle_date_filter != "<ALL>" else None,
+        exchange_filter=settle_exchange_filter if settle_exchange_filter != "<ALL>" else None
     )
     
-    st.markdown("""
-    <div style="background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%); 
-                border-radius: 12px; padding: 1rem; margin: 1rem 0;">
-    </div>
-    """, unsafe_allow_html=True)
+    if settle_status_filter != "<ALL>" and not settlement_trades.empty:
+        settlement_trades = settlement_trades[settlement_trades['SETTLEMENT_STATUS'] == settle_status_filter]
     
-    summary_col1, summary_col2, summary_col3, summary_col4, summary_col5, summary_col6 = st.columns([1, 1, 1, 1, 1, 1])
-    with summary_col1:
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 8px; 
-                    padding: 0.5rem; text-align: center; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.55rem; font-weight: 600; letter-spacing: 0.05em;">TOTAL VALUE</p>
-            <p style="color: white; margin: 0.15rem 0 0 0; font-size: 1rem; font-weight: 700;">${:,.0f}</p>
-        </div>
-        """.format(mapped_trades['AMOUNT_USD'].sum() if not mapped_trades.empty else 0), unsafe_allow_html=True)
-    with summary_col2:
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #10b981, #059669); border-radius: 8px; 
-                    padding: 0.5rem; text-align: center; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.55rem; font-weight: 600; letter-spacing: 0.05em;">TOTAL TRADES</p>
-            <p style="color: white; margin: 0.15rem 0 0 0; font-size: 1rem; font-weight: 700;">{:,}</p>
-        </div>
-        """.format(len(mapped_trades)), unsafe_allow_html=True)
-    with summary_col3:
-        equity_count = len(mapped_trades[mapped_trades['ASSET_CLASS'] == 'Equity']) if not mapped_trades.empty else 0
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius: 8px; 
-                    padding: 0.5rem; text-align: center; box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.55rem; font-weight: 600; letter-spacing: 0.05em;">EQUITY TRADES</p>
-            <p style="color: white; margin: 0.15rem 0 0 0; font-size: 1rem; font-weight: 700;">{:,}</p>
-        </div>
-        """.format(equity_count), unsafe_allow_html=True)
-    with summary_col4:
-        bond_count = len(mapped_trades[mapped_trades['ASSET_CLASS'] == 'Bond']) if not mapped_trades.empty else 0
-        st.markdown("""
-        <div style="background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 8px; 
-                    padding: 0.5rem; text-align: center; box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);">
-            <p style="color: rgba(255,255,255,0.8); margin: 0; font-size: 0.55rem; font-weight: 600; letter-spacing: 0.05em;">BOND TRADES</p>
-            <p style="color: white; margin: 0.15rem 0 0 0; font-size: 1rem; font-weight: 700;">{:,}</p>
-        </div>
-        """.format(bond_count), unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    active_filters = []
-    if security_type_filter != "All Types":
-        active_filters.append(f"Type: {security_type_filter}")
-    if trade_date_start:
-        active_filters.append(f"Date: {trade_date_start} to {trade_date_end}")
-    if sp500_select != "All":
-        active_filters.append(f"S&P 500: {sp500_select}")
-    if ticker_input:
-        active_filters.append(f"Ticker: {ticker_input}")
-    if exchange_select != "All Exchanges":
-        active_filters.append(f"Exchange: {exchange_select}")
-    if amount_range[0] > 0 or amount_range[1] < 10000000:
-        active_filters.append(f"Amount: ${amount_range[0]:,} - ${amount_range[1]:,}")
-    
-    if active_filters:
-        filter_tags = " ".join([f'<span style="background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; margin-right: 0.5rem;">{f}</span>' for f in active_filters])
-        st.markdown(f"""
-        <div style="margin-bottom: 1rem;">
-            <span style="color: #64748b; font-size: 0.8rem; margin-right: 0.5rem;">Active filters:</span>
-            {filter_tags}
-        </div>
-        """, unsafe_allow_html=True)
-    
-    if not mapped_trades.empty:
-        display_mapped = mapped_trades[['ORDER_ID', 'ASSET_CLASS', 'TRADE_DATE', 'TRADE_TIME', 'SETTLEMENT_DATE', 'SETTLEMENT_STATUS', 'SIDE', 'TICKER', 
-                                        'ISSUER', 'GLOBAL_SECURITY_ID', 'EXCHANGE', 'ISIN', 
-                                        'QUANTITY', 'PRICE', 'AMOUNT_USD', 
-                                        'IN_SP500']].copy()
-        display_mapped['AMOUNT_USD'] = display_mapped['AMOUNT_USD'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else "N/A")
-        display_mapped['PRICE'] = display_mapped['PRICE'].apply(lambda x: f"${x:,.4f}" if pd.notna(x) else "N/A")
-        display_mapped['QUANTITY'] = display_mapped['QUANTITY'].apply(lambda x: f"{x:,.0f}" if pd.notna(x) else "N/A")
-        display_mapped = display_mapped.rename(columns={
+    if not settlement_trades.empty:
+        display_settle = settlement_trades[['ORDER_ID', 'ASSET_CLASS', 'TRADE_DATE', 'TRADE_TIME', 
+                                            'SETTLEMENT_DATE', 'SETTLEMENT_STATUS', 'SIDE', 'TICKER',
+                                            'ISSUER', 'EXCHANGE', 'QUANTITY', 'PRICE', 'AMOUNT_USD']].copy()
+        display_settle['ORDER_ID'] = display_settle['ORDER_ID'].apply(lambda x: f"ORD{int(x)}" if pd.notna(x) else "N/A")
+        display_settle['TRADE_DATE'] = pd.to_datetime(display_settle['TRADE_DATE']).dt.strftime('%d-%b-%Y').str.upper()
+        display_settle['SETTLEMENT_DATE'] = pd.to_datetime(display_settle['SETTLEMENT_DATE']).dt.strftime('%d-%b-%Y').str.upper()
+        display_settle['AMOUNT_USD'] = display_settle['AMOUNT_USD'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else "N/A")
+        display_settle['PRICE'] = display_settle['PRICE'].apply(lambda x: f"${x:,.2f}" if pd.notna(x) else "N/A")
+        display_settle['QUANTITY'] = display_settle['QUANTITY'].apply(lambda x: f"{int(x)}" if pd.notna(x) else "N/A")
+        display_settle = display_settle.rename(columns={
             'ORDER_ID': 'Order ID',
             'ASSET_CLASS': 'Type',
             'TRADE_DATE': 'Trade Date',
@@ -1723,401 +905,25 @@ with tab8:
             'SIDE': 'Side',
             'TICKER': 'Ticker',
             'ISSUER': 'Issuer',
-            'GLOBAL_SECURITY_ID': 'GSID',
             'EXCHANGE': 'Exchange',
             'QUANTITY': 'Qty',
             'PRICE': 'Price',
-            'AMOUNT_USD': 'Amount USD',
-            'IN_SP500': 'S&P 500'
+            'AMOUNT_USD': 'Amount USD'
         })
         
-        count_col, refresh_col = st.columns([0.85, 0.15])
-        with count_col:
-            st.markdown(f'<p style="color: #64748b; font-size: 0.85rem; margin: 0;">Showing <strong>{len(mapped_trades):,}</strong> trades (max 1,000)</p>', unsafe_allow_html=True)
-        with refresh_col:
-            if st.button("🔄 Refresh", key="refresh_settlement"):
-                st.cache_data.clear()
-                st.experimental_rerun()
-        
-        st.dataframe(display_mapped, use_container_width=True, height=500)
+        st.markdown(f'<p style="color: #64748b; font-size: 0.85rem;">Showing <strong>{len(settlement_trades):,}</strong> trades</p>', unsafe_allow_html=True)
+        st.dataframe(display_settle, use_container_width=True, height=500)
     else:
         st.info("No trades found matching the selected filters.")
 
-with tab7:
-    st.markdown("""
-    <div style="background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 50%, #a78bfa 100%); 
-                border-radius: 10px; padding: 0.5rem 1rem; margin-bottom: 1rem;">
-        <h4 style="color: white; margin: 0; font-weight: 600;">📜 Security Master History & Audit Trail</h4>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    history_tab1, history_tab2 = st.tabs(["📊 Current Security Master", "📜 Change History"])
-    
-    with history_tab1:
-        st.subheader("Security Master - Latest State")
-        
-        @st.cache_data(ttl=60)
-        def load_full_security_master():
-            return session.sql("""
-                SELECT 
-                    GLOBAL_SECURITY_ID, ISSUER, ASSET_CLASS, PRIMARY_TICKER, PRIMARY_EXCHANGE,
-                    ISIN, CUSIP, SEDOL, CURRENCY, STATUS, GOLDEN_SOURCE, LAST_VALIDATED,
-                    LINEAGE_ID, CREATED_BY, CREATED_AT, LAST_MODIFIED_BY
-                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-                ORDER BY LAST_VALIDATED DESC
-            """).to_pandas()
-        
-        full_master = load_full_security_master()
-        
-        master_col1, master_col2, master_col3, master_col4 = st.columns(4)
-        with master_col1:
-            st.metric("Total Securities", f"{len(full_master):,}")
-        with master_col2:
-            active_count = len(full_master[full_master['STATUS'] == 'Active'])
-            st.metric("Active", f"{active_count:,}")
-        with master_col3:
-            preissue_count = len(full_master[full_master['STATUS'] == 'Pre-Issue'])
-            st.metric("Pre-Issue", f"{preissue_count:,}")
-        with master_col4:
-            matured_count = len(full_master[full_master['STATUS'].isin(['Matured', 'Defaulted', 'Retired'])])
-            st.metric("Matured/Retired", f"{matured_count:,}")
-        
-        st.markdown("---")
-        
-        export_col1, export_col2, export_col3 = st.columns([1, 1, 2])
-        with export_col1:
-            if st.button("📥 Export to CSV", use_container_width=True):
-                try:
-                    from datetime import datetime
-                    now = datetime.now()
-                    file_date = now.strftime("%d-%b-%Y").upper()
-                    file_time = now.strftime("%H-%M")
-                    csv_filename = f"SEC_MASTER_{file_date}_{file_time}.csv"
-                    
-                    session.sql(f"""
-                        COPY INTO @SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT/{csv_filename}
-                        FROM (
-                            SELECT 
-                                'GLOBAL_SECURITY_ID' as C1, 'ISSUER' as C2, 'ASSET_CLASS' as C3, 
-                                'PRIMARY_TICKER' as C4, 'PRIMARY_EXCHANGE' as C5, 'ISIN' as C6, 
-                                'CUSIP' as C7, 'SEDOL' as C8, 'CURRENCY' as C9, 'STATUS' as C10,
-                                'GOLDEN_SOURCE' as C11, 'LAST_VALIDATED' as C12, 'LINEAGE_ID' as C13,
-                                'CREATED_BY' as C14, 'CREATED_AT' as C15, 'LAST_MODIFIED_BY' as C16
-                            UNION ALL
-                            SELECT 
-                                GLOBAL_SECURITY_ID, ISSUER, ASSET_CLASS, PRIMARY_TICKER, PRIMARY_EXCHANGE,
-                                ISIN, CUSIP, SEDOL, CURRENCY, STATUS, GOLDEN_SOURCE, 
-                                TO_VARCHAR(LAST_VALIDATED, 'YYYY-MM-DD HH24:MI:SS'),
-                                LINEAGE_ID, CREATED_BY, 
-                                TO_VARCHAR(CREATED_AT, 'YYYY-MM-DD HH24:MI:SS'), 
-                                LAST_MODIFIED_BY
-                            FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE
-                            ORDER BY 12 DESC
-                        )
-                        FILE_FORMAT = (TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY = '"' COMPRESSION = NONE)
-                        OVERWRITE = TRUE
-                        SINGLE = TRUE
-                    """).collect()
-                    st.success(f"✅ Exported to @EXPORT/{csv_filename}")
-                except Exception as e:
-                    st.error(f"Export error: {str(e)}")
-        with export_col2:
-            if st.button("🔄 Update Systems", use_container_width=True, type="primary"):
-                try:
-                    from datetime import datetime
-                    import json
-                    
-                    now = datetime.now()
-                    file_date = now.strftime("%d-%b-%Y").upper()
-                    file_time = now.strftime("%H-%M")
-                    filename = f"SEC_MASTER_UPDATES_{file_date}_{file_time}.json"
-                    
-                    latest_changes = session.sql("""
-                        SELECT 
-                            h.HISTORY_ID,
-                            h.GLOBAL_SECURITY_ID,
-                            h.ACTION,
-                            h.ISSUER_BEFORE,
-                            h.ISSUER_AFTER,
-                            h.ASSET_CLASS_BEFORE,
-                            h.ASSET_CLASS_AFTER,
-                            h.PRIMARY_TICKER_BEFORE,
-                            h.PRIMARY_TICKER_AFTER,
-                            h.PRIMARY_EXCHANGE_BEFORE,
-                            h.PRIMARY_EXCHANGE_AFTER,
-                            h.ISIN_BEFORE,
-                            h.ISIN_AFTER,
-                            h.CUSIP_BEFORE,
-                            h.CUSIP_AFTER,
-                            h.SEDOL_BEFORE,
-                            h.SEDOL_AFTER,
-                            h.CURRENCY_BEFORE,
-                            h.CURRENCY_AFTER,
-                            h.STATUS_BEFORE,
-                            h.STATUS_AFTER,
-                            h.EDIT_REASON,
-                            h.CHANGED_BY,
-                            TO_VARCHAR(h.CHANGED_AT, 'YYYY-MM-DD HH24:MI:SS') as CHANGED_AT,
-                            h.LINEAGE_ID,
-                            h.LINEAGE_PARENT_ID,
-                            h.LINEAGE_PATH,
-                            r.ISSUER as CURRENT_ISSUER,
-                            r.ASSET_CLASS as CURRENT_ASSET_CLASS,
-                            r.PRIMARY_TICKER as CURRENT_TICKER,
-                            r.PRIMARY_EXCHANGE as CURRENT_EXCHANGE,
-                            r.ISIN as CURRENT_ISIN,
-                            r.CUSIP as CURRENT_CUSIP,
-                            r.SEDOL as CURRENT_SEDOL,
-                            r.CURRENCY as CURRENT_CURRENCY,
-                            r.STATUS as CURRENT_STATUS
-                        FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY h
-                        LEFT JOIN SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_REFERENCE r
-                            ON h.GLOBAL_SECURITY_ID = r.GLOBAL_SECURITY_ID
-                        WHERE h.CHANGED_AT >= DATEADD('day', -1, CURRENT_TIMESTAMP())
-                        ORDER BY h.CHANGED_AT DESC
-                    """).to_pandas()
-                    
-                    export_data = {
-                        "export_timestamp": now.strftime("%Y-%m-%d %H:%M:%S"),
-                        "export_type": "SECURITY_MASTER_UPDATES",
-                        "record_count": len(latest_changes),
-                        "changes": latest_changes.to_dict(orient='records')
-                    }
-                    
-                    json_str = json.dumps(export_data, indent=2, default=str)
-                    
-                    session.sql(f"""
-                        COPY INTO @SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT/{filename}
-                        FROM (
-                            SELECT OBJECT_CONSTRUCT(
-                                'export_timestamp', '{now.strftime("%Y-%m-%d %H:%M:%S")}',
-                                'export_type', 'SECURITY_MASTER_UPDATES',
-                                'record_count', {len(latest_changes)},
-                                'changes', PARSE_JSON('{json_str.replace(chr(39), chr(39)+chr(39))}')
-                            )
-                        )
-                        FILE_FORMAT = (TYPE = JSON COMPRESSION = NONE)
-                        OVERWRITE = TRUE
-                        SINGLE = TRUE
-                    """).collect()
-                    
-                    st.success(f"✅ Exported {len(latest_changes)} changes to @EXPORT/{filename}")
-                    
-                except Exception as e:
-                    st.error(f"Error exporting: {str(e)}")
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        display_master = full_master[['GLOBAL_SECURITY_ID', 'ISSUER', 'ASSET_CLASS', 'PRIMARY_TICKER', 
-                                      'PRIMARY_EXCHANGE', 'ISIN', 'CUSIP', 'SEDOL', 'CURRENCY', 
-                                      'STATUS', 'LAST_VALIDATED', 'CREATED_BY', 'LAST_MODIFIED_BY']].copy()
-        display_master = display_master.rename(columns={
-            'GLOBAL_SECURITY_ID': 'GSID', 'PRIMARY_TICKER': 'Ticker', 'PRIMARY_EXCHANGE': 'Exchange',
-            'ASSET_CLASS': 'Class', 'LAST_VALIDATED': 'Last Updated', 'CREATED_BY': 'Created By',
-            'LAST_MODIFIED_BY': 'Modified By'
-        })
-        st.dataframe(display_master, use_container_width=True, height=500)
-    
-    with history_tab2:
-        st.subheader("Change History & Audit Log")
-        
-        @st.cache_data(ttl=30)
-        def load_history_data():
-            return session.sql("""
-                SELECT * FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                ORDER BY CHANGED_AT DESC
-                LIMIT 1000
-            """).to_pandas()
-        
-        @st.cache_data(ttl=300)
-        def get_unique_users():
-            result = session.sql("""
-                SELECT DISTINCT CHANGED_BY FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                WHERE CHANGED_BY IS NOT NULL ORDER BY CHANGED_BY
-            """).to_pandas()
-            return result['CHANGED_BY'].tolist()
-        
-        @st.cache_data(ttl=300)
-        def get_unique_tickers_history():
-            result = session.sql("""
-                SELECT DISTINCT COALESCE(PRIMARY_TICKER_AFTER, PRIMARY_TICKER_BEFORE) as TICKER 
-                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                WHERE COALESCE(PRIMARY_TICKER_AFTER, PRIMARY_TICKER_BEFORE) IS NOT NULL
-                ORDER BY TICKER
-            """).to_pandas()
-            return result['TICKER'].tolist()
-        
-        @st.cache_data(ttl=300)
-        def get_unique_currencies_history():
-            result = session.sql("""
-                SELECT DISTINCT COALESCE(CURRENCY_AFTER, CURRENCY_BEFORE) as CURRENCY 
-                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                WHERE COALESCE(CURRENCY_AFTER, CURRENCY_BEFORE) IS NOT NULL
-                ORDER BY CURRENCY
-            """).to_pandas()
-            return result['CURRENCY'].tolist()
-        
-        @st.cache_data(ttl=300)
-        def get_unique_exchanges_history():
-            result = session.sql("""
-                SELECT DISTINCT COALESCE(PRIMARY_EXCHANGE_AFTER, PRIMARY_EXCHANGE_BEFORE) as EXCHANGE 
-                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                WHERE COALESCE(PRIMARY_EXCHANGE_AFTER, PRIMARY_EXCHANGE_BEFORE) IS NOT NULL
-                ORDER BY EXCHANGE
-            """).to_pandas()
-            return result['EXCHANGE'].tolist()
-        
-        hist_filter_col1, hist_filter_col2, hist_filter_col3, hist_filter_col4, hist_filter_col5 = st.columns(5)
-        
-        with hist_filter_col1:
-            users = ["All Users"] + get_unique_users()
-            user_filter = st.selectbox("Changed By", users, key="hist_user")
-        
-        with hist_filter_col2:
-            tickers = ["All Tickers"] + get_unique_tickers_history()
-            ticker_filter = st.selectbox("Ticker", tickers, key="hist_ticker")
-        
-        with hist_filter_col3:
-            currencies = ["All Currencies"] + get_unique_currencies_history()
-            currency_filter = st.selectbox("Currency", currencies, key="hist_currency")
-        
-        with hist_filter_col4:
-            exchanges = ["All Exchanges"] + get_unique_exchanges_history()
-            exchange_filter = st.selectbox("Exchange", exchanges, key="hist_exchange")
-        
-        with hist_filter_col5:
-            isin_filter = st.text_input("ISIN Filter", placeholder="e.g., US037833...", key="hist_isin")
-        
-        history_data = load_history_data()
-        
-        if not history_data.empty:
-            filtered_history = history_data.copy()
-            
-            if user_filter != "All Users":
-                filtered_history = filtered_history[filtered_history['CHANGED_BY'] == user_filter]
-            if ticker_filter != "All Tickers":
-                filtered_history = filtered_history[
-                    (filtered_history['PRIMARY_TICKER_AFTER'] == ticker_filter) | 
-                    (filtered_history['PRIMARY_TICKER_BEFORE'] == ticker_filter)
-                ]
-            if currency_filter != "All Currencies":
-                filtered_history = filtered_history[
-                    (filtered_history['CURRENCY_AFTER'] == currency_filter) | 
-                    (filtered_history['CURRENCY_BEFORE'] == currency_filter)
-                ]
-            if exchange_filter != "All Exchanges":
-                filtered_history = filtered_history[
-                    (filtered_history['PRIMARY_EXCHANGE_AFTER'] == exchange_filter) | 
-                    (filtered_history['PRIMARY_EXCHANGE_BEFORE'] == exchange_filter)
-                ]
-            if isin_filter:
-                filtered_history = filtered_history[
-                    (filtered_history['ISIN_AFTER'].str.contains(isin_filter, na=False, case=False)) | 
-                    (filtered_history['ISIN_BEFORE'].str.contains(isin_filter, na=False, case=False))
-                ]
-            
-            st.markdown(f"**Found {len(filtered_history):,} change records**")
-            
-            export_hist_col1, export_hist_col2 = st.columns([1, 3])
-            with export_hist_col1:
-                if st.button("📥 Export History CSV", use_container_width=True):
-                    try:
-                        from datetime import datetime
-                        now = datetime.now()
-                        file_date = now.strftime("%d-%b-%Y").upper()
-                        file_time = now.strftime("%H-%M")
-                        hist_filename = f"SEC_MASTER_HISTORY_{file_date}_{file_time}.csv"
-                        
-                        session.sql(f"""
-                            COPY INTO @SECURITY_MASTER_DB.GOLDEN_RECORD.EXPORT/{hist_filename}
-                            FROM (
-                                SELECT 
-                                    'HISTORY_ID' as C1, 'GLOBAL_SECURITY_ID' as C2, 'ACTION' as C3,
-                                    'ISSUER_BEFORE' as C4, 'ISSUER_AFTER' as C5,
-                                    'STATUS_BEFORE' as C6, 'STATUS_AFTER' as C7,
-                                    'EDIT_REASON' as C8, 'CHANGED_BY' as C9, 'CHANGED_AT' as C10,
-                                    'LINEAGE_ID' as C11, 'LINEAGE_PATH' as C12
-                                UNION ALL
-                                SELECT 
-                                    TO_VARCHAR(HISTORY_ID), GLOBAL_SECURITY_ID, ACTION,
-                                    ISSUER_BEFORE, ISSUER_AFTER,
-                                    STATUS_BEFORE, STATUS_AFTER,
-                                    EDIT_REASON, CHANGED_BY, TO_VARCHAR(CHANGED_AT, 'YYYY-MM-DD HH24:MI:SS'),
-                                    LINEAGE_ID, LINEAGE_PATH
-                                FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                                ORDER BY 10 DESC
-                            )
-                            FILE_FORMAT = (TYPE = CSV FIELD_OPTIONALLY_ENCLOSED_BY = '"')
-                            OVERWRITE = TRUE
-                            SINGLE = TRUE
-                        """).collect()
-                        st.success(f"✅ Exported to @EXPORT/{hist_filename}")
-                    except Exception as e:
-                        st.error(f"Export error: {str(e)}")
-            
-            st.markdown("---")
-            
-            display_history = filtered_history[['HISTORY_ID', 'GLOBAL_SECURITY_ID', 'ACTION', 
-                                                'PRIMARY_TICKER_BEFORE', 'PRIMARY_TICKER_AFTER',
-                                                'ISSUER_BEFORE', 'ISSUER_AFTER',
-                                                'STATUS_BEFORE', 'STATUS_AFTER',
-                                                'EDIT_REASON', 'CHANGED_BY', 'CHANGED_AT', 
-                                                'LINEAGE_ID']].copy()
-            display_history = display_history.rename(columns={
-                'HISTORY_ID': 'ID', 'GLOBAL_SECURITY_ID': 'GSID', 'ACTION': 'Action',
-                'PRIMARY_TICKER_BEFORE': 'Ticker (Before)', 'PRIMARY_TICKER_AFTER': 'Ticker (After)',
-                'ISSUER_BEFORE': 'Issuer (Before)', 'ISSUER_AFTER': 'Issuer (After)',
-                'STATUS_BEFORE': 'Status (Before)', 'STATUS_AFTER': 'Status (After)',
-                'EDIT_REASON': 'Reason', 'CHANGED_BY': 'Changed By', 'CHANGED_AT': 'Changed At',
-                'LINEAGE_ID': 'Lineage ID'
-            })
-            
-            st.dataframe(display_history, use_container_width=True, height=400)
-            
-            st.markdown("---")
-            st.subheader("🔗 Lineage Viewer")
-            
-            if not filtered_history.empty:
-                gsid_options = ["-- Select a security --"] + filtered_history['GLOBAL_SECURITY_ID'].unique().tolist()
-                selected_gsid_lineage = st.selectbox("Select Security to View Lineage", gsid_options, key="lineage_gsid")
-                
-                if selected_gsid_lineage != "-- Select a security --":
-                    lineage_records = session.sql(f"""
-                        SELECT HISTORY_ID, ACTION, CHANGED_AT, CHANGED_BY, EDIT_REASON,
-                               ISSUER_BEFORE, ISSUER_AFTER, STATUS_BEFORE, STATUS_AFTER,
-                               LINEAGE_ID, LINEAGE_PARENT_ID, LINEAGE_PATH
-                        FROM SECURITY_MASTER_DB.GOLDEN_RECORD.SECURITY_MASTER_HISTORY
-                        WHERE GLOBAL_SECURITY_ID = '{selected_gsid_lineage}'
-                        ORDER BY CHANGED_AT ASC
-                    """).to_pandas()
-                    
-                    if not lineage_records.empty:
-                        st.markdown(f"**Lineage for {selected_gsid_lineage}** - {len(lineage_records)} changes found")
-                        
-                        for idx, record in lineage_records.iterrows():
-                            action_color = "#10b981" if record['ACTION'] == 'INSERT' else "#f59e0b"
-                            st.markdown(f"""
-                            <div style="border-left: 4px solid {action_color}; padding-left: 1rem; margin-bottom: 1rem; background: #f8fafc; border-radius: 0 8px 8px 0; padding: 1rem;">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <span style="font-weight: 600; color: {action_color};">{record['ACTION']}</span>
-                                    <span style="color: #64748b; font-size: 0.85rem;">{record['CHANGED_AT']}</span>
-                                </div>
-                                <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>By:</strong> {record['CHANGED_BY']}</p>
-                                <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Reason:</strong> {record['EDIT_REASON'] or 'N/A'}</p>
-                                <p style="margin: 0.5rem 0; font-size: 0.9rem;"><strong>Status:</strong> {record['STATUS_BEFORE'] or 'N/A'} → {record['STATUS_AFTER'] or 'N/A'}</p>
-                                <p style="margin: 0.5rem 0; font-size: 0.75rem; color: #64748b;"><strong>Lineage ID:</strong> {record['LINEAGE_ID']}</p>
-                            </div>
-                            """, unsafe_allow_html=True)
-                    else:
-                        st.info("No lineage records found for this security.")
-        else:
-            st.info("No history records found. Changes will be tracked when securities are added or modified.")
-
+# ============================================
+# TAB 9: STOCK/ETF ORDER
+# ============================================
 with tab9:
     import json
     
     st.markdown("""
-    <div style="background: linear-gradient(135deg, #a5b4fc 0%, #93c5fd 50%, #bfdbfe 100%); 
+    <div style="background: linear-gradient(135deg, #a5b4fc 0%, #93c5fd 50%, #bfdbfe 100%);
                 border-radius: 8px; padding: 0.5rem 1rem; margin-bottom: 0.75rem;
                 box-shadow: 0 1px 5px rgba(147, 197, 253, 0.2);">
         <h4 style="color: #1e3a5f; margin: 0; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.4rem;">
@@ -2133,7 +939,7 @@ with tab9:
     
     with order_col1:
         st.markdown("""
-        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; 
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
                     padding: 0.75rem; margin-bottom: 0.75rem;">
             <h4 style="margin: 0; color: #0f172a; font-family: 'Outfit', sans-serif;">
                 Order
@@ -2153,53 +959,6 @@ with tab9:
             st.session_state.show_preview = False
         if 'order_confirmed' not in st.session_state:
             st.session_state.order_confirmed = None
-        
-        @st.cache_data(ttl=300)
-        def get_tradeable_securities():
-            return session.sql("""
-                SELECT DISTINCT 
-                    SYMBOL, 
-                    SECURITY_NAME,
-                    GICS_SECTOR
-                FROM SECURITY_MASTER_DB.SECURITIES.SP500
-                ORDER BY SYMBOL
-            """).to_pandas()
-        
-        @st.cache_data(ttl=30)
-        def get_live_stock_price(symbol):
-            try:
-                result = session.sql(f"""
-                    SELECT SECURITY_MASTER_DB.TRADES.GET_STOCK_PRICE('{symbol}') as PRICE_DATA
-                """).to_pandas()
-                if not result.empty:
-                    price_data = result.iloc[0]['PRICE_DATA']
-                    if isinstance(price_data, str):
-                        return json.loads(price_data)
-                    return price_data
-            except Exception as e:
-                return {"error": str(e)}
-            return None
-        
-        @st.cache_data(ttl=60)
-        def get_security_quote(symbol):
-            try:
-                result = session.sql(f"""
-                    SELECT 
-                        t.SYMBOL,
-                        s.SECURITY_NAME,
-                        t.PRICE as LAST_PRICE,
-                        t.TRADE_DATE as LAST_TRADE_DATE,
-                        (SELECT AVG(PRICE) FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES WHERE SYMBOL = '{symbol}') as AVG_PRICE,
-                        (SELECT COUNT(*) FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES WHERE SYMBOL = '{symbol}') as TRADE_COUNT
-                    FROM SECURITY_MASTER_DB.TRADES.EQUITY_TRADES t
-                    JOIN SECURITY_MASTER_DB.SECURITIES.SP500 s ON t.SYMBOL = s.SYMBOL
-                    WHERE t.SYMBOL = '{symbol}'
-                    ORDER BY t.TRADE_DATE DESC
-                    LIMIT 1
-                """).to_pandas()
-                return result
-            except:
-                return None
         
         tradeable = get_tradeable_securities()
         
@@ -2232,7 +991,7 @@ with tab9:
                 security_name = security_info.iloc[0]['SECURITY_NAME'] if not security_info.empty else selected_order_symbol
                 
                 st.markdown(f"""
-                <div style="background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%); 
+                <div style="background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%);
                             border: 1px solid #10b981; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem 0;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <div>
@@ -2261,7 +1020,7 @@ with tab9:
                     q = quote_data.iloc[0]
                     live_price = q['LAST_PRICE']
                     st.markdown(f"""
-                    <div style="background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%); 
+                    <div style="background: linear-gradient(90deg, #ecfdf5 0%, #d1fae5 100%);
                                 border: 1px solid #10b981; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
@@ -2331,11 +1090,12 @@ with tab9:
         
         if price_type in ["Limit", "Stop Limit"]:
             st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">LIMIT PRICE</p>', unsafe_allow_html=True)
+            default_limit = live_price if live_price else 100.00
             limit_price = st.number_input(
                 "Limit Price",
                 min_value=0.01,
                 max_value=100000.00,
-                value=100.00,
+                value=default_limit,
                 step=0.01,
                 format="%.2f",
                 key="order_limit",
@@ -2344,11 +1104,12 @@ with tab9:
         
         if price_type in ["Stop", "Stop Limit"]:
             st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">STOP PRICE</p>', unsafe_allow_html=True)
+            default_stop = (live_price * 0.95) if live_price else 95.00
             stop_price = st.number_input(
                 "Stop Price",
                 min_value=0.01,
                 max_value=100000.00,
-                value=95.00,
+                value=default_stop,
                 step=0.01,
                 format="%.2f",
                 key="order_stop",
@@ -2502,7 +1263,7 @@ with tab9:
                 trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
                 now = datetime.now()
                 trade_date = now.strftime('%Y-%m-%d')
-                settlement_date = (now + pd.Timedelta(days=2)).strftime('%Y-%m-%d')
+                settlement_date = (now + pd.Timedelta(days=1)).strftime('%Y-%m-%d')
                 
                 side = 'BUY' if 'Buy' in pd_data['action'] else 'SELL'
                 total_value = pd_data['quantity'] * pd_data['execution_price']
@@ -2568,13 +1329,8 @@ with tab9:
                     }
                     st.session_state.show_preview = False
                     st.cache_data.clear()
-                    st.markdown(f"""
-                    <div style="background: #dcfce7; border: 2px solid #22c55e; border-radius: 10px; padding: 1rem; margin: 0.75rem 0;">
-                        <p style="color: #000000; margin: 0; font-size: 1rem; font-weight: 600;">
-                            Confirmed {side} {pd_data['security_name']} ${pd_data['execution_price']:,.2f} Quantity {pd_data['quantity']:,}
-                        </p>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.success(f"✅ Confirmed {side} {pd_data['security_name']} ${pd_data['execution_price']:,.2f} Quantity {pd_data['quantity']:,} - Portfolio updated!")
+                    st.experimental_rerun()
                     
                 except Exception as e:
                     st.session_state.order_confirmed = {
@@ -2589,7 +1345,7 @@ with tab9:
     
     with order_col2:
         st.markdown("""
-        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; 
+        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px;
                     padding: 0.5rem; margin-bottom: 0.5rem;">
             <h5 style="margin: 0; color: #0f172a; font-family: 'Outfit', sans-serif; font-size: 0.85rem;">
                 💡 Order Types
@@ -2641,6 +1397,395 @@ with tab9:
                     st.metric("Total Trades", f"{int(q['TRADE_COUNT']):,}")
         else:
             st.info("Select a symbol to view stats")
+
+# ============================================
+# TAB 10: BOND ORDER
+# ============================================
+with tab10:
+    import json
+    
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 50%, #8b5cf6 100%);
+                border-radius: 8px; padding: 0.5rem 1rem; margin-bottom: 0.75rem;
+                box-shadow: 0 1px 5px rgba(139, 92, 246, 0.2);">
+        <h4 style="color: white; margin: 0; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.4rem;">
+            🏦 Bond Order
+        </h4>
+        <p style="color: #e9d5ff; margin: 0.1rem 0 0 0; font-size: 0.75rem;">
+            Place buy and sell orders for fixed income securities
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    bond_order_col1, bond_order_col2 = st.columns([2, 1])
+    
+    with bond_order_col1:
+        st.markdown("""
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+                    padding: 0.75rem; margin-bottom: 0.75rem;">
+            <h4 style="margin: 0; color: #0f172a; font-family: 'Outfit', sans-serif;">
+                Bond Order
+            </h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        if 'bond_show_preview' not in st.session_state:
+            st.session_state.bond_show_preview = False
+        if 'bond_order_confirmed' not in st.session_state:
+            st.session_state.bond_order_confirmed = None
+        
+        tradeable_bonds = get_tradeable_bonds()
+        bond_holdings = get_bond_holdings()
+        
+        bond_input_col1, bond_input_col2, bond_input_col3 = st.columns([2, 0.3, 2])
+        
+        with bond_input_col1:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">CUSIP, symbol or company name</p>', unsafe_allow_html=True)
+            bond_options = ["-- Select a bond --"] + [f"{row['CUSIP']} - {row['ISSUER_NAME']}" for _, row in tradeable_bonds.iterrows()]
+            selected_bond_display = st.selectbox(
+                "Bond",
+                options=bond_options,
+                key="bond_search_select",
+                label_visibility="collapsed"
+            )
+        
+        with bond_input_col2:
+            st.markdown('<p style="text-align: center; padding-top: 1.5rem; color: #64748b;">or</p>', unsafe_allow_html=True)
+        
+        with bond_input_col3:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">Choose from existing holdings</p>', unsafe_allow_html=True)
+            holding_options = ["-- Select --"] + [f"{row['CUSIP']} - {row['ISSUER_NAME']}" for _, row in bond_holdings.iterrows()]
+            selected_holding = st.selectbox(
+                "Holdings",
+                options=holding_options,
+                key="bond_holding_select",
+                label_visibility="collapsed"
+            )
+        
+        selected_bond_cusip = None
+        selected_bond_info = None
+        
+        if selected_bond_display and selected_bond_display != "-- Select a bond --":
+            selected_bond_cusip = selected_bond_display.split(" - ")[0]
+            bond_match = tradeable_bonds[tradeable_bonds['CUSIP'] == selected_bond_cusip]
+            if not bond_match.empty:
+                selected_bond_info = bond_match.iloc[0]
+        elif selected_holding and selected_holding != "-- Select --":
+            selected_bond_cusip = selected_holding.split(" - ")[0]
+            bond_match = tradeable_bonds[tradeable_bonds['CUSIP'] == selected_bond_cusip]
+            if not bond_match.empty:
+                selected_bond_info = bond_match.iloc[0]
+        
+        if selected_bond_info is not None:
+            st.markdown(f"""
+            <div style="background: linear-gradient(90deg, #faf5ff 0%, #f3e8ff 100%);
+                        border: 1px solid #8b5cf6; border-radius: 8px; padding: 0.75rem 1rem; margin: 0.5rem 0 1rem 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: #0f172a;">
+                            {selected_bond_info['ISSUER_NAME']}
+                        </span>
+                        <p style="margin: 0.25rem 0 0 0; font-size: 0.8rem; color: #64748b;">
+                            CUSIP: {selected_bond_info['CUSIP']} | Rating: {selected_bond_info['CREDIT_RATING']}
+                        </p>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 600; color: #8b5cf6;">
+                            {selected_bond_info['CURRENT_YIELD']:.2f}% Yield
+                        </span>
+                        <p style="margin: 0; font-size: 0.75rem; color: #64748b;">Coupon: {selected_bond_info['COUPON_RATE']:.2f}%</p>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        
+        bond_action_col, bond_qty_col = st.columns(2)
+        
+        with bond_action_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">Action</p>', unsafe_allow_html=True)
+            bond_action = st.selectbox(
+                "Action",
+                options=["Select", "Buy", "Sell"],
+                key="bond_action",
+                label_visibility="collapsed"
+            )
+        
+        with bond_qty_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">Quantity (Face Value in $1,000s)</p>', unsafe_allow_html=True)
+            bond_quantity = st.number_input(
+                "Quantity",
+                min_value=1,
+                max_value=10000,
+                value=10,
+                step=1,
+                key="bond_qty",
+                label_visibility="collapsed"
+            )
+        
+        st.markdown("---")
+        
+        st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">Execution Type</p>', unsafe_allow_html=True)
+        bond_exec_type = st.selectbox(
+            "Execution Type",
+            options=["--", "Market", "Limit"],
+            key="bond_exec_type",
+            label_visibility="collapsed"
+        )
+        
+        price_mode = st.radio(
+            "Price Mode",
+            options=["Price", "Yield"],
+            key="bond_price_mode",
+            horizontal=True
+        )
+        
+        if price_mode == "Price":
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">Price (% of par)</p>', unsafe_allow_html=True)
+            bond_price = st.number_input(
+                "Price",
+                min_value=0.01,
+                max_value=200.00,
+                value=100.00,
+                step=0.01,
+                format="%.4f",
+                key="bond_price",
+                label_visibility="collapsed"
+            )
+            bond_yield_input = None
+        else:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.25rem; font-weight: 600;">Yield (%)</p>', unsafe_allow_html=True)
+            bond_yield_input = st.number_input(
+                "Yield",
+                min_value=0.01,
+                max_value=50.00,
+                value=selected_bond_info['CURRENT_YIELD'] if selected_bond_info is not None else 5.00,
+                step=0.01,
+                format="%.2f",
+                key="bond_yield_input",
+                label_visibility="collapsed"
+            )
+            bond_price = 100.00
+        
+        st.markdown("---")
+        
+        comm_col, total_col, calc_col = st.columns([1, 1, 1])
+        
+        with comm_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.1rem;">Comm.</p>', unsafe_allow_html=True)
+            st.markdown('<p style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">$0.00</p>', unsafe_allow_html=True)
+        
+        face_value = bond_quantity * 1000
+        est_total = face_value * (bond_price / 100)
+        
+        with total_col:
+            st.markdown('<p style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.1rem;">Est. Total</p>', unsafe_allow_html=True)
+            st.markdown(f'<p style="font-size: 1.1rem; font-weight: 700; color: #0f172a;">${est_total:,.2f}</p>', unsafe_allow_html=True)
+        
+        with calc_col:
+            if st.button("Calculate totals", key="calc_bond_totals"):
+                st.info(f"Face Value: ${face_value:,.0f} | Est. Total: ${est_total:,.2f}")
+        
+        st.markdown("---")
+        
+        bond_preview = st.button("👁️ Preview order", key="bond_preview_btn", use_container_width=True, type="primary")
+        
+        if bond_preview:
+            if not selected_bond_cusip:
+                st.error("⚠️ Please select a bond to trade.")
+            elif bond_action == "Select":
+                st.error("⚠️ Please select an action (Buy or Sell).")
+            else:
+                st.session_state.bond_preview_data = {
+                    'cusip': selected_bond_cusip,
+                    'bond_id': selected_bond_info['BOND_ID'],
+                    'issuer_name': selected_bond_info['ISSUER_NAME'],
+                    'action': bond_action,
+                    'quantity': bond_quantity,
+                    'face_value': face_value,
+                    'price': bond_price,
+                    'yield_value': bond_yield_input if bond_yield_input else selected_bond_info['CURRENT_YIELD'],
+                    'exec_type': bond_exec_type,
+                    'est_total': est_total,
+                    'credit_rating': selected_bond_info['CREDIT_RATING'],
+                    'coupon_rate': selected_bond_info['COUPON_RATE']
+                }
+                st.session_state.bond_show_preview = True
+                st.session_state.bond_order_confirmed = None
+        
+        if st.session_state.bond_order_confirmed and st.session_state.bond_order_confirmed.get('success'):
+            conf = st.session_state.bond_order_confirmed
+            st.markdown(f"""
+            <div style="background: #dcfce7; border: 2px solid #22c55e; border-radius: 10px; padding: 1rem; margin: 0.75rem 0;">
+                <p style="color: #166534; margin: 0; font-size: 1rem; font-weight: 600;">
+                    ✅ Bond {conf['issuer_name']} confirmed at ${conf['price']:.2f} with Quantity {conf['quantity']:,}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        if st.session_state.bond_show_preview and 'bond_preview_data' in st.session_state:
+            bpd = st.session_state.bond_preview_data
+            
+            st.markdown(f"""
+            <div style="background: #f3f4f6; border: 1px solid #d1d5db; border-radius: 10px; padding: 1rem; margin-top: 0.75rem;">
+                <h4 style="color: #1f2937; margin: 0 0 0.75rem 0; font-size: 1rem;">📋 Bond Order Preview</h4>
+                <table style="width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;">
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">Issuer:</td><td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{bpd['issuer_name']}</td></tr>
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">CUSIP:</td><td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{bpd['cusip']}</td></tr>
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">Action:</td><td style="padding: 0.35rem 0; color: {'#059669' if bpd['action'] == 'Buy' else '#dc2626'}; font-weight: 700;">{bpd['action']}</td></tr>
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">Face Value:</td><td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">${bpd['face_value']:,}</td></tr>
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">Price:</td><td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{bpd['price']:.4f}%</td></tr>
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">Yield:</td><td style="padding: 0.35rem 0; color: #000000; font-weight: 700;">{bpd['yield_value']:.2f}%</td></tr>
+                    <tr><td style="padding: 0.35rem 0; color: #6b7280;">Est. Total:</td><td style="padding: 0.35rem 0; color: #000000; font-weight: 800;">${bpd['est_total']:,.2f}</td></tr>
+                </table>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            bond_confirm_col1, bond_confirm_col2 = st.columns(2)
+            with bond_confirm_col1:
+                place_bond_order = st.button("✅ Place Order", key="place_bond_order_btn", use_container_width=True, type="primary")
+            with bond_confirm_col2:
+                cancel_bond_order = st.button("❌ Cancel", key="cancel_bond_order_btn", use_container_width=True)
+            
+            if place_bond_order:
+                import uuid
+                from datetime import datetime
+                
+                order_id = f"BND-{str(uuid.uuid4())[:8].upper()}"
+                trade_id = f"TRD-{str(uuid.uuid4())[:8].upper()}"
+                now = datetime.now()
+                trade_date = now.strftime('%Y-%m-%d')
+                settlement_date = (now + pd.Timedelta(days=1)).strftime('%Y-%m-%d')
+                
+                side = bpd['action'].upper()
+                side_code = '1' if side == 'BUY' else '2'
+                
+                try:
+                    session.sql(f"""
+                        INSERT INTO SECURITY_MASTER_DB.TRADES.BOND_TRADES (
+                            TRADE_ID, TRADE_DATE, SETTLEMENT_DATE, BOND_ID, CUSIP, ISSUER,
+                            SIDE, FACE_VALUE, PRICE, YIELD, TOTAL_VALUE, CURRENCY,
+                            COUNTERPARTY, TRADER, STATUS
+                        ) VALUES (
+                            '{trade_id}',
+                            '{trade_date}',
+                            '{settlement_date}',
+                            '{bpd['bond_id']}',
+                            '{bpd['cusip']}',
+                            '{bpd['issuer_name'].replace("'", "''")}',
+                            '{side}',
+                            {bpd['face_value']},
+                            {bpd['price']},
+                            {bpd['yield_value']},
+                            {bpd['est_total']},
+                            'USD',
+                            'INTERNAL',
+                            'CURRENT_USER',
+                            'CONFIRMED'
+                        )
+                    """).collect()
+                    
+                    fixml_bond_msg = f'''<?xml version="1.0" encoding="UTF-8"?>
+<FIXML xmlns="http://www.fixprotocol.org/FIXML-5-0-SP2" v="5.0SP2">
+    <ExecRpt ExecID="{trade_id}" ExecTyp="F" OrdStat="2" Side="{side_code}" LeavesQty="0" CumQty="{bpd['face_value']}" AvgPx="{bpd['price']}" TrdDt="{trade_date}" TxnTm="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z" SettlDt="{settlement_date}">
+        <Hdr SID="SECMASTER" TID="EXCHANGE" Snt="{now.strftime('%Y-%m-%dT%H:%M:%S')}Z"/>
+        <OrdID ID="{order_id}"/>
+        <Instrmt CUSIP="{bpd['cusip']}" SecTyp="CORP" ID="{bpd['cusip']}" Src="1" Issr="{bpd['issuer_name'].replace('"', '&quot;')}"/>
+        <Yield Typ="CURRENT" Yld="{bpd['yield_value']}"/>
+        <OrdQty Qty="{bpd['face_value']}"/>
+        <Px Px="{bpd['price']}"/>
+        <TrdCapRpt LastQty="{bpd['face_value']}" LastPx="{bpd['price']}"/>
+        <Amt Typ="SMTL" Amt="{bpd['est_total']}" Ccy="USD"/>
+        <Comm Typ="3" Comm="0.00" Ccy="USD"/>
+        <Pty ID="SECMASTER" R="1"/>
+        <Pty ID="EXCHANGE" R="17"/>
+    </ExecRpt>
+</FIXML>'''
+                    
+                    bond_symbol = bpd['cusip']
+                    fixml_bond_filename = f"FIXML_BOND_{side}_{bond_symbol}_{now.strftime('%d-%b-%Y').upper()}_{now.strftime('%H-%M-%S')}.xml"
+                    
+                    session.sql(f"""
+                        COPY INTO @SECURITY_MASTER_DB.TRADES.BOND_ORDERS/{fixml_bond_filename}
+                        FROM (SELECT '{fixml_bond_msg.replace("'", "''")}')
+                        FILE_FORMAT = (TYPE = CSV FIELD_DELIMITER = NONE)
+                        OVERWRITE = TRUE
+                        SINGLE = TRUE
+                    """).collect()
+                    
+                    st.session_state.bond_order_confirmed = {
+                        'success': True,
+                        'side': side,
+                        'issuer_name': bpd['issuer_name'],
+                        'price': bpd['price'],
+                        'quantity': bpd['quantity'],
+                        'total': bpd['est_total']
+                    }
+                    st.session_state.bond_show_preview = False
+                    st.cache_data.clear()
+                    st.markdown(f"""
+                    <div style="background: #dcfce7; border: 2px solid #22c55e; border-radius: 10px; padding: 1rem; margin: 0.75rem 0;">
+                        <p style="color: #166534; margin: 0; font-size: 1rem; font-weight: 600;">
+                            ✅ Bond {bpd['issuer_name']} confirmed at ${bpd['price']:.2f} with Quantity {bpd['quantity']:,}
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    st.experimental_rerun()
+                    
+                except Exception as e:
+                    st.session_state.bond_order_confirmed = {
+                        'success': False,
+                        'error': str(e)
+                    }
+                    st.session_state.bond_show_preview = False
+            
+            if cancel_bond_order:
+                st.session_state.bond_show_preview = False
+                st.session_state.bond_order_confirmed = None
+    
+    with bond_order_col2:
+        st.markdown("""
+        <div style="background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px;
+                    padding: 0.5rem; margin-bottom: 0.5rem;">
+            <h5 style="margin: 0; color: #0f172a; font-family: 'Outfit', sans-serif; font-size: 0.85rem;">
+                💡 Bond Order Types
+            </h5>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div style="font-size: 0.8rem;">
+        
+        **Market Order**  
+        Executes at current market price.
+        
+        ---
+        
+        **Limit Order**  
+        Executes at your specified price or better.
+        
+        ---
+        
+        **Price vs Yield**  
+        Price: % of par value (100 = par)  
+        Yield: Annual return as percentage
+        
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        st.markdown("#### 📊 Bond Quick Stats")
+        
+        if selected_bond_info is not None:
+            st.metric("Current Yield", f"{selected_bond_info['CURRENT_YIELD']:.2f}%")
+            st.metric("Coupon Rate", f"{selected_bond_info['COUPON_RATE']:.2f}%")
+            st.metric("Credit Rating", selected_bond_info['CREDIT_RATING'])
+            st.metric("Maturity", str(selected_bond_info['MATURITY_DATE'])[:10])
+        else:
+            st.info("Select a bond to view stats")
 
 # Footer
 st.markdown("---")
